@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Vietnam 2026 · Hoek Family</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --red: #C8102E;
+      --red-dark: #8B0000;
+      --red-deep: #5C0A14;
+      --gold: #D4A017;
+      --gold-light: #F0C040;
+      --gold-pale: #F5E6A3;
+      --cream: #FAF5E4;
+      --cream-dark: #F0E6CC;
+      --ink: #1A0A05;
+      --ink-light: #3D1A10;
+      --smoke: rgba(255,255,255,0.06);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ─── PASSWORD SCREEN ─── */
+    #lock-screen {
+      position: fixed; inset: 0; z-index: 1000;
+      background: var(--ink);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 32px;
+      transition: opacity 0.8s ease, visibility 0.8s ease;
+    }
+    #lock-screen.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+
+    .lock-lotus {
+      font-size: 64px;
+      animation: float 4s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%,100% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
+    }
+
+    .lock-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(28px, 6vw, 52px);
+      font-style: italic;
+      color: var(--gold-light);
+      letter-spacing: 0.02em;
+      text-align: center;
+    }
+    .lock-sub {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 16px;
+      color: rgba(255,255,255,0.45);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    .lock-form {
+      display: flex; flex-direction: column; align-items: center; gap: 16px;
+      width: min(360px, 90vw);
+    }
+    .lock-input {
+      width: 100%;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(212,160,23,0.4);
+      border-radius: 4px;
+      padding: 14px 20px;
+      font-family: 'Space Mono', monospace;
+      font-size: 16px;
+      color: var(--gold-pale);
+      outline: none;
+      text-align: center;
+      letter-spacing: 0.15em;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    .lock-input:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 20px rgba(212,160,23,0.2);
+    }
+    .lock-input::placeholder { color: rgba(255,255,255,0.2); letter-spacing: 0.08em; }
+
+    .lock-btn {
+      width: 100%;
+      background: var(--red);
+      color: var(--gold-pale);
+      border: none;
+      padding: 14px;
+      font-family: 'Space Mono', monospace;
+      font-size: 13px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .lock-btn:hover { background: var(--red-dark); }
+    .lock-btn:active { transform: scale(0.98); }
+
+    .lock-error {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 14px;
+      color: #ff6b6b;
+      height: 20px;
+      text-align: center;
+      transition: opacity 0.3s;
+    }
+
+    .lock-divider {
+      width: 120px; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+
+    /* ─── MAIN SITE ─── */
+    body {
+      background: var(--cream);
+      color: var(--ink);
+      font-family: 'Cormorant Garamond', serif;
+      overflow-x: hidden;
+    }
+
+    /* ─── HERO ─── */
+    .hero {
+      position: relative;
+      min-height: 100svh;
+      background: var(--ink);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      overflow: hidden;
+      padding: 40px 20px;
+    }
+
+    /* Decorative background pattern */
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image:
+        radial-gradient(ellipse 80% 60% at 50% 50%, rgba(139,0,0,0.25) 0%, transparent 70%),
+        repeating-linear-gradient(
+          45deg,
+          transparent 0px,
+          transparent 30px,
+          rgba(212,160,23,0.03) 30px,
+          rgba(212,160,23,0.03) 31px
+        );
+    }
+
+    /* Decorative corner ornaments */
+    .hero::after {
+      content: '';
+      position: absolute; inset: 20px;
+      border: 1px solid rgba(212,160,23,0.15);
+      pointer-events: none;
+    }
+
+    .hero-corner {
+      position: absolute;
+      width: 60px; height: 60px;
+      border-color: var(--gold);
+      border-style: solid;
+      opacity: 0.5;
+    }
+    .hero-corner.tl { top: 20px; left: 20px; border-width: 2px 0 0 2px; }
+    .hero-corner.tr { top: 20px; right: 20px; border-width: 2px 2px 0 0; }
+    .hero-corner.bl { bottom: 20px; left: 20px; border-width: 0 0 2px 2px; }
+    .hero-corner.br { bottom: 20px; right: 20px; border-width: 0 2px 2px 0; }
+
+    .hero-eyebrow {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.4em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      opacity: 0;
+      animation: fadeUp 1s 0.3s forwards;
+    }
+
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(56px, 12vw, 140px);
+      font-weight: 900;
+      color: var(--cream);
+      line-height: 0.9;
+      text-align: center;
+      letter-spacing: -0.02em;
+      opacity: 0;
+      animation: fadeUp 1s 0.5s forwards;
+    }
+    .hero-title em {
+      display: block;
+      font-style: italic;
+      color: var(--gold-light);
+      font-size: 0.65em;
+    }
+
+    .hero-year {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(80px, 20vw, 220px);
+      font-weight: 900;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(212,160,23,0.2);
+      position: absolute;
+      bottom: -20px;
+      letter-spacing: -0.05em;
+      user-select: none;
+      pointer-events: none;
+    }
+
+    .hero-desc {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(16px, 2.5vw, 22px);
+      color: rgba(255,255,255,0.5);
+      margin-top: 24px;
+      letter-spacing: 0.05em;
+      text-align: center;
+      font-style: italic;
+      opacity: 0;
+      animation: fadeUp 1s 0.7s forwards;
+    }
+
+    .hero-flag {
+      font-size: 40px;
+      margin-bottom: 8px;
+      opacity: 0;
+      animation: fadeUp 1s 0.2s forwards;
+    }
+
+    .hero-scroll {
+      position: absolute; bottom: 40px;
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      color: rgba(255,255,255,0.3);
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      opacity: 0;
+      animation: fadeUp 1s 1.5s forwards;
+    }
+    .scroll-line {
+      width: 1px; height: 50px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+    @keyframes scrollPulse {
+      0%, 100% { transform: scaleY(1); opacity: 0.5; }
+      50% { transform: scaleY(1.3); opacity: 1; }
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─── NAV STRIP ─── */
+    .nav-strip {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--ink);
+      border-bottom: 1px solid rgba(212,160,23,0.2);
+      display: flex; align-items: center; justify-content: center;
+      gap: clamp(16px, 4vw, 48px);
+      padding: 14px 20px;
+    }
+    .nav-link {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-link:hover { color: var(--gold); }
+
+    /* ─── SECTION BASE ─── */
+    section {
+      padding: clamp(60px, 10vw, 120px) clamp(20px, 6vw, 80px);
+    }
+
+    .section-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 12px;
+      display: flex; align-items: center; gap: 16px;
+    }
+    .section-label::after {
+      content: '';
+      flex: 1; max-width: 80px; height: 1px;
+      background: var(--red);
+      opacity: 0.4;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(36px, 6vw, 72px);
+      font-weight: 700;
+      line-height: 1;
+      margin-bottom: 48px;
+      color: var(--ink);
+    }
+    .section-title em { font-style: italic; color: var(--red); }
+
+    /* ─── FLIGHTS ─── */
+    #flights { background: var(--ink); color: var(--cream); }
+    #flights .section-label { color: var(--gold); }
+    #flights .section-label::after { background: var(--gold); }
+    #flights .section-title { color: var(--cream); }
+    #flights .section-title em { color: var(--gold-light); }
+
+    .flights-grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .flight-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(212,160,23,0.15);
+      border-radius: 8px;
+      padding: 28px 32px;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr auto;
+      gap: 16px;
+      align-items: center;
+      transition: border-color 0.3s, background 0.3s;
+    }
+    .flight-card:hover {
+      border-color: rgba(212,160,23,0.4);
+      background: rgba(255,255,255,0.07);
+    }
+
+    .flight-city {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(20px, 3vw, 32px);
+      font-weight: 700;
+      color: var(--cream);
+    }
+    .flight-city-code {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      color: var(--gold);
+      letter-spacing: 0.2em;
+    }
+    .flight-time {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(22px, 3.5vw, 36px);
+      color: var(--gold-light);
+      font-weight: 700;
+    }
+
+    .flight-arrow {
+      display: flex; flex-direction: column; align-items: center;
+      gap: 4px;
+      color: rgba(255,255,255,0.3);
+    }
+    .flight-arrow-line {
+      width: clamp(40px, 8vw, 120px);
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+    .flight-arrow-icon { font-size: 18px; }
+    .flight-duration {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      color: rgba(255,255,255,0.3);
+    }
+
+    .flight-meta {
+      display: flex; flex-direction: column; gap: 4px;
+      padding-left: 20px;
+      border-left: 1px solid rgba(212,160,23,0.2);
+    }
+    .flight-airline {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 14px;
+      color: rgba(255,255,255,0.6);
+    }
+    .flight-ref {
+      font-family: 'Space Mono', monospace;
+      font-size: 12px;
+      color: var(--gold);
+      letter-spacing: 0.15em;
+    }
+    .flight-date-badge {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      color: rgba(255,255,255,0.35);
+      letter-spacing: 0.1em;
+    }
+
+    /* ─── HOTELS ─── */
+    #hotels { background: var(--cream); }
+
+    .hotels-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr));
+      gap: 24px;
+    }
+
+    .hotel-card {
+      background: white;
+      border: 1px solid rgba(0,0,0,0.08);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .hotel-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.12);
+    }
+
+    .hotel-banner {
+      height: 80px;
+      background: linear-gradient(135deg, var(--red-dark), var(--red));
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 24px;
+    }
+    .hotel-emoji { font-size: 32px; }
+    .hotel-stars { color: var(--gold-light); font-size: 14px; letter-spacing: 2px; }
+
+    .hotel-body { padding: 24px; }
+
+    .hotel-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 4px;
+    }
+    .hotel-city {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.25em;
+      color: var(--red);
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .hotel-dates {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .hotel-date-box {
+      background: var(--cream);
+      border-radius: 6px;
+      padding: 10px 14px;
+    }
+    .hotel-date-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      color: rgba(0,0,0,0.4);
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .hotel-date-val {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--ink);
+    }
+
+    .hotel-ref {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      color: rgba(0,0,0,0.35);
+      padding-top: 14px;
+      border-top: 1px dashed rgba(0,0,0,0.1);
+      letter-spacing: 0.1em;
+    }
+    .hotel-ref span { color: var(--red); }
+
+    .hotel-nights {
+      display: inline-block;
+      background: var(--red);
+      color: white;
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      padding: 4px 10px;
+      border-radius: 20px;
+      margin-bottom: 12px;
+    }
+
+    /* ─── VISAS ─── */
+    #visas { background: var(--ink); }
+    #visas .section-label { color: var(--gold); }
+    #visas .section-label::after { background: var(--gold); }
+    #visas .section-title { color: var(--cream); }
+    #visas .section-title em { color: var(--gold-light); }
+
+    .visas-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr));
+      gap: 20px;
+    }
+
+    .visa-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(212,160,23,0.2);
+      border-radius: 12px;
+      padding: 28px;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.3s;
+    }
+    .visa-card:hover { background: rgba(255,255,255,0.07); }
+
+    .visa-card::before {
+      content: '🛂';
+      position: absolute;
+      top: -10px; right: -10px;
+      font-size: 80px;
+      opacity: 0.05;
+    }
+
+    .visa-type {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.3em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .visa-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 26px;
+      color: var(--cream);
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    .visa-detail {
+      display: flex; justify-content: space-between; align-items: baseline;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .visa-detail:last-of-type { border-bottom: none; }
+    .visa-detail-key {
+      font-family: 'Space Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      color: rgba(255,255,255,0.35);
+      text-transform: uppercase;
+    }
+    .visa-detail-val {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 15px;
+      color: rgba(255,255,255,0.75);
+    }
+    .visa-detail-val.highlight { color: var(--gold-light); font-weight: 500; }
+
+    /* ─── ITINERARY ─── */
+    #itinerary { background: var(--cream-dark); }
+
+    .timeline {
+      position: relative;
+      display: flex; flex-direction: column; gap: 0;
+      max-width: 800px;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 28px; top: 0; bottom: 0;
+      width: 1px;
+      background: linear-gradient(to bottom, var(--red), transparent);
+    }
+
+    .timeline-item {
+      display: grid;
+      grid-template-columns: 56px 1fr;
+      gap: 24px;
+      padding-bottom: 40px;
+    }
+
+    .timeline-dot {
+      width: 56px; height: 56px;
+      border-radius: 50%;
+      background: var(--red);
+      color: white;
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      position: relative; z-index: 1;
+      flex-shrink: 0;
+      box-shadow: 0 4px 20px rgba(200,16,46,0.3);
+    }
+
+    .timeline-content {
+      background: white;
+      border-radius: 12px;
+      padding: 20px 24px;
+      border: 1px solid rgba(0,0,0,0.06);
+    }
+    .timeline-date {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      color: var(--red);
+      margin-bottom: 4px;
+    }
+    .timeline-city {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 6px;
+    }
+    .timeline-desc {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 16px;
+      color: rgba(0,0,0,0.55);
+      line-height: 1.6;
+    }
+
+    .stay-badge {
+      display: inline-block;
+      background: var(--cream);
+      border: 1px solid rgba(200,16,46,0.2);
+      color: var(--red);
+      font-family: 'Space Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.15em;
+      padding: 3px 8px;
+      border-radius: 20px;
+      margin-top: 8px;
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--ink);
+      padding: 40px 40px;
+      text-align: center;
+      border-top: 1px solid rgba(212,160,23,0.15);
+    }
+    .footer-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+      font-style: italic;
+      color: var(--gold-light);
+      margin-bottom: 8px;
+    }
+    .footer-sub {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 14px;
+      color: rgba(255,255,255,0.3);
+      letter-spacing: 0.1em;
+    }
+    .footer-divider {
+      width: 80px; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      margin: 20px auto;
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 640px) {
+      .flight-card {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+      .flight-meta {
+        padding-left: 0;
+        border-left: none;
+        border-top: 1px solid rgba(212,160,23,0.2);
+        padding-top: 12px;
+        flex-direction: row; flex-wrap: wrap; gap: 8px;
+      }
+      .flight-arrow-line { width: 60px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══ LOCK SCREEN ═══ -->
+<div id="lock-screen">
+  <div class="lock-lotus">🪷</div>
+  <div class="lock-title">Vietnam 2026</div>
+  <div class="lock-sub">Hoek Family · Private</div>
+  <div class="lock-divider"></div>
+  <form class="lock-form" onsubmit="checkPassword(event)">
+    <input
+      id="pw-input"
+      class="lock-input"
+      type="password"
+      placeholder="Enter password"
+      autocomplete="current-password"
+      autofocus
+    />
+    <button class="lock-btn" type="submit">Unlock Trip Details</button>
+    <div class="lock-error" id="pw-error"></div>
+  </form>
+</div>
+
+<!-- ═══ MAIN CONTENT ═══ -->
+<div id="main-content" style="display:none">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-corner tl"></div>
+    <div class="hero-corner tr"></div>
+    <div class="hero-corner bl"></div>
+    <div class="hero-corner br"></div>
+
+    <div class="hero-flag">🇻🇳</div>
+    <div class="hero-eyebrow">Hoek Family · Private Trip</div>
+    <h1 class="hero-title">
+      Vietnam
+      <em>2026</em>
+    </h1>
+    <p class="hero-desc">Hanoi · Hội An · Ho Chi Minh City</p>
+
+    <div class="hero-year">2026</div>
+
+    <div class="hero-scroll">
+      <div class="scroll-line"></div>
+      Scroll
+    </div>
+  </div>
+
+  <!-- NAV -->
+  <nav class="nav-strip">
+    <a class="nav-link" href="#flights">✈ Flights</a>
+    <a class="nav-link" href="#hotels">🏨 Hotels</a>
+    <a class="nav-link" href="#visas">🛂 Visas</a>
+    <a class="nav-link" href="#itinerary">📍 Itinerary</a>
+  </nav>
+
+  <!-- ═══ FLIGHTS ═══ -->
+  <section id="flights">
+    <div class="section-label">Outbound &amp; Return</div>
+    <h2 class="section-title">Our <em>Flights</em></h2>
+
+    <div class="flights-grid">
+      <!-- OUTBOUND -->
+      <div class="flight-card">
+        <div>
+          <div class="flight-city">Amsterdam</div>
+          <div class="flight-city-code">AMS</div>
+          <div class="flight-time">09:05</div>
+          <div class="flight-date-badge">Mon 20 Apr 2026</div>
+        </div>
+        <div class="flight-arrow">
+          <div class="flight-arrow-line"></div>
+          <div class="flight-arrow-icon">✈</div>
+          <div class="flight-duration">~11h 45m</div>
+        </div>
+        <div>
+          <div class="flight-city">Hanoi</div>
+          <div class="flight-city-code">HAN</div>
+          <div class="flight-time">00:50+1</div>
+          <div class="flight-date-badge">Tue 21 Apr 2026</div>
+        </div>
+        <div class="flight-meta">
+          <div class="flight-airline">Vietnam Airlines</div>
+          <div class="flight-ref">VN 756</div>
+          <div class="flight-date-badge">Ref: UPDATE IN DATA</div>
+        </div>
+      </div>
+
+      <!-- INTERNAL: Hoi An to HCMC -->
+      <div class="flight-card">
+        <div>
+          <div class="flight-city">Đà Nẵng</div>
+          <div class="flight-city-code">DAD</div>
+          <div class="flight-time">07:30</div>
+          <div class="flight-date-badge">Fri 01 May 2026</div>
+        </div>
+        <div class="flight-arrow">
+          <div class="flight-arrow-line"></div>
+          <div class="flight-arrow-icon">✈</div>
+          <div class="flight-duration">~1h 20m</div>
+        </div>
+        <div>
+          <div class="flight-city">Ho Chi Minh</div>
+          <div class="flight-city-code">SGN</div>
+          <div class="flight-time">08:50</div>
+          <div class="flight-date-badge">Fri 01 May 2026</div>
+        </div>
+        <div class="flight-meta">
+          <div class="flight-airline">VietJet Air</div>
+          <div class="flight-ref">VJ 548</div>
+          <div class="flight-date-badge">Domestic</div>
+        </div>
+      </div>
+
+      <!-- RETURN -->
+      <div class="flight-card">
+        <div>
+          <div class="flight-city">Ho Chi Minh</div>
+          <div class="flight-city-code">SGN</div>
+          <div class="flight-time">23:45</div>
+          <div class="flight-date-badge">Sun 10 May 2026</div>
+        </div>
+        <div class="flight-arrow">
+          <div class="flight-arrow-line"></div>
+          <div class="flight-arrow-icon">✈</div>
+          <div class="flight-duration">~12h 10m</div>
+        </div>
+        <div>
+          <div class="flight-city">Amsterdam</div>
+          <div class="flight-city-code">AMS</div>
+          <div class="flight-time">06:55+1</div>
+          <div class="flight-date-badge">Tue 12 May 2026</div>
+        </div>
+        <div class="flight-meta">
+          <div class="flight-airline">Vietnam Airlines</div>
+          <div class="flight-ref">VN 753</div>
+          <div class="flight-date-badge">Ref: UPDATE IN DATA</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ HOTELS ═══ -->
+  <section id="hotels">
+    <div class="section-label">Accommodation</div>
+    <h2 class="section-title">Our <em>Hotels</em></h2>
+
+    <div class="hotels-grid">
+
+      <!-- Hanoi -->
+      <div class="hotel-card">
+        <div class="hotel-banner">
+          <div class="hotel-emoji">🏛️</div>
+          <div class="hotel-stars">★★★★★</div>
+        </div>
+        <div class="hotel-body">
+          <div class="hotel-city">Hanoi · Night 1–4</div>
+          <div class="hotel-name">Sofitel Legend Metropole</div>
+          <div class="hotel-nights">4 nights</div>
+          <div class="hotel-dates">
+            <div class="hotel-date-box">
+              <div class="hotel-date-label">Check-in</div>
+              <div class="hotel-date-val">21 Apr 2026</div>
+            </div>
+            <div class="hotel-date-box">
+              <div class="hotel-date-label">Check-out</div>
+              <div class="hotel-date-val">25 Apr 2026</div>
+            </div>
+          </div>
+          <div class="hotel-ref">Ref: <span>UPDATE FROM EMAIL</span></div>
+        </div>
+      </div>
+
+      <!-- Halong Bay -->
+      <div class="hotel-card">
+        <div class="hotel-banner" style="background: linear-gradient(135deg, #1a4a5e, #0d7090)">
+          <div class="hotel-emoji">🛳️</div>
+          <div class="hotel-stars">★★★★★</div>
+        </div>
+        <div class="hotel-body">
+          <div class="hotel-city">Hạ Long Bay · Night 4–6</div>
+          <div class="hotel-name">Indochine Cruise</div>
+          <div class="hotel-nights">2 nights</div>
+          <div class="hotel-dates">
+            <div class="hotel-date-box">
+              <div class="hotel-date-label">Embark</div>
+              <div class="hotel-date-val">25 Apr 2026</div>
+            </div>
+            <div class="hotel-date-box">
+              <div class="hotel-date-label">Disembark</div>
+              <div class="hotel-date-val">27 Apr 2026</div>
+            </div>
+          </div>
+          <div class="hotel-ref">Ref: <span>UPDATE FROM EMAIL</span></div>
+        </div>
+      </div>
+
+      <!-- Hoi An -->
+      <div class="hotel-card">
+        <div class="hotel-banner" style="background: linear-gradient(135deg, #7B5E2A, #C8A040)">
+          <div class="hotel-emoji">🏮</div>
+          <div class="hotel-stars">★★★★★</div>
+        </div>
+        <div class="hotel-body">
+          <div class="hotel-city">Hội An · Night 7–10</div>
+          <div class="hotel-name">Four Seasons The Nam Hai</div>
+          <div class="hotel-nights">3 nights</div>
+          <div class="hotel-dates">
+            <div class="hotel-date-box">
+              <div class="hotel-date-label">Check-in</div>
+              <div class="hotel-date-val">28 Apr 2026</div>
+            </div>
+            <div class="hotel-date-box">
+              <div class="hotel-date-label">Check-out</div>
+              <div class="hotel-date-val">01 May 2026</div>
+            </div>
+          </div>
+          <div class="hotel-ref">Ref: <span>UPDATE FROM EMAIL</span></div>
+        </div>
+      </div>
+
+      <!-- HCMC -->
+      <div class="hotel-card">
+        <div class="hotel-banner" style="background: linear-gradient(135deg, #2C2C54, #474787)">
+          <div class="hotel-emoji">🌃</div>
+          <div class="hotel-stars">★★★★★</div>
+        </div>
+        <div class="hotel-body">
+          <div class="hotel-city">Ho Chi Minh City · Night 10–13</div>
+          <div class="hotel-name">Park Hyatt Saigon</div>
+          <div class="hotel-nights">3 nights</div>
+          <div class="hotel-dates">
+            <div class="hotel-date-box">
+              <div class="hotel-date-label">Check-in</div>
+              <div class="hotel-date-val">01 May 2026</div>
+            </div>
+            <div class="hotel-date-box">
+              <div class="hotel-date-label">Check-out</div>
+              <div class="hotel-date-val">04 May 2026</div>
+            </div>
+          </div>
+          <div class="hotel-ref">Ref: <span>UPDATE FROM EMAIL</span></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══ VISAS ═══ -->
+  <section id="visas">
+    <div class="section-label">Travel Documents</div>
+    <h2 class="section-title">Visas &amp; <em>Documents</em></h2>
+
+    <div class="visas-grid">
+      <div class="visa-card">
+        <div class="visa-type">E-Visa · Vietnam</div>
+        <div class="visa-name">Adi Hoek</div>
+        <div class="visa-detail">
+          <span class="visa-detail-key">Visa Type</span>
+          <span class="visa-detail-val">Tourist Single Entry</span>
+        </div>
+        <div class="visa-detail">
+          <span class="visa-detail-key">Valid From</span>
+          <span class="visa-detail-val highlight">20 Apr 2026</span>
+        </div>
+        <div class="visa-detail">
+          <span class="visa-detail-key">Valid To</span>
+          <span class="visa-detail-val highlight">12 May 2026</span>
+        </div>
+        <div class="visa-detail">
+          <span class="visa-detail-key">Application No.</span>
+          <span class="visa-detail-val">UPDATE FROM EMAIL</span>
+        </div>
+      </div>
+
+      <div class="visa-card">
+        <div class="visa-type">E-Visa · Vietnam</div>
+        <div class="visa-name">Family Member</div>
+        <div class="visa-detail">
+          <span class="visa-detail-key">Visa Type</span>
+          <span class="visa-detail-val">Tourist Single Entry</span>
+        </div>
+        <div class="visa-detail">
+          <span class="visa-detail-key">Valid From</span>
+          <span class="visa-detail-val highlight">20 Apr 2026</span>
+        </div>
+        <div class="visa-detail">
+          <span class="visa-detail-key">Valid To</span>
+          <span class="visa-detail-val highlight">12 May 2026</span>
+        </div>
+        <div class="visa-detail">
+          <span class="visa-detail-key">Application No.</span>
+          <span class="visa-detail-val">UPDATE FROM EMAIL</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ ITINERARY ═══ -->
+  <section id="itinerary">
+    <div class="section-label">Day by Day</div>
+    <h2 class="section-title">The <em>Journey</em></h2>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-dot">1</div>
+        <div class="timeline-content">
+          <div class="timeline-date">Mon 20 Apr · Departure Day</div>
+          <div class="timeline-city">Amsterdam → Hanoi</div>
+          <div class="timeline-desc">Early morning flight from Schiphol. Overnight to Vietnam — land Tuesday morning local time.</div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot">2</div>
+        <div class="timeline-content">
+          <div class="timeline-date">Tue 21 – Fri 24 Apr</div>
+          <div class="timeline-city">Hanoi</div>
+          <div class="timeline-desc">Explore the Old Quarter, visit Hoan Kiem Lake, the Temple of Literature, and indulge in bún chả and phở in the city's legendary street food scene.</div>
+          <div class="stay-badge">4 nights · Sofitel Metropole</div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot">3</div>
+        <div class="timeline-content">
+          <div class="timeline-date">Sat 25 – Sun 26 Apr</div>
+          <div class="timeline-city">Hạ Long Bay</div>
+          <div class="timeline-desc">Board the Indochine cruise for two nights sailing through the iconic karst landscapes, kayaking through sea caves and watching the sun set over emerald waters.</div>
+          <div class="stay-badge">2 nights · Cruise</div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot">4</div>
+        <div class="timeline-content">
+          <div class="timeline-date">Mon 27 Apr</div>
+          <div class="timeline-city">Hanoi → Đà Nẵng → Hội An</div>
+          <div class="timeline-desc">Fly south to Đà Nẵng, then transfer to the lantern-lit streets of ancient Hội An.</div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot">5</div>
+        <div class="timeline-content">
+          <div class="timeline-date">Tue 28 Apr – Thu 30 Apr</div>
+          <div class="timeline-city">Hội An</div>
+          <div class="timeline-desc">Wander the UNESCO World Heritage old town, visit tailor shops, cycle through rice paddies, and relax on An Bằng Beach.</div>
+          <div class="stay-badge">3 nights · Four Seasons Nam Hai</div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot">6</div>
+        <div class="timeline-content">
+          <div class="timeline-date">Fri 01 May – Sun 03 May</div>
+          <div class="timeline-city">Ho Chi Minh City</div>
+          <div class="timeline-desc">The city that never sleeps. Explore Bến Thành Market, Reunification Palace, rooftop bars and the buzzing District 1 food scene.</div>
+          <div class="stay-badge">3 nights · Park Hyatt Saigon</div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot">🏠</div>
+        <div class="timeline-content">
+          <div class="timeline-date">Mon 04 May · Homeward</div>
+          <div class="timeline-city">Ho Chi Minh City → Amsterdam</div>
+          <div class="timeline-desc">Late night departure, arriving back in Amsterdam with memories to last a lifetime — and maybe some bánh mì in the bag.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-title">Safe travels, Hoek family 🪷</div>
+    <div class="footer-divider"></div>
+    <div class="footer-sub">Vietnam 2026 · Private family trip page</div>
+  </footer>
+
+</div><!-- /main-content -->
+
+<script>
+  // Password is stored as a simple hash (sha-256 of the word)
+  // Change PASS_HASH to the sha256 of your chosen password
+  const PASS_HASH = "4126792aba172af73ab054fcd3b1203c241ddd8f99933180ef7956ceada4416b"; // will be replaced by build script
+
+  // Session unlock
+  const SESSION_KEY = "vietnam2026_unlocked";
+
+  async function sha256(str) {
+    const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
+    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,"0")).join("");
+  }
+
+  async function checkPassword(e) {
+    e.preventDefault();
+    const input = document.getElementById("pw-input").value.trim();
+    const hash = await sha256(input);
+    if (hash === PASS_HASH) {
+      sessionStorage.setItem(SESSION_KEY, "true");
+      unlock();
+    } else {
+      const err = document.getElementById("pw-error");
+      err.textContent = "Incorrect password. Try again.";
+      document.getElementById("pw-input").value = "";
+      document.getElementById("pw-input").focus();
+      setTimeout(() => err.textContent = "", 3000);
+    }
+  }
+
+  function unlock() {
+    document.getElementById("lock-screen").classList.add("hidden");
+    document.getElementById("main-content").style.display = "block";
+    // Smooth scroll to top
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  // Check session on load
+  window.addEventListener("DOMContentLoaded", () => {
+    if (sessionStorage.getItem(SESSION_KEY) === "true") {
+      unlock();
+    }
+  });
+</script>
+
+</body>
+</html>
