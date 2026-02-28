@@ -9,21 +9,22 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
   <style>
-    :root {
-      --red:#C8102E; --red-dark:#8B0000; --gold:#D4A017;
-      --gold-light:#F0C040; --gold-pale:#F5E6A3;
-      --cream:#FAF5E4; --cream-dark:#F0E6CC;
-      --ink:#1A0A05; --ink-light:#3D1A10;
+    :root{
+      --red:#C8102E;--red-dark:#8B0000;--gold:#D4A017;
+      --gold-light:#F0C040;--gold-pale:#F5E6A3;
+      --cream:#FAF5E4;--cream-dark:#F0E6CC;
+      --ink:#1A0A05;--ink-light:#3D1A10;
     }
     *{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;}
 
-    /* ── LOCK ── */
-    #lock-screen{position:fixed;inset:0;z-index:2000;background:var(--ink);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;transition:opacity .8s ease,visibility .8s ease;}
+    /* ══════════════════ LOCK ══════════════════ */
+    #lock-screen{position:fixed;inset:0;z-index:3000;background:var(--ink);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;transition:opacity .8s ease,visibility .8s ease;}
     #lock-screen.hidden{opacity:0;visibility:hidden;pointer-events:none;}
     .lock-lotus{font-size:56px;animation:float 4s ease-in-out infinite;}
     @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
     .lock-title{font-family:'Playfair Display',serif;font-size:clamp(26px,6vw,48px);font-style:italic;color:var(--gold-light);text-align:center;}
-    .lock-sub{font-family:'Space Mono',monospace;font-size:10px;color:rgba(255,255,255,0.35);letter-spacing:.25em;text-transform:uppercase;}
+    .lock-sub{font-family:'Space Mono',monospace;font-size:10px;color:rgba(255,255,255,.35);letter-spacing:.25em;text-transform:uppercase;}
     .lock-div{width:90px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);}
     .lock-form{display:flex;flex-direction:column;align-items:center;gap:11px;width:min(320px,88vw);}
     .lock-input{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(212,160,23,.4);border-radius:4px;padding:12px 16px;font-family:'Space Mono',monospace;font-size:16px;color:var(--gold-pale);outline:none;text-align:center;letter-spacing:.15em;transition:border-color .3s,box-shadow .3s;}
@@ -33,10 +34,25 @@
     .lock-btn:hover{background:var(--red-dark);}
     .lock-err{font-family:'Cormorant Garamond',serif;font-size:13px;color:#ff6b6b;height:16px;text-align:center;}
 
-    /* ── BODY ── */
-    body{background:var(--cream);color:var(--ink);font-family:'Cormorant Garamond',serif;overflow-x:hidden;}
+    /* ══════════════════ VIEW SELECTOR ══════════════════ */
+    #view-selector{position:fixed;inset:0;z-index:2000;background:var(--ink);display:none;flex-direction:column;align-items:center;justify-content:center;gap:32px;padding:20px;}
+    #view-selector.active{display:flex;}
+    .vs-title{font-family:'Playfair Display',serif;font-size:clamp(22px,5vw,42px);font-style:italic;color:var(--gold-light);text-align:center;}
+    .vs-sub{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.3em;color:rgba(255,255,255,.35);text-transform:uppercase;}
+    .vs-div{width:80px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);}
+    .vs-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr));gap:16px;width:100%;max-width:640px;}
+    .vs-card{background:rgba(255,255,255,.04);border:1px solid rgba(212,160,23,.2);border-radius:12px;padding:32px 24px;cursor:pointer;transition:background .25s,border-color .25s,transform .2s;text-align:center;text-decoration:none;display:block;}
+    .vs-card:hover{background:rgba(255,255,255,.08);border-color:var(--gold);transform:translateY(-3px);}
+    .vs-card-icon{font-size:40px;margin-bottom:14px;}
+    .vs-card-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--cream);margin-bottom:8px;}
+    .vs-card-desc{font-family:'Cormorant Garamond',serif;font-size:15px;color:rgba(255,255,255,.45);line-height:1.5;}
 
-    /* ── HERO ── */
+    /* ══════════════════ SHARED BODY ══════════════════ */
+    body{background:var(--cream);color:var(--ink);font-family:'Cormorant Garamond',serif;overflow-x:hidden;}
+    #overview-view,#timeline-view{display:none;}
+    #overview-view.active,#timeline-view.active{display:block;}
+
+    /* ══════════════════ HERO ══════════════════ */
     .hero{position:relative;min-height:100svh;background:var(--ink);display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;padding:40px 20px;}
     .hero::before{content:'';position:absolute;inset:0;background-image:radial-gradient(ellipse 80% 60% at 50% 50%,rgba(139,0,0,.25) 0%,transparent 70%),repeating-linear-gradient(45deg,transparent 0px,transparent 30px,rgba(212,160,23,.03) 30px,rgba(212,160,23,.03) 31px);}
     .hero::after{content:'';position:absolute;inset:20px;border:1px solid rgba(212,160,23,.12);pointer-events:none;}
@@ -55,57 +71,57 @@
     .sc-line{width:1px;height:46px;background:linear-gradient(to bottom,var(--gold),transparent);animation:sp 2s ease-in-out infinite;}
     @keyframes sp{0%,100%{transform:scaleY(1);opacity:.5}50%{transform:scaleY(1.25);opacity:1}}
 
-    /* ── NAV ── */
-    .nav-strip{position:sticky;top:0;z-index:100;background:var(--ink);border-bottom:1px solid rgba(212,160,23,.18);display:flex;align-items:center;justify-content:center;gap:clamp(8px,3vw,36px);padding:11px 14px;flex-wrap:wrap;}
-    .nav-link{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.45);text-decoration:none;transition:color .2s;white-space:nowrap;}
+    /* ══════════════════ NAV ══════════════════ */
+    .nav-strip{position:sticky;top:0;z-index:100;background:var(--ink);border-bottom:1px solid rgba(212,160,23,.18);display:flex;align-items:center;justify-content:center;gap:clamp(6px,2.5vw,30px);padding:11px 14px;flex-wrap:wrap;}
+    .nav-link{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.45);text-decoration:none;transition:color .2s;white-space:nowrap;}
     .nav-link:hover{color:var(--gold);}
+    .nav-switch{background:rgba(212,160,23,.15);border:1px solid rgba(212,160,23,.35);color:var(--gold);border-radius:20px;padding:4px 12px;cursor:pointer;font-family:'Space Mono',monospace;font-size:8.5px;letter-spacing:.15em;text-transform:uppercase;text-decoration:none;transition:background .2s;white-space:nowrap;}
+    .nav-switch:hover{background:rgba(212,160,23,.28);}
 
-    /* ── SECTIONS ── */
+    /* ══════════════════ SECTIONS ══════════════════ */
     section{padding:clamp(56px,9vw,100px) clamp(18px,5.5vw,72px);}
     .sl{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.38em;text-transform:uppercase;color:var(--red);margin-bottom:10px;display:flex;align-items:center;gap:12px;}
     .sl::after{content:'';flex:1;max-width:70px;height:1px;background:var(--red);opacity:.35;}
-    .st{font-family:'Playfair Display',serif;font-size:clamp(32px,5vw,62px);font-weight:700;line-height:1;margin-bottom:40px;color:var(--ink);}
+    .st{font-family:'Playfair Display',serif;font-size:clamp(30px,5vw,62px);font-weight:700;line-height:1;margin-bottom:40px;color:var(--ink);}
     .st em{font-style:italic;color:var(--red);}
-    .dark .sl{color:var(--gold);} .dark .sl::after{background:var(--gold);}
-    .dark .st{color:var(--cream);} .dark .st em{color:var(--gold-light);}
+    .dark .sl{color:var(--gold);}.dark .sl::after{background:var(--gold);}
+    .dark .st{color:var(--cream);}.dark .st em{color:var(--gold-light);}
 
-    /* ── FLIGHTS ── */
+    /* ══════════════════ FLIGHTS ══════════════════ */
     #flights{background:var(--ink);}
     .fgrid{display:grid;gap:12px;}
-    .fc{background:rgba(255,255,255,.04);border:1px solid rgba(212,160,23,.14);border-radius:8px;padding:22px 26px;display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center;transition:border-color .3s,background .3s;}
+    .fc{background:rgba(255,255,255,.04);border:1px solid rgba(212,160,23,.14);border-radius:8px;padding:20px 24px;display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center;transition:border-color .3s,background .3s;}
     .fc:hover{border-color:rgba(212,160,23,.38);background:rgba(255,255,255,.065);}
-    .ftag{display:inline-block;background:rgba(200,16,46,.3);color:var(--gold-pale);font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.16em;padding:2px 7px;border-radius:20px;margin-bottom:6px;}
-    .fcity{font-family:'Playfair Display',serif;font-size:clamp(16px,2.5vw,26px);font-weight:700;color:var(--cream);}
-    .fcode{font-family:'Space Mono',monospace;font-size:9px;color:var(--gold);letter-spacing:.18em;}
-    .ftime{font-family:'Playfair Display',serif;font-size:clamp(18px,2.8vw,30px);color:var(--gold-light);font-weight:700;margin-top:3px;}
+    .ftag{display:inline-block;background:rgba(200,16,46,.3);color:var(--gold-pale);font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.14em;padding:2px 7px;border-radius:20px;margin-bottom:6px;}
+    .fcity{font-family:'Playfair Display',serif;font-size:clamp(15px,2.3vw,24px);font-weight:700;color:var(--cream);}
+    .fcode{font-family:'Space Mono',monospace;font-size:9px;color:var(--gold);letter-spacing:.15em;}
+    .ftime{font-family:'Playfair Display',serif;font-size:clamp(17px,2.6vw,28px);color:var(--gold-light);font-weight:700;margin-top:3px;}
     .fdate{font-family:'Space Mono',monospace;font-size:8px;color:rgba(255,255,255,.28);letter-spacing:.09em;margin-top:2px;}
     .farrow{display:flex;flex-direction:column;align-items:center;gap:3px;}
-    .farr-line{width:clamp(28px,5.5vw,90px);height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);}
+    .farr-line{width:clamp(24px,5vw,80px);height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);}
     .fnum{font-family:'Space Mono',monospace;font-size:9px;color:var(--gold);letter-spacing:.1em;}
-    .fdur{font-family:'Space Mono',monospace;font-size:8px;color:rgba(255,255,255,.28);letter-spacing:.09em;}
-    .fmeta{grid-column:1/-1;border-top:1px solid rgba(212,160,23,.1);padding-top:10px;display:flex;gap:18px;flex-wrap:wrap;}
+    .fdur{font-family:'Space Mono',monospace;font-size:8px;color:rgba(255,255,255,.28);}
+    .fmeta{grid-column:1/-1;border-top:1px solid rgba(212,160,23,.1);padding-top:10px;display:flex;gap:16px;flex-wrap:wrap;}
     .fmi{font-family:'Space Mono',monospace;font-size:9px;color:rgba(255,255,255,.3);letter-spacing:.09em;}
     .fmi span{color:var(--gold);}
 
-    /* ── HOTELS ── */
+    /* ══════════════════ HOTELS ══════════════════ */
     #hotels{background:var(--cream);}
     .hgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(300px,100%),1fr));gap:20px;}
     .hcard{background:white;border:1px solid rgba(0,0,0,.07);border-radius:12px;overflow:hidden;transition:transform .3s,box-shadow .3s;display:flex;flex-direction:column;}
     .hcard:hover{transform:translateY(-3px);box-shadow:0 18px 45px rgba(0,0,0,.09);}
-    .hbanner{height:68px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;flex-shrink:0;}
-    .hemoji{font-size:26px;}
-    .hstars{color:var(--gold-light);font-size:12px;letter-spacing:2px;}
-    .hbody{padding:18px 20px;display:flex;flex-direction:column;flex:1;}
+    .hbanner{height:66px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;flex-shrink:0;}
+    .hemoji{font-size:26px;}.hstars{color:var(--gold-light);font-size:12px;letter-spacing:2px;}
+    .hbody{padding:17px 20px;display:flex;flex-direction:column;flex:1;}
     .hcity{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.22em;color:var(--red);text-transform:uppercase;margin-bottom:3px;}
-    .hname{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--ink);margin-bottom:2px;}
+    .hname{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--ink);margin-bottom:2px;}
     .hnights{display:inline-block;background:var(--red);color:white;font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.09em;padding:2px 8px;border-radius:20px;margin:8px 0;}
-    .hdates{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:10px;}
-    .hdb{background:var(--cream);border-radius:5px;padding:8px 11px;}
+    .hdates{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;}
+    .hdb{background:var(--cream);border-radius:5px;padding:8px 10px;}
     .hdl{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.18em;color:rgba(0,0,0,.38);text-transform:uppercase;margin-bottom:2px;}
     .hdv{font-family:'Cormorant Garamond',serif;font-size:14px;font-weight:500;color:var(--ink);}
     .href-row{font-family:'Space Mono',monospace;font-size:9px;color:rgba(0,0,0,.3);padding-top:10px;border-top:1px dashed rgba(0,0,0,.09);letter-spacing:.07em;margin-bottom:12px;}
     .href-row span{color:var(--red);}
-    /* hotel link buttons */
     .hlinks{display:flex;gap:8px;margin-top:auto;}
     .hlink-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:5px;padding:8px 10px;border-radius:6px;font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.1em;text-decoration:none;text-transform:uppercase;transition:background .2s,transform .1s;white-space:nowrap;}
     .hlink-btn:active{transform:scale(.97);}
@@ -114,7 +130,7 @@
     .hlink-web{background:#e3f0ff;color:#1565c0;border:1px solid rgba(21,101,192,.2);}
     .hlink-web:hover{background:#bbdefb;}
 
-    /* ── TRIP MAP ── */
+    /* ══════════════════ TRIP MAP ══════════════════ */
     #tripmap{background:var(--ink);padding:clamp(56px,9vw,100px) 0 0;}
     #tripmap .map-header{padding:0 clamp(18px,5.5vw,72px) 40px;}
     #map{height:520px;width:100%;border-top:1px solid rgba(212,160,23,.2);}
@@ -127,11 +143,11 @@
     .map-popup-link{font-family:'Space Mono',monospace;font-size:8px;padding:4px 9px;border-radius:4px;text-decoration:none;letter-spacing:.1em;}
     .mpl-maps{background:#e8f5e9;color:#2e7d32;}
     .mpl-web{background:#e3f0ff;color:#1565c0;}
-    .route-info{padding:20px clamp(18px,5.5vw,72px);display:flex;gap:20px;flex-wrap:wrap;background:var(--ink);border-top:1px solid rgba(212,160,23,.1);}
+    .route-info{padding:20px clamp(18px,5.5vw,72px);display:flex;gap:18px;flex-wrap:wrap;background:var(--ink);border-top:1px solid rgba(212,160,23,.1);}
     .route-stop{display:flex;align-items:center;gap:8px;font-family:'Space Mono',monospace;font-size:9px;color:rgba(255,255,255,.45);letter-spacing:.1em;}
     .route-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
 
-    /* ── VISAS ── */
+    /* ══════════════════ VISAS ══════════════════ */
     #visas{background:var(--ink);}
     .vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(250px,100%),1fr));gap:14px;}
     .vcard{background:rgba(255,255,255,.04);border:1px solid rgba(212,160,23,.18);border-radius:10px;padding:20px 22px;transition:background .3s;}
@@ -144,7 +160,7 @@
     .vdv{font-family:'Cormorant Garamond',serif;font-size:13px;color:rgba(255,255,255,.68);}
     .vdv.hi{color:var(--gold-light);font-weight:500;}
 
-    /* ── ITINERARY ── */
+    /* ══════════════════ ITINERARY ══════════════════ */
     #itinerary{background:var(--cream-dark);}
     .tl{position:relative;display:flex;flex-direction:column;max-width:760px;}
     .tl::before{content:'';position:absolute;left:26px;top:0;bottom:0;width:1px;background:linear-gradient(to bottom,var(--red),transparent);}
@@ -156,7 +172,7 @@
     .tdesc{font-family:'Cormorant Garamond',serif;font-size:15px;color:rgba(0,0,0,.52);line-height:1.6;}
     .sbadge{display:inline-block;background:var(--cream);border:1px solid rgba(200,16,46,.18);color:var(--red);font-family:'Space Mono',monospace;font-size:7.5px;letter-spacing:.1em;padding:2px 7px;border-radius:20px;margin-top:7px;}
 
-    /* ── PASSENGERS ── */
+    /* ══════════════════ PASSENGERS ══════════════════ */
     #passengers{background:var(--cream);}
     .pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(210px,100%),1fr));gap:12px;}
     .pcard{background:white;border:1px solid rgba(0,0,0,.07);border-radius:9px;padding:16px 18px;display:flex;align-items:center;gap:12px;}
@@ -165,23 +181,78 @@
     .prole{font-family:'Space Mono',monospace;font-size:8px;color:rgba(0,0,0,.32);letter-spacing:.1em;margin-top:2px;}
     .info-bar{margin-top:20px;padding:14px 18px;background:rgba(200,16,46,.06);border-left:3px solid var(--red);border-radius:4px;font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--ink-light);line-height:1.8;}
 
-    /* ── FOOTER ── */
+    /* ══════════════════ FOOTER ══════════════════ */
     footer{background:var(--ink);padding:32px;text-align:center;border-top:1px solid rgba(212,160,23,.13);}
     .ftitle{font-family:'Playfair Display',serif;font-size:24px;font-style:italic;color:var(--gold-light);margin-bottom:5px;}
     .fdiv{width:70px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:14px auto;}
     .fsub{font-family:'Cormorant Garamond',serif;font-size:12px;color:rgba(255,255,255,.28);letter-spacing:.09em;}
+
+    /* ══════════════════ TIMELINE VIEW ══════════════════ */
+    #timeline-view{background:var(--ink);min-height:100vh;}
+
+    /* Timeline Hero */
+    .tl-hero{background:var(--ink);padding:clamp(60px,10vw,110px) clamp(18px,5.5vw,72px) 40px;border-bottom:1px solid rgba(212,160,23,.15);}
+    .tl-hero-label{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.38em;color:var(--gold);text-transform:uppercase;margin-bottom:10px;}
+    .tl-hero-title{font-family:'Playfair Display',serif;font-size:clamp(36px,6vw,72px);font-weight:900;color:var(--cream);line-height:.95;}
+    .tl-hero-title em{font-style:italic;color:var(--gold-light);}
+    .tl-hero-sub{font-family:'Cormorant Garamond',serif;font-size:16px;color:rgba(255,255,255,.4);margin-top:14px;font-style:italic;}
+
+    /* Day blocks */
+    .tl-day{border-bottom:1px solid rgba(212,160,23,.1);}
+    .tl-day-header{display:flex;align-items:stretch;cursor:pointer;user-select:none;}
+    .tl-day-num{width:clamp(60px,8vw,90px);background:var(--red);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px 10px;flex-shrink:0;}
+    .tl-day-num-n{font-family:'Playfair Display',serif;font-size:clamp(24px,4vw,40px);font-weight:900;color:white;line-height:1;}
+    .tl-day-num-label{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.15em;color:rgba(255,255,255,.65);text-transform:uppercase;margin-top:3px;}
+    .tl-day-info{flex:1;padding:20px clamp(16px,4vw,40px);background:rgba(255,255,255,.03);display:flex;flex-direction:column;justify-content:center;transition:background .2s;}
+    .tl-day-header:hover .tl-day-info{background:rgba(255,255,255,.06);}
+    .tl-day-date{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.2em;color:var(--gold);text-transform:uppercase;margin-bottom:5px;}
+    .tl-day-place{font-family:'Playfair Display',serif;font-size:clamp(18px,3vw,28px);font-weight:700;color:var(--cream);}
+    .tl-day-tagline{font-family:'Cormorant Garamond',serif;font-size:14px;color:rgba(255,255,255,.4);font-style:italic;margin-top:4px;}
+    .tl-day-toggle{display:flex;align-items:center;padding:0 20px;color:rgba(255,255,255,.3);font-size:18px;transition:transform .3s,color .2s;}
+    .tl-day-header.open .tl-day-toggle{transform:rotate(180deg);color:var(--gold);}
+
+    /* Events inside a day */
+    .tl-events{display:none;padding:0 0 0 clamp(60px,8vw,90px);background:var(--ink);}
+    .tl-events.open{display:block;}
+    .tl-event{display:grid;grid-template-columns:80px 36px 1fr;gap:0 16px;align-items:start;padding:18px clamp(16px,4vw,40px) 18px 0;border-left:1px solid rgba(212,160,23,.08);position:relative;}
+    .tl-event:last-child{padding-bottom:28px;}
+    .tl-event-time{font-family:'Space Mono',monospace;font-size:10px;color:var(--gold);text-align:right;padding-top:3px;letter-spacing:.06em;}
+    .tl-event-time.est{color:rgba(212,160,23,.5);}
+    .tl-event-icon{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;position:relative;z-index:1;}
+    /* connector line */
+    .tl-event::before{content:'';position:absolute;left:80px;top:36px;bottom:-18px;width:1px;background:rgba(212,160,23,.12);margin-left:17px;}
+    .tl-event:last-child::before{display:none;}
+    .tl-event-body{padding-top:2px;}
+    .tl-event-title{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--cream);margin-bottom:4px;}
+    .tl-event-desc{font-family:'Cormorant Garamond',serif;font-size:14px;color:rgba(255,255,255,.45);line-height:1.55;}
+    .tl-event-links{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;}
+    .tl-event-link{font-family:'Space Mono',monospace;font-size:8px;padding:4px 10px;border-radius:4px;text-decoration:none;letter-spacing:.1em;transition:opacity .2s;}
+    .tl-event-link:hover{opacity:.8;}
+    .ev-flight{background:rgba(200,16,46,.2);color:#ffb3be;}
+    .ev-hotel{background:rgba(212,160,23,.15);color:var(--gold-pale);}
+    .ev-activity{background:rgba(255,255,255,.08);color:rgba(255,255,255,.7);}
+    .ev-meal{background:rgba(60,180,60,.12);color:#a0e8a0;}
+    .ev-transfer{background:rgba(100,180,255,.1);color:#a8d8ff;}
+    /* icon colour variants */
+    .icon-flight{background:rgba(200,16,46,.25);}
+    .icon-hotel{background:rgba(212,160,23,.2);}
+    .icon-activity{background:rgba(255,255,255,.08);}
+    .icon-meal{background:rgba(60,180,60,.15);}
+    .icon-transfer{background:rgba(100,180,255,.12);}
 
     @media(max-width:580px){
       .fc{grid-template-columns:1fr;gap:9px;}
       .farrow{flex-direction:row;justify-content:center;}
       .farr-line{width:38px;}
       .hlinks{flex-direction:column;}
+      .tl-event{grid-template-columns:64px 32px 1fr;}
+      .tl-event::before{margin-left:15px;}
     }
   </style>
 </head>
 <body>
 
-<!-- LOCK -->
+<!-- ══════════════ LOCK ══════════════ -->
 <div id="lock-screen">
   <div class="lock-lotus">🪷</div>
   <div class="lock-title">Vietnam 2026</div>
@@ -194,464 +265,710 @@
   </form>
 </div>
 
-<div id="main-content" style="display:none">
-
-<!-- HERO -->
-<div class="hero">
-  <div class="hc tl"></div><div class="hc tr"></div><div class="hc bl"></div><div class="hc br"></div>
-  <div class="hero-flag">🇻🇳</div>
-  <div class="hero-ey">Hoek Family · 6 Travellers · Private</div>
-  <h1 class="hero-title">Vietnam<em>2026</em></h1>
-  <p class="hero-desc">Hội An &middot; Huế &middot; Hà Nội &middot; Hạ Long &middot; Ninh Bình &middot; Mai Châu</p>
-  <div class="hero-dates">23 MARCH – 05 APRIL 2026 &nbsp;·&nbsp; 14 DAYS / 13 NIGHTS</div>
-  <div class="hero-yr">2026</div>
-  <div class="hero-scroll"><div class="sc-line"></div>Scroll</div>
+<!-- ══════════════ VIEW SELECTOR ══════════════ -->
+<div id="view-selector">
+  <div class="vs-title">How do you want to explore?</div>
+  <div class="vs-sub">Vietnam 2026 · Hoek Family</div>
+  <div class="vs-div"></div>
+  <div class="vs-cards">
+    <a class="vs-card" onclick="showView('overview')" href="#">
+      <div class="vs-card-icon">🗺️</div>
+      <div class="vs-card-title">Trip Overview</div>
+      <div class="vs-card-desc">Flights, hotels, map, visas, and itinerary — all the key details in one place.</div>
+    </a>
+    <a class="vs-card" onclick="showView('timeline')" href="#">
+      <div class="vs-card-icon">📅</div>
+      <div class="vs-card-title">Full Timeline</div>
+      <div class="vs-card-desc">Every day, hour by hour — activities, transfers, check-ins, meals, and links.</div>
+    </a>
+  </div>
 </div>
 
-<!-- NAV -->
-<nav class="nav-strip">
-  <a class="nav-link" href="#flights">✈ Flights</a>
-  <a class="nav-link" href="#hotels">🏨 Hotels</a>
-  <a class="nav-link" href="#tripmap">🗺 Map</a>
-  <a class="nav-link" href="#visas">🛂 Visas</a>
-  <a class="nav-link" href="#itinerary">📍 Itinerary</a>
-  <a class="nav-link" href="#passengers">👨‍👩‍👧‍👦 Travellers</a>
-</nav>
+<!-- ══════════════════════════════════════════════════
+     OVERVIEW VIEW
+══════════════════════════════════════════════════════ -->
+<div id="overview-view">
 
-<!-- FLIGHTS -->
-<section id="flights" class="dark">
-  <div class="sl">International &amp; Domestic</div>
-  <h2 class="st">Our <em>Flights</em></h2>
-  <div class="fgrid">
-
-    <div class="fc">
-      <div><div class="ftag">OUTBOUND</div><div class="fcity">Tel Aviv</div><div class="fcode">TLV → Abu Dhabi → HAN</div><div class="ftime">—</div><div class="fdate">Sun 22 Mar 2026</div></div>
-      <div class="farrow"><div class="farr-line"></div><div class="fnum">EY432</div><div class="fdur">Etihad Airways</div></div>
-      <div><div style="height:20px"></div><div class="fcity">Hà Nội</div><div class="fcode">HAN · Noi Bai Int'l</div><div class="ftime">05:55</div><div class="fdate">Mon 23 Mar 2026</div></div>
-      <div class="fmeta"><div class="fmi">Flight <span>EY432</span></div><div class="fmi">All 6 passengers</div></div>
-    </div>
-
-    <div class="fc">
-      <div><div class="ftag">DOMESTIC 1 — Vietnam Airlines</div><div class="fcity">Hà Nội</div><div class="fcode">HAN · Noi Bai T1</div><div class="ftime">10:10</div><div class="fdate">Mon 23 Mar 2026</div></div>
-      <div class="farrow"><div class="farr-line"></div><div class="fnum">VN165</div><div class="fdur">1h 25m</div></div>
-      <div><div style="height:20px"></div><div class="fcity">Đà Nẵng</div><div class="fcode">DAD · Da Nang T1</div><div class="ftime">11:35</div><div class="fdate">Mon 23 Mar 2026</div></div>
-      <div class="fmeta"><div class="fmi">Booking <span>FG9YNH</span></div><div class="fmi">Airbus A321</div><div class="fmi">All 6 passengers</div></div>
-    </div>
-
-    <div class="fc">
-      <div><div class="ftag">DOMESTIC 2 — Vietnam Airlines</div><div class="fcity">Huế</div><div class="fcode">HUI · Phu Bai Airport</div><div class="ftime">07:50</div><div class="fdate">Sat 28 Mar 2026</div></div>
-      <div class="farrow"><div class="farr-line"></div><div class="fnum">VN1540</div><div class="fdur">1h 20m</div></div>
-      <div><div style="height:20px"></div><div class="fcity">Hà Nội</div><div class="fcode">HAN · Noi Bai T1</div><div class="ftime">09:10</div><div class="fdate">Sat 28 Mar 2026</div></div>
-      <div class="fmeta"><div class="fmi">Booking <span>FG9YNH</span></div><div class="fmi">Airbus A321</div><div class="fmi">All 6 passengers</div></div>
-    </div>
-
-    <div class="fc">
-      <div><div class="ftag">RETURN — DORITTE &amp; RICHARD</div><div class="fcity">Hà Nội</div><div class="fcode">HAN · Noi Bai</div><div class="ftime">12:05</div><div class="fdate">Sun 5 Apr · pickup 08:30</div></div>
-      <div class="farrow"><div class="farr-line"></div><div class="fnum">BR398</div><div class="fdur">EVA Air</div></div>
-      <div><div style="height:20px"></div><div class="fcity">Tel Aviv</div><div class="fcode">TLV</div><div class="ftime">—</div><div class="fdate">Sun 5 Apr 2026</div></div>
-      <div class="fmeta"><div class="fmi">Passengers <span>Doritte &amp; Richard</span></div></div>
-    </div>
-
-    <div class="fc">
-      <div><div class="ftag">RETURN — ADI, VERLY, SOL &amp; NEIL</div><div class="fcity">Hà Nội</div><div class="fcode">HAN · Noi Bai</div><div class="ftime">19:40</div><div class="fdate">Sun 5 Apr · pickup 15:45</div></div>
-      <div class="farrow"><div class="farr-line"></div><div class="fnum">EY431</div><div class="fdur">Etihad Airways</div></div>
-      <div><div style="height:20px"></div><div class="fcity">Tel Aviv</div><div class="fcode">TLV via Abu Dhabi</div><div class="ftime">—</div><div class="fdate">Mon 6 Apr 2026</div></div>
-      <div class="fmeta"><div class="fmi">Passengers <span>Adi, Verly, Sol &amp; Neil</span></div></div>
-    </div>
-
+  <div class="hero">
+    <div class="hc tl"></div><div class="hc tr"></div><div class="hc bl"></div><div class="hc br"></div>
+    <div class="hero-flag">🇻🇳</div>
+    <div class="hero-ey">Hoek Family · 6 Travellers · Private</div>
+    <h1 class="hero-title">Vietnam<em>2026</em></h1>
+    <p class="hero-desc">Hội An &middot; Huế &middot; Hà Nội &middot; Hạ Long &middot; Ninh Bình &middot; Mai Châu</p>
+    <div class="hero-dates">23 MARCH – 05 APRIL 2026 &nbsp;·&nbsp; 14 DAYS / 13 NIGHTS</div>
+    <div class="hero-yr">2026</div>
+    <div class="hero-scroll"><div class="sc-line"></div>Scroll</div>
   </div>
-</section>
 
-<!-- HOTELS -->
-<section id="hotels">
-  <div class="sl">Confirmed Accommodation</div>
-  <h2 class="st">Our <em>Hotels</em></h2>
-  <div class="hgrid">
+  <nav class="nav-strip">
+    <a class="nav-link" href="#flights">✈ Flights</a>
+    <a class="nav-link" href="#hotels">🏨 Hotels</a>
+    <a class="nav-link" href="#tripmap">🗺 Map</a>
+    <a class="nav-link" href="#visas">🛂 Visas</a>
+    <a class="nav-link" href="#itinerary">📍 Days</a>
+    <a class="nav-link" href="#passengers">👨‍👩‍👧‍👦 Crew</a>
+    <a class="nav-switch" onclick="showView('timeline')" href="#">📅 Switch to Timeline</a>
+  </nav>
 
-    <div class="hcard">
-      <div class="hbanner" style="background:linear-gradient(135deg,#1a5e42,#2e8b60)"><div class="hemoji">🏖️</div><div class="hstars">★★★★★</div></div>
-      <div class="hbody">
-        <div class="hcity">Hội An · Nights 1–3</div>
-        <div class="hname">Palm Garden Beach Resort & Spa</div>
-        <div class="hnights">3 nights</div>
-        <div class="hdates">
-          <div class="hdb"><div class="hdl">Check-in</div><div class="hdv">23 Mar 2026</div></div>
-          <div class="hdb"><div class="hdl">Check-out</div><div class="hdv">26 Mar 2026</div></div>
-        </div>
-        <div class="href-row">Deluxe Garden View x3 · Ref: <span>70863</span></div>
-        <div class="hlinks">
-          <a class="hlink-btn hlink-maps" href="https://www.google.com/maps/place/?q=place_id:ChIJd2hEc5MNQjERYLHo53B5sU8" target="_blank">📍 Maps</a>
-          <a class="hlink-btn hlink-web" href="https://www.palmgardenresort.com.vn" target="_blank">🌐 Website</a>
+  <!-- FLIGHTS -->
+  <section id="flights" class="dark">
+    <div class="sl">International &amp; Domestic</div>
+    <h2 class="st">Our <em>Flights</em></h2>
+    <div class="fgrid">
+
+      <div class="fc">
+        <div><div class="ftag">OUTBOUND</div><div class="fcity">Tel Aviv</div><div class="fcode">TLV → Abu Dhabi → HAN</div><div class="ftime">—</div><div class="fdate">Sun 22 Mar 2026</div></div>
+        <div class="farrow"><div class="farr-line"></div><div class="fnum">EY432</div><div class="fdur">Etihad Airways</div></div>
+        <div><div style="height:20px"></div><div class="fcity">Hà Nội</div><div class="fcode">HAN · Noi Bai</div><div class="ftime">05:55</div><div class="fdate">Mon 23 Mar 2026</div></div>
+        <div class="fmeta"><div class="fmi">Flight <span>EY432</span></div><div class="fmi">All 6 passengers</div></div>
+      </div>
+
+      <div class="fc">
+        <div><div class="ftag">DOMESTIC 1 — Vietnam Airlines</div><div class="fcity">Hà Nội</div><div class="fcode">HAN · Noi Bai T1</div><div class="ftime">10:10</div><div class="fdate">Mon 23 Mar 2026</div></div>
+        <div class="farrow"><div class="farr-line"></div><div class="fnum">VN165</div><div class="fdur">1h 25m</div></div>
+        <div><div style="height:20px"></div><div class="fcity">Đà Nẵng</div><div class="fcode">DAD · Da Nang T1</div><div class="ftime">11:35</div><div class="fdate">Mon 23 Mar 2026</div></div>
+        <div class="fmeta"><div class="fmi">Booking <span>FG9YNH</span></div><div class="fmi">Airbus A321</div><div class="fmi">All 6 pax</div></div>
+      </div>
+
+      <div class="fc">
+        <div><div class="ftag">DOMESTIC 2 — Vietnam Airlines</div><div class="fcity">Huế</div><div class="fcode">HUI · Phu Bai Airport</div><div class="ftime">07:50</div><div class="fdate">Sat 28 Mar 2026</div></div>
+        <div class="farrow"><div class="farr-line"></div><div class="fnum">VN1540</div><div class="fdur">1h 20m</div></div>
+        <div><div style="height:20px"></div><div class="fcity">Hà Nội</div><div class="fcode">HAN · Noi Bai T1</div><div class="ftime">09:10</div><div class="fdate">Sat 28 Mar 2026</div></div>
+        <div class="fmeta"><div class="fmi">Booking <span>FG9YNH</span></div><div class="fmi">Airbus A321</div><div class="fmi">All 6 pax</div></div>
+      </div>
+
+      <div class="fc">
+        <div><div class="ftag">RETURN — DORITTE &amp; RICHARD</div><div class="fcity">Hà Nội</div><div class="fcode">HAN · Noi Bai</div><div class="ftime">12:05</div><div class="fdate">Sun 5 Apr · pickup 08:30</div></div>
+        <div class="farrow"><div class="farr-line"></div><div class="fnum">BR398</div><div class="fdur">EVA Air</div></div>
+        <div><div style="height:20px"></div><div class="fcity">Tel Aviv</div><div class="fcode">TLV</div><div class="ftime">—</div><div class="fdate">Sun 5 Apr 2026</div></div>
+        <div class="fmeta"><div class="fmi">Passengers <span>Doritte &amp; Richard</span></div></div>
+      </div>
+
+      <div class="fc">
+        <div><div class="ftag">RETURN — ADI, VERLY, SOL &amp; NEIL</div><div class="fcity">Hà Nội</div><div class="fcode">HAN · Noi Bai</div><div class="ftime">19:40</div><div class="fdate">Sun 5 Apr · pickup 15:45</div></div>
+        <div class="farrow"><div class="farr-line"></div><div class="fnum">EY431</div><div class="fdur">Etihad Airways</div></div>
+        <div><div style="height:20px"></div><div class="fcity">Tel Aviv</div><div class="fcode">TLV via Abu Dhabi</div><div class="ftime">—</div><div class="fdate">Mon 6 Apr 2026</div></div>
+        <div class="fmeta"><div class="fmi">Passengers <span>Adi, Verly, Sol &amp; Neil</span></div></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- HOTELS -->
+  <section id="hotels">
+    <div class="sl">Confirmed Accommodation</div>
+    <h2 class="st">Our <em>Hotels</em></h2>
+    <div class="hgrid">
+
+      <div class="hcard">
+        <div class="hbanner" style="background:linear-gradient(135deg,#1a5e42,#2e8b60)"><div class="hemoji">🏖️</div><div class="hstars">★★★★★</div></div>
+        <div class="hbody">
+          <div class="hcity">Hội An · Nights 1–3</div><div class="hname">Palm Garden Beach Resort & Spa</div>
+          <div class="hnights">3 nights</div>
+          <div class="hdates"><div class="hdb"><div class="hdl">Check-in</div><div class="hdv">23 Mar 2026</div></div><div class="hdb"><div class="hdl">Check-out</div><div class="hdv">26 Mar 2026</div></div></div>
+          <div class="href-row">Deluxe Garden View x3 · Ref: <span>70863</span></div>
+          <div class="hlinks">
+            <a class="hlink-btn hlink-maps" href="https://www.google.com/maps/search/?api=1&query=Palm+Garden+Beach+Resort+Hoi+An&query_place_id=ChIJd2hEc5MNQjERYLHo53B5sU8" target="_blank">📍 Maps</a>
+            <a class="hlink-btn hlink-web" href="https://www.palmgardenresort.com.vn" target="_blank">🌐 Website</a>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="hcard">
-      <div class="hbanner" style="background:linear-gradient(135deg,#3b1f5e,#6935a0)"><div class="hemoji">🏛️</div><div class="hstars">★★★★★</div></div>
-      <div class="hbody">
-        <div class="hcity">Huế · Nights 4–5</div>
-        <div class="hname">Indochine Palace Hotel Hue</div>
-        <div class="hnights">2 nights</div>
-        <div class="hdates">
-          <div class="hdb"><div class="hdl">Check-in</div><div class="hdv">26 Mar 2026</div></div>
-          <div class="hdb"><div class="hdl">Check-out</div><div class="hdv">28 Mar 2026</div></div>
-        </div>
-        <div class="href-row">Palace Deluxe x3 (connecting) · Ref: <span>71721</span></div>
-        <div class="hlinks">
-          <a class="hlink-btn hlink-maps" href="https://www.google.com/maps/place/?q=place_id:ChIJf4F_QBWhQTERoNIz5ZvO4cs" target="_blank">📍 Maps</a>
-          <a class="hlink-btn hlink-web" href="https://indochinepalace.com" target="_blank">🌐 Website</a>
+      <div class="hcard">
+        <div class="hbanner" style="background:linear-gradient(135deg,#3b1f5e,#6935a0)"><div class="hemoji">🏛️</div><div class="hstars">★★★★★</div></div>
+        <div class="hbody">
+          <div class="hcity">Huế · Nights 4–5</div><div class="hname">Indochine Palace Hotel Hue</div>
+          <div class="hnights">2 nights</div>
+          <div class="hdates"><div class="hdb"><div class="hdl">Check-in</div><div class="hdv">26 Mar 2026</div></div><div class="hdb"><div class="hdl">Check-out</div><div class="hdv">28 Mar 2026</div></div></div>
+          <div class="href-row">Palace Deluxe x3 (connecting) · Ref: <span>71721</span></div>
+          <div class="hlinks">
+            <a class="hlink-btn hlink-maps" href="https://www.google.com/maps/search/?api=1&query=Indochine+Palace+Hotel+Hue&query_place_id=ChIJf4F_QBWhQTERoNIz5ZvO4cs" target="_blank">📍 Maps</a>
+            <a class="hlink-btn hlink-web" href="https://indochinepalace.com" target="_blank">🌐 Website</a>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="hcard">
-      <div class="hbanner" style="background:linear-gradient(135deg,#8B0000,#C8102E)"><div class="hemoji">🏙️</div><div class="hstars">★★★★</div></div>
-      <div class="hbody">
-        <div class="hcity">Hà Nội · Nights 6–8 &amp; 12–13</div>
-        <div class="hname">Somerset Grand Hanoi Hotel</div>
-        <div class="hnights">5 nights total</div>
-        <div class="hdates">
-          <div class="hdb"><div class="hdl">First stay</div><div class="hdv">28–31 Mar</div></div>
-          <div class="hdb"><div class="hdl">Final stay</div><div class="hdv">3–5 Apr</div></div>
-        </div>
-        <div class="href-row">3-bed Deluxe (King+Queen+Twin) · Ref: <span>19371581</span></div>
-        <div class="hlinks">
-          <a class="hlink-btn hlink-maps" href="https://www.google.com/maps/place/?q=place_id:ChIJDyi8FJerNTERkGa5aeymJIw" target="_blank">📍 Maps</a>
-          <a class="hlink-btn hlink-web" href="https://www.somerset.com/en/vietnam/hanoi/somerset-grand-hanoi" target="_blank">🌐 Website</a>
+      <div class="hcard">
+        <div class="hbanner" style="background:linear-gradient(135deg,#8B0000,#C8102E)"><div class="hemoji">🏙️</div><div class="hstars">★★★★</div></div>
+        <div class="hbody">
+          <div class="hcity">Hà Nội · Nights 6–8 &amp; 12–13</div><div class="hname">Somerset Grand Hanoi Hotel</div>
+          <div class="hnights">5 nights total</div>
+          <div class="hdates"><div class="hdb"><div class="hdl">First stay</div><div class="hdv">28–31 Mar</div></div><div class="hdb"><div class="hdl">Final stay</div><div class="hdv">3–5 Apr</div></div></div>
+          <div class="href-row">3-bed Deluxe (King+Queen+Twin) · Ref: <span>19371581</span></div>
+          <div class="hlinks">
+            <a class="hlink-btn hlink-maps" href="https://www.google.com/maps/search/?api=1&query=Somerset+Grand+Hanoi&query_place_id=ChIJDyi8FJerNTERkGa5aeymJIw" target="_blank">📍 Maps</a>
+            <a class="hlink-btn hlink-web" href="https://www.somerset.com/en/vietnam/hanoi/somerset-grand-hanoi" target="_blank">🌐 Website</a>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="hcard">
-      <div class="hbanner" style="background:linear-gradient(135deg,#0d4a65,#1278a0)"><div class="hemoji">🛳️</div><div class="hstars">★★★★</div></div>
-      <div class="hbody">
-        <div class="hcity">Hạ Long Bay · Night 9</div>
-        <div class="hname">Signature Cruise — Bai Tu Long Bay</div>
-        <div class="hnights">1 night cruise</div>
-        <div class="hdates">
-          <div class="hdb"><div class="hdl">Embark</div><div class="hdv">29 Mar 2026</div></div>
-          <div class="hdb"><div class="hdl">Disembark</div><div class="hdv">30 Mar 2026</div></div>
-        </div>
-        <div class="href-row">Junior Suite x3 (main deck) · Ref: <span>19398</span></div>
-        <div class="hlinks">
-          <a class="hlink-btn hlink-maps" href="https://www.google.com/maps/place/?q=place_id:ChIJH9C-6cCrNTERKbg3i-RebSs" target="_blank">📍 Marina</a>
-          <a class="hlink-btn hlink-web" href="https://www.signaturehalongcruise.com" target="_blank">🌐 Website</a>
+      <div class="hcard">
+        <div class="hbanner" style="background:linear-gradient(135deg,#0d4a65,#1278a0)"><div class="hemoji">🛳️</div><div class="hstars">★★★★</div></div>
+        <div class="hbody">
+          <div class="hcity">Hạ Long Bay · Night 9</div><div class="hname">Signature Cruise — Bai Tu Long Bay</div>
+          <div class="hnights">1 night cruise</div>
+          <div class="hdates"><div class="hdb"><div class="hdl">Embark</div><div class="hdv">29 Mar 2026</div></div><div class="hdb"><div class="hdl">Disembark</div><div class="hdv">30 Mar 2026</div></div></div>
+          <div class="href-row">Junior Suite x3 (main deck) · Ref: <span>19398</span></div>
+          <div class="hlinks">
+            <a class="hlink-btn hlink-maps" href="https://www.google.com/maps/search/?api=1&query=Signature+Halong+Cruise+Bai+Tu+Long&query_place_id=ChIJH9C-6cCrNTERKbg3i-RebSs" target="_blank">📍 Marina</a>
+            <a class="hlink-btn hlink-web" href="https://www.signaturehalongcruise.com" target="_blank">🌐 Website</a>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="hcard">
-      <div class="hbanner" style="background:linear-gradient(135deg,#344e24,#528038)"><div class="hemoji">🌾</div><div class="hstars">★★★★</div></div>
-      <div class="hbody">
-        <div class="hcity">Ninh Bình · Nights 10–11</div>
-        <div class="hname">Emeralda Resort Tam Coc</div>
-        <div class="hnights">2 nights</div>
-        <div class="hdates">
-          <div class="hdb"><div class="hdl">Check-in</div><div class="hdv">30 Mar 2026</div></div>
-          <div class="hdb"><div class="hdl">Check-out</div><div class="hdv">01 Apr 2026</div></div>
-        </div>
-        <div class="href-row">Deluxe x3 · Ref: <span>20038</span></div>
-        <div class="hlinks">
-          <a class="hlink-btn hlink-maps" href="https://www.google.com/maps/place/?q=place_id:ChIJk2yfySkkNTERGhYC6kh382g" target="_blank">📍 Maps</a>
-          <a class="hlink-btn hlink-web" href="https://www.emeraldaresort.com" target="_blank">🌐 Website</a>
+      <div class="hcard">
+        <div class="hbanner" style="background:linear-gradient(135deg,#344e24,#528038)"><div class="hemoji">🌾</div><div class="hstars">★★★★</div></div>
+        <div class="hbody">
+          <div class="hcity">Ninh Bình · Nights 10–11</div><div class="hname">Emeralda Resort Tam Coc</div>
+          <div class="hnights">2 nights</div>
+          <div class="hdates"><div class="hdb"><div class="hdl">Check-in</div><div class="hdv">30 Mar 2026</div></div><div class="hdb"><div class="hdl">Check-out</div><div class="hdv">01 Apr 2026</div></div></div>
+          <div class="href-row">Deluxe x3 · Ref: <span>20038</span></div>
+          <div class="hlinks">
+            <a class="hlink-btn hlink-maps" href="https://www.google.com/maps/search/?api=1&query=Emeralda+Resort+Tam+Coc+Ninh+Binh&query_place_id=ChIJk2yfySkkNTERGhYC6kh382g" target="_blank">📍 Maps</a>
+            <a class="hlink-btn hlink-web" href="https://www.emeraldaresort.com" target="_blank">🌐 Website</a>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="hcard">
-      <div class="hbanner" style="background:linear-gradient(135deg,#5c4018,#9c7030)"><div class="hemoji">🏔️</div><div class="hstars">★★★★</div></div>
-      <div class="hbody">
-        <div class="hcity">Mai Châu · Nights 12–13</div>
-        <div class="hname">Mai Chau Ecolodge</div>
-        <div class="hnights">2 nights</div>
-        <div class="hdates">
-          <div class="hdb"><div class="hdl">Check-in</div><div class="hdv">01 Apr 2026</div></div>
-          <div class="hdb"><div class="hdl">Check-out</div><div class="hdv">03 Apr 2026</div></div>
-        </div>
-        <div class="href-row">Suite x3 (connecting) · Ref: <span>164184</span></div>
-        <div class="hlinks">
-          <a class="hlink-btn hlink-maps" href="https://www.google.com/maps/place/?q=place_id:ChIJhwcfY1MINDERFnWr9OFoAr0" target="_blank">📍 Maps</a>
-          <a class="hlink-btn hlink-web" href="https://www.maichauecolodge.com" target="_blank">🌐 Website</a>
+      <div class="hcard">
+        <div class="hbanner" style="background:linear-gradient(135deg,#5c4018,#9c7030)"><div class="hemoji">🏔️</div><div class="hstars">★★★★</div></div>
+        <div class="hbody">
+          <div class="hcity">Mai Châu · Nights 12–13</div><div class="hname">Mai Chau Ecolodge</div>
+          <div class="hnights">2 nights</div>
+          <div class="hdates"><div class="hdb"><div class="hdl">Check-in</div><div class="hdv">01 Apr 2026</div></div><div class="hdb"><div class="hdl">Check-out</div><div class="hdv">03 Apr 2026</div></div></div>
+          <div class="href-row">Suite x3 (connecting) · Ref: <span>164184</span></div>
+          <div class="hlinks">
+            <a class="hlink-btn hlink-maps" href="https://www.google.com/maps/search/?api=1&query=Mai+Chau+Ecolodge+Vietnam&query_place_id=ChIJhwcfY1MINDERFnWr9OFoAr0" target="_blank">📍 Maps</a>
+            <a class="hlink-btn hlink-web" href="https://maichau.ecolodge.asia/en/" target="_blank">🌐 Website</a>
+          </div>
         </div>
       </div>
-    </div>
 
-  </div>
-</section>
-
-<!-- TRIP MAP -->
-<section id="tripmap" class="dark" style="padding-bottom:0">
-  <div class="map-header">
-    <div class="sl">Interactive Route</div>
-    <h2 class="st">Trip <em>Map</em></h2>
-  </div>
-  <div id="map"></div>
-  <div class="route-info">
-    <div class="route-stop"><div class="route-dot" style="background:#2e8b60"></div>Hội An · 23–26 Mar</div>
-    <div class="route-stop"><div class="route-dot" style="background:#6935a0"></div>Huế · 26–28 Mar</div>
-    <div class="route-stop"><div class="route-dot" style="background:#C8102E"></div>Hà Nội · 28–31 Mar</div>
-    <div class="route-stop"><div class="route-dot" style="background:#1278a0"></div>Hạ Long · 29–30 Mar</div>
-    <div class="route-stop"><div class="route-dot" style="background:#528038"></div>Ninh Bình · 30 Mar–1 Apr</div>
-    <div class="route-stop"><div class="route-dot" style="background:#9c7030"></div>Mai Châu · 1–3 Apr</div>
-  </div>
-</section>
-
-<!-- VISAS -->
-<section id="visas" class="dark">
-  <div class="sl">Electronic Visas</div>
-  <h2 class="st">Vietnam <em>E-Visas</em></h2>
-  <p style="font-family:'Cormorant Garamond',serif;font-size:14px;color:rgba(255,255,255,.36);margin-bottom:28px;letter-spacing:.05em;">All visas valid 21 Mar – 19 Apr 2026 &nbsp;·&nbsp; Single Entry Tourist</p>
-  <div class="vgrid">
-    <div class="vcard"><div class="vtype">E-Visa · Israel</div><div class="vname">Adi Hoek</div>
-      <div class="vd"><span class="vdk">Visa No.</span><span class="vdv hi">104902850/EV</span></div>
-      <div class="vd"><span class="vdk">Code</span><span class="vdv" style="font-size:11px">E251205ISR3231696396</span></div>
-      <div class="vd"><span class="vdk">Passport</span><span class="vdv">32316963</span></div>
-      <div class="vd"><span class="vdk">DOB</span><span class="vdv">09 Dec 1977</span></div>
     </div>
-    <div class="vcard"><div class="vtype">E-Visa · Israel</div><div class="vname">Verly Gafni Hoek</div>
-      <div class="vd"><span class="vdk">Visa No.</span><span class="vdv hi">104910766/EV</span></div>
-      <div class="vd"><span class="vdk">Code</span><span class="vdv" style="font-size:11px">E251205ISR4100083068</span></div>
-      <div class="vd"><span class="vdk">Passport</span><span class="vdv">41000830</span></div>
-      <div class="vd"><span class="vdk">DOB</span><span class="vdv">15 Sep 1981</span></div>
+  </section>
+
+  <!-- TRIP MAP -->
+  <section id="tripmap" class="dark" style="padding-bottom:0">
+    <div class="map-header">
+      <div class="sl">Interactive Route</div>
+      <h2 class="st">Trip <em>Map</em></h2>
     </div>
-    <div class="vcard"><div class="vtype">E-Visa · Israel</div><div class="vname">Doritte Yael Hoek</div>
-      <div class="vd"><span class="vdk">Visa No.</span><span class="vdv hi">104902895/EV</span></div>
-      <div class="vd"><span class="vdk">Code</span><span class="vdv" style="font-size:11px">E251205ISR3167291542</span></div>
-      <div class="vd"><span class="vdk">Passport</span><span class="vdv">31672915</span></div>
-      <div class="vd"><span class="vdk">DOB</span><span class="vdv">02 Apr 1953</span></div>
+    <div id="map"></div>
+    <div class="route-info">
+      <div class="route-stop"><div class="route-dot" style="background:#2e8b60"></div>Hội An · 23–26 Mar</div>
+      <div class="route-stop"><div class="route-dot" style="background:#6935a0"></div>Huế · 26–28 Mar</div>
+      <div class="route-stop"><div class="route-dot" style="background:#C8102E"></div>Hà Nội · 28–31 Mar &amp; 3–5 Apr</div>
+      <div class="route-stop"><div class="route-dot" style="background:#1278a0"></div>Hạ Long · 29–30 Mar</div>
+      <div class="route-stop"><div class="route-dot" style="background:#528038"></div>Ninh Bình · 30 Mar–1 Apr</div>
+      <div class="route-stop"><div class="route-dot" style="background:#9c7030"></div>Mai Châu · 1–3 Apr</div>
     </div>
-    <div class="vcard"><div class="vtype">E-Visa · Israel</div><div class="vname">Richard Neil Borenstein</div>
-      <div class="vd"><span class="vdk">Visa No.</span><span class="vdv hi">104903009/EV</span></div>
-      <div class="vd"><span class="vdk">Code</span><span class="vdv" style="font-size:11px">E251205ISR3633028227</span></div>
-      <div class="vd"><span class="vdk">Passport</span><span class="vdv">36330282</span></div>
-      <div class="vd"><span class="vdk">DOB</span><span class="vdv">20 Apr 1948</span></div>
+  </section>
+
+  <!-- VISAS -->
+  <section id="visas" class="dark">
+    <div class="sl">Electronic Visas</div>
+    <h2 class="st">Vietnam <em>E-Visas</em></h2>
+    <p style="font-family:'Cormorant Garamond',serif;font-size:14px;color:rgba(255,255,255,.36);margin-bottom:28px;letter-spacing:.05em;">All visas valid 21 Mar – 19 Apr 2026 &nbsp;·&nbsp; Single Entry Tourist</p>
+    <div class="vgrid">
+      <div class="vcard"><div class="vtype">E-Visa · Israel</div><div class="vname">Adi Hoek</div><div class="vd"><span class="vdk">Visa No.</span><span class="vdv hi">104902850/EV</span></div><div class="vd"><span class="vdk">Code</span><span class="vdv" style="font-size:11px">E251205ISR3231696396</span></div><div class="vd"><span class="vdk">Passport</span><span class="vdv">32316963</span></div><div class="vd"><span class="vdk">DOB</span><span class="vdv">09 Dec 1977</span></div></div>
+      <div class="vcard"><div class="vtype">E-Visa · Israel</div><div class="vname">Verly Gafni Hoek</div><div class="vd"><span class="vdk">Visa No.</span><span class="vdv hi">104910766/EV</span></div><div class="vd"><span class="vdk">Code</span><span class="vdv" style="font-size:11px">E251205ISR4100083068</span></div><div class="vd"><span class="vdk">Passport</span><span class="vdv">41000830</span></div><div class="vd"><span class="vdk">DOB</span><span class="vdv">15 Sep 1981</span></div></div>
+      <div class="vcard"><div class="vtype">E-Visa · Israel</div><div class="vname">Doritte Yael Hoek</div><div class="vd"><span class="vdk">Visa No.</span><span class="vdv hi">104902895/EV</span></div><div class="vd"><span class="vdk">Code</span><span class="vdv" style="font-size:11px">E251205ISR3167291542</span></div><div class="vd"><span class="vdk">Passport</span><span class="vdv">31672915</span></div><div class="vd"><span class="vdk">DOB</span><span class="vdv">02 Apr 1953</span></div></div>
+      <div class="vcard"><div class="vtype">E-Visa · Israel</div><div class="vname">Richard Neil Borenstein</div><div class="vd"><span class="vdk">Visa No.</span><span class="vdv hi">104903009/EV</span></div><div class="vd"><span class="vdk">Code</span><span class="vdv" style="font-size:11px">E251205ISR3633028227</span></div><div class="vd"><span class="vdk">Passport</span><span class="vdv">36330282</span></div><div class="vd"><span class="vdk">DOB</span><span class="vdv">20 Apr 1948</span></div></div>
+      <div class="vcard"><div class="vtype">E-Visa · Israel</div><div class="vname">Sol Hoek</div><div class="vd"><span class="vdk">Visa No.</span><span class="vdv hi">104910757/EV</span></div><div class="vd"><span class="vdk">Code</span><span class="vdv" style="font-size:11px">E251205ISR4066801830</span></div><div class="vd"><span class="vdk">Passport</span><span class="vdv">40668018</span></div><div class="vd"><span class="vdk">DOB</span><span class="vdv">24 Oct 2018</span></div></div>
+      <div class="vcard"><div class="vtype">E-Visa · Israel</div><div class="vname">Neil Hoek</div><div class="vd"><span class="vdk">Visa No.</span><span class="vdv hi">104902964/EV</span></div><div class="vd"><span class="vdk">Code</span><span class="vdv" style="font-size:11px">E251205ISR3555848468</span></div><div class="vd"><span class="vdk">Passport</span><span class="vdv">35558484</span></div><div class="vd"><span class="vdk">DOB</span><span class="vdv">04 Jan 2016</span></div></div>
     </div>
-    <div class="vcard"><div class="vtype">E-Visa · Israel</div><div class="vname">Sol Hoek</div>
-      <div class="vd"><span class="vdk">Visa No.</span><span class="vdv hi">104910757/EV</span></div>
-      <div class="vd"><span class="vdk">Code</span><span class="vdv" style="font-size:11px">E251205ISR4066801830</span></div>
-      <div class="vd"><span class="vdk">Passport</span><span class="vdv">40668018</span></div>
-      <div class="vd"><span class="vdk">DOB</span><span class="vdv">24 Oct 2018</span></div>
+  </section>
+
+  <!-- ITINERARY SUMMARY -->
+  <section id="itinerary">
+    <div class="sl">Day by Day</div>
+    <h2 class="st">The <em>Journey</em></h2>
+    <div class="tl">
+      <div class="ti"><div class="tdot">1</div><div class="tc"><div class="tdate">Mon 23 Mar · Day 1</div><div class="tcity">Tel Aviv → Hà Nội → Hội An</div><div class="tdesc">Arrive Hanoi on EY432 at 5:55am. Connect on VN165 (10:10→11:35) to Đà Nẵng, then private transfer to Hội An.</div><div class="sbadge">🏨 Palm Garden Beach Resort & Spa</div></div></div>
+      <div class="ti"><div class="tdot">2</div><div class="tc"><div class="tdate">Tue 24 Mar · Day 2</div><div class="tcity">Hội An — Cooking Class & Ancient Town</div><div class="tdesc">Trà Quế organic farm by bicycle, hands-on cooking class (lunch included), then lantern-lit UNESCO old town.</div><div class="sbadge">🏨 Palm Garden Beach Resort & Spa</div></div></div>
+      <div class="ti"><div class="tdot">3</div><div class="tc"><div class="tdate">Wed 25 Mar · Day 3</div><div class="tcity">Hội An — Bà Nà Hill & Golden Bridge</div><div class="tdesc">Full day at the French Hill Station at 1,487m and the iconic Golden Bridge held in giant stone hands.</div><div class="sbadge">🏨 Palm Garden Beach Resort & Spa</div></div></div>
+      <div class="ti"><div class="tdot">4</div><div class="tc"><div class="tdate">Thu 26 Mar · Day 4</div><div class="tcity">Hội An → Sơn Trà → Huế</div><div class="tdesc">Sơn Trà Peninsula with the Giant Lady Buddha and douc langurs, then drive over the dramatic Hải Vân Pass to Huế.</div><div class="sbadge">🏨 Indochine Palace Hotel Hue</div></div></div>
+      <div class="ti"><div class="tdot">5</div><div class="tc"><div class="tdate">Fri 27 Mar · Day 5</div><div class="tcity">Huế — Imperial City</div><div class="tdesc">UNESCO Citadel, royal tombs along the Perfume River, and the Thiên Mụ Pagoda.</div><div class="sbadge">🏨 Indochine Palace Hotel Hue</div></div></div>
+      <div class="ti"><div class="tdot">6</div><div class="tc"><div class="tdate">Sat 28 Mar · Day 6</div><div class="tcity">Huế → Hà Nội — VN1540</div><div class="tdesc">Early flight 07:50→09:10. Afternoon: Hoan Kiem Lake, Old Quarter, Temple of Literature.</div><div class="sbadge">🏨 Somerset Grand Hanoi Hotel</div></div></div>
+      <div class="ti"><div class="tdot">7</div><div class="tc"><div class="tdate">Sun 29 Mar · Day 7</div><div class="tcity">Hà Nội → Hạ Long Bay 🛩️</div><div class="tdesc">Scenic seaplane flight at 10:50 for 5 pax (Doritte skips). Board Signature Cruise at noon. Kayaking through Vũng Viêng fishing village.</div><div class="sbadge">🛳️ Signature Cruise · Bai Tu Long Bay</div></div></div>
+      <div class="ti"><div class="tdot">8</div><div class="tc"><div class="tdate">Mon 30 Mar · Day 8</div><div class="tcity">Hạ Long → Ninh Bình</div><div class="tdesc">Thiên Cảnh Sơn cave, brunch on deck, disembark 10:45, then drive south to Ninh Bình.</div><div class="sbadge">🏨 Emeralda Resort Tam Coc</div></div></div>
+      <div class="ti"><div class="tdot">9</div><div class="tc"><div class="tdate">Tue 31 Mar · Day 9</div><div class="tcity">Ninh Bình</div><div class="tdesc">Sampan boat through Tam Cốc caves, cycling rice paddies, Bích Động Pagoda, Hoa Lư citadel.</div><div class="sbadge">🏨 Emeralda Resort Tam Coc</div></div></div>
+      <div class="ti"><div class="tdot">10</div><div class="tc"><div class="tdate">Wed 1 Apr · Day 10</div><div class="tcity">Ninh Bình → Mai Châu</div><div class="tdesc">Drive west into the highlands to Mai Châu valley — White Thai stilt houses, handwoven silk, limestone peaks.</div><div class="sbadge">🏨 Mai Chau Ecolodge</div></div></div>
+      <div class="ti"><div class="tdot">11</div><div class="tc"><div class="tdate">Thu 2 Apr · Day 11</div><div class="tcity">Mai Châu — Village Hike & Rafting</div><div class="tdesc">Pickup 9:30, hike to Mai Hịch Village, meet Thai farmers, traditional crafts, bamboo rafting.</div><div class="sbadge">🏨 Mai Chau Ecolodge</div></div></div>
+      <div class="ti"><div class="tdot">12</div><div class="tc"><div class="tdate">Fri 3 Apr · Day 12</div><div class="tcity">Mai Châu → Hà Nội</div><div class="tdesc">Leisure morning, 3.5-hour drive back to Hanoi. Final evening — night market, last dinner.</div><div class="sbadge">🏨 Somerset Grand Hanoi Hotel</div></div></div>
+      <div class="ti"><div class="tdot">13</div><div class="tc"><div class="tdate">Sat 4 Apr · Day 13</div><div class="tcity">Hà Nội — Free Day</div><div class="tdesc">Ho Chi Minh Mausoleum, Old Quarter, Đồng Xuân Market, or a café trứng and shopping.</div><div class="sbadge">🏨 Somerset Grand Hanoi Hotel</div></div></div>
+      <div class="ti"><div class="tdot">🏠</div><div class="tc"><div class="tdate">Sun 5 Apr · Day 14 — Homeward</div><div class="tcity">Two Departures from Hà Nội</div><div class="tdesc"><strong>Doritte &amp; Richard</strong> — pickup 08:30, BR398 departs 12:05<br/><strong>Adi, Verly, Sol &amp; Neil</strong> — pickup 15:45, EY431 departs 19:40 via Abu Dhabi → Tel Aviv</div></div></div>
     </div>
-    <div class="vcard"><div class="vtype">E-Visa · Israel</div><div class="vname">Neil Hoek</div>
-      <div class="vd"><span class="vdk">Visa No.</span><span class="vdv hi">104902964/EV</span></div>
-      <div class="vd"><span class="vdk">Code</span><span class="vdv" style="font-size:11px">E251205ISR3555848468</span></div>
-      <div class="vd"><span class="vdk">Passport</span><span class="vdv">35558484</span></div>
-      <div class="vd"><span class="vdk">DOB</span><span class="vdv">04 Jan 2016</span></div>
+  </section>
+
+  <!-- PASSENGERS -->
+  <section id="passengers">
+    <div class="sl">The Crew</div>
+    <h2 class="st">Who's <em>Coming</em></h2>
+    <div class="pgrid">
+      <div class="pcard"><div class="pav">DH</div><div><div class="pname">Doritte Yael Hoek</div><div class="prole">Adult · Vegetarian (eats seafood)</div></div></div>
+      <div class="pcard"><div class="pav">RB</div><div><div class="pname">Richard Neil Borenstein</div><div class="prole">Adult</div></div></div>
+      <div class="pcard"><div class="pav">AH</div><div><div class="pname">Adi Hoek</div><div class="prole">Adult</div></div></div>
+      <div class="pcard"><div class="pav">VG</div><div><div class="pname">Verly Gafni Hoek</div><div class="prole">Adult</div></div></div>
+      <div class="pcard"><div class="pav">SH</div><div><div class="pname">Sol Hoek</div><div class="prole">Child · Age 7</div></div></div>
+      <div class="pcard"><div class="pav">NH</div><div><div class="pname">Neil Hoek</div><div class="prole">Child · Age 10</div></div></div>
+    </div>
+    <div class="info-bar">
+      📞 <strong>VietnamStay hotline:</strong> +84 985 459 921 &nbsp;·&nbsp; 👩 <strong>Lily (trip designer):</strong> +84 982 893 692<br/>
+      📋 <strong>Booking ref:</strong> SO85861 &nbsp;·&nbsp; <strong>Operator:</strong> VietnamStay / Aurora DMC
+    </div>
+  </section>
+
+  <footer>
+    <div class="ftitle">Safe travels, Hoek family 🪷</div>
+    <div class="fdiv"></div>
+    <div class="fsub">Vietnam 2026 &nbsp;·&nbsp; 23 Mar – 05 Apr &nbsp;·&nbsp; Private family site</div>
+  </footer>
+</div><!-- /overview-view -->
+
+
+<!-- ══════════════════════════════════════════════════
+     TIMELINE VIEW
+══════════════════════════════════════════════════════ -->
+<div id="timeline-view">
+
+  <div class="tl-hero">
+    <div class="tl-hero-label">🇻🇳 Hoek Family · Vietnam 2026 · Hour by Hour</div>
+    <div class="tl-hero-title">Full Trip<br/><em>Timeline</em></div>
+    <div class="tl-hero-sub">14 days · all flights, hotels, activities and transfers — tap a day to expand</div>
+  </div>
+
+  <nav class="nav-strip">
+    <a class="nav-switch" onclick="showView('overview')" href="#">🗺️ Switch to Overview</a>
+    <span style="color:rgba(255,255,255,.2);font-family:'Space Mono',monospace;font-size:9px;">|</span>
+    <a class="nav-link" href="#tl-d1">Day 1</a>
+    <a class="nav-link" href="#tl-d4">Day 4</a>
+    <a class="nav-link" href="#tl-d7">Day 7</a>
+    <a class="nav-link" href="#tl-d10">Day 10</a>
+    <a class="nav-link" href="#tl-d14">Day 14</a>
+  </nav>
+
+  <!-- helper macros rendered inline below -->
+
+  <!-- DAY 1 -->
+  <div class="tl-day" id="tl-d1">
+    <div class="tl-day-header open" onclick="toggleDay(this)">
+      <div class="tl-day-num"><div class="tl-day-num-n">1</div><div class="tl-day-num-label">Mon 23 Mar</div></div>
+      <div class="tl-day-info"><div class="tl-day-date">Monday 23 March 2026</div><div class="tl-day-place">Tel Aviv → Hà Nội → Hội An</div><div class="tl-day-tagline">Arrival day — two flights, one long journey</div></div>
+      <div class="tl-day-toggle">▼</div>
+    </div>
+    <div class="tl-events open">
+
+      <div class="tl-event">
+        <div class="tl-event-time">05:55</div>
+        <div class="tl-event-icon icon-flight">✈️</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Land in Hà Nội — EY432</div>
+          <div class="tl-event-desc">Arrive at Noi Bai International Airport. Clear customs and immigration — Israeli passports, e-visa codes ready. All 6 passengers.</div>
+          <div class="tl-event-links"><span class="tl-event-link ev-flight">EY432 · Etihad Airways</span></div>
+        </div>
+      </div>
+
+      <div class="tl-event">
+        <div class="tl-event-time est">~06:45</div>
+        <div class="tl-event-icon icon-transfer">🚶</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Transfer to Domestic Terminal</div>
+          <div class="tl-event-desc">Collect bags, clear arrivals, then walk or take shuttle to Terminal 1 domestic. Allow ~90 min before VN165 — use the time for breakfast in the terminal.</div>
+        </div>
+      </div>
+
+      <div class="tl-event">
+        <div class="tl-event-time">10:10</div>
+        <div class="tl-event-icon icon-flight">✈️</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Fly to Đà Nẵng — VN165</div>
+          <div class="tl-event-desc">Vietnam Airlines domestic flight. Airbus A321. 1h 25min. Booking code FG9YNH. Arrives Đà Nẵng 11:35.</div>
+          <div class="tl-event-links"><span class="tl-event-link ev-flight">VN165 · Booking FG9YNH</span></div>
+        </div>
+      </div>
+
+      <div class="tl-event">
+        <div class="tl-event-time">11:35</div>
+        <div class="tl-event-icon icon-transfer">🚐</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Land Đà Nẵng → Transfer to Hội An</div>
+          <div class="tl-event-desc">Private air-conditioned vehicle from Da Nang Airport to Palm Garden Resort. ~30–40 minutes (30km south along the coast).</div>
+        </div>
+      </div>
+
+      <div class="tl-event">
+        <div class="tl-event-time est">~13:00</div>
+        <div class="tl-event-icon icon-meal">🍜</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Lunch at Resort</div>
+          <div class="tl-event-desc">Check-in after 14:00 — have lunch at the resort restaurant first. Try the Cao Lầu noodles, a Hội An speciality.</div>
+        </div>
+      </div>
+
+      <div class="tl-event">
+        <div class="tl-event-time">14:00</div>
+        <div class="tl-event-icon icon-hotel">🏖️</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Check in — Palm Garden Beach Resort & Spa</div>
+          <div class="tl-event-desc">3 × Deluxe Garden View rooms (connecting). 5-star beachfront resort on Cua Dai Beach.</div>
+          <div class="tl-event-links">
+            <a class="tl-event-link ev-hotel" href="https://www.google.com/maps/search/?api=1&query=Palm+Garden+Beach+Resort+Hoi+An&query_place_id=ChIJd2hEc5MNQjERYLHo53B5sU8" target="_blank">📍 Maps</a>
+            <a class="tl-event-link ev-hotel" href="https://www.palmgardenresort.com.vn" target="_blank">🌐 Website</a>
+            <span class="tl-event-link ev-hotel">Ref 70863</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-event">
+        <div class="tl-event-time est">~17:00</div>
+        <div class="tl-event-icon icon-activity">🏖️</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Afternoon — Settle &amp; Beach</div>
+          <div class="tl-event-desc">After a long night and morning of travel — pools, Cua Dai beach, and an early dinner. The kids deserve it.</div>
+        </div>
+      </div>
+
     </div>
   </div>
-</section>
 
-<!-- ITINERARY -->
-<section id="itinerary">
-  <div class="sl">Day by Day</div>
-  <h2 class="st">The <em>Journey</em></h2>
-  <div class="tl">
-    <div class="ti"><div class="tdot">1</div><div class="tc">
-      <div class="tdate">Mon 23 Mar · Day 1</div><div class="tcity">Tel Aviv → Hà Nội → Hội An</div>
-      <div class="tdesc">Arrive Hanoi on EY432 at 5:55am. Head to the domestic terminal for VN165 (10:10→11:35) to Đà Nẵng, then private transfer to Hội An.</div>
-      <div class="sbadge">🏨 Palm Garden Beach Resort & Spa</div>
-    </div></div>
-    <div class="ti"><div class="tdot">2</div><div class="tc">
-      <div class="tdate">Tue 24 Mar · Day 2</div><div class="tcity">Hội An — Cooking Class & Ancient Town</div>
-      <div class="tdesc">Bicycle through Trà Quế organic farm, join a hands-on cooking class with local farmers, then wander the lantern-lit UNESCO old town at leisure.</div>
-      <div class="sbadge">🏨 Palm Garden Beach Resort & Spa</div>
-    </div></div>
-    <div class="ti"><div class="tdot">3</div><div class="tc">
-      <div class="tdate">Wed 25 Mar · Day 3</div><div class="tcity">Hội An — Bà Nà Hill & Golden Bridge</div>
-      <div class="tdesc">Full day up to the French Hill Station at 1,487m and the famous Golden Bridge cradled in giant stone hands, with panoramic coastal views.</div>
-      <div class="sbadge">🏨 Palm Garden Beach Resort & Spa</div>
-    </div></div>
-    <div class="ti"><div class="tdot">4</div><div class="tc">
-      <div class="tdate">Thu 26 Mar · Day 4</div><div class="tcity">Hội An → Sơn Trà → Huế</div>
-      <div class="tdesc">Morning on the Sơn Trà Peninsula with the Giant Lady Buddha and red-shanked douc langurs. Drive north over the dramatic Hải Vân Pass to the imperial city of Huế.</div>
-      <div class="sbadge">🏨 Indochine Palace Hotel Hue</div>
-    </div></div>
-    <div class="ti"><div class="tdot">5</div><div class="tc">
-      <div class="tdate">Fri 27 Mar · Day 5</div><div class="tcity">Huế — Imperial City</div>
-      <div class="tdesc">Explore the magnificent UNESCO Citadel and Imperial Enclosure, royal tombs along the Perfume River, and the iconic Thiên Mụ Pagoda.</div>
-      <div class="sbadge">🏨 Indochine Palace Hotel Hue</div>
-    </div></div>
-    <div class="ti"><div class="tdot">6</div><div class="tc">
-      <div class="tdate">Sat 28 Mar · Day 6</div><div class="tcity">Huế → Hà Nội — VN1540</div>
-      <div class="tdesc">Early morning flight — depart Phu Bai 07:50, arrive Hanoi 09:10. Afternoon exploring Hoan Kiem Lake, the Old Quarter, and the Temple of Literature.</div>
-      <div class="sbadge">🏨 Somerset Grand Hanoi Hotel</div>
-    </div></div>
-    <div class="ti"><div class="tdot">7</div><div class="tc">
-      <div class="tdate">Sun 29 Mar · Day 7</div><div class="tcity">Hà Nội → Hạ Long Bay 🛩️</div>
-      <div class="tdesc">Scenic seaplane flight over Hạ Long Bay at 10:50 for 5 passengers (Doritte will skip). Board Signature Cruise at noon, sail Bai Tu Long Bay. Kayaking through Vũng Viêng floating fishing village.</div>
-      <div class="sbadge">🛳️ Signature Cruise · Bai Tu Long Bay</div>
-    </div></div>
-    <div class="ti"><div class="tdot">8</div><div class="tc">
-      <div class="tdate">Mon 30 Mar · Day 8</div><div class="tcity">Hạ Long → Ninh Bình</div>
-      <div class="tdesc">Morning cave visit at Thiên Cảnh Sơn (200 steps of stalactites!). Brunch buffet on deck, disembark, then drive south to the karst landscape of Ninh Bình.</div>
-      <div class="sbadge">🏨 Emeralda Resort Tam Coc</div>
-    </div></div>
-    <div class="ti"><div class="tdot">9</div><div class="tc">
-      <div class="tdate">Tue 31 Mar · Day 9</div><div class="tcity">Ninh Bình</div>
-      <div class="tdesc">Sampan boat through Tam Cốc river caves, cycling through emerald rice paddies, Bích Động Pagoda, and the ancient Hoa Lư citadel ruins.</div>
-      <div class="sbadge">🏨 Emeralda Resort Tam Coc</div>
-    </div></div>
-    <div class="ti"><div class="tdot">10</div><div class="tc">
-      <div class="tdate">Wed 1 Apr · Day 10</div><div class="tcity">Ninh Bình → Mai Châu</div>
-      <div class="tdesc">Drive west into the highlands to Mai Châu valley — home of the White Thai minority, stilt houses, handwoven silk, and rice fields ringed by limestone peaks.</div>
-      <div class="sbadge">🏨 Mai Chau Ecolodge</div>
-    </div></div>
-    <div class="ti"><div class="tdot">11</div><div class="tc">
-      <div class="tdate">Thu 2 Apr · Day 11</div><div class="tcity">Mai Châu — Village Hike & Rafting</div>
-      <div class="tdesc">Pickup 9:30 for a hike to remote Mai Hịch Village through rice meadows. Meet Thai farmers, learn traditional crafts, then bamboo rafting along a tranquil mountain stream.</div>
-      <div class="sbadge">🏨 Mai Chau Ecolodge</div>
-    </div></div>
-    <div class="ti"><div class="tdot">12</div><div class="tc">
-      <div class="tdate">Fri 3 Apr · Day 12</div><div class="tcity">Mai Châu → Hà Nội</div>
-      <div class="tdesc">Leisure morning, then 3.5-hour drive back to Hanoi. Final evening — night market, last bia hơi on the pavement.</div>
-      <div class="sbadge">🏨 Somerset Grand Hanoi Hotel</div>
-    </div></div>
-    <div class="ti"><div class="tdot">13</div><div class="tc">
-      <div class="tdate">Sat 4 Apr · Day 13</div><div class="tcity">Hà Nội — Free Day</div>
-      <div class="tdesc">A final free day — wander the Old Quarter, Ho Chi Minh Mausoleum, Đồng Xuân Market, or just linger over a café trứng.</div>
-      <div class="sbadge">🏨 Somerset Grand Hanoi Hotel</div>
-    </div></div>
-    <div class="ti"><div class="tdot">🏠</div><div class="tc">
-      <div class="tdate">Sun 5 Apr · Day 14 — Homeward</div><div class="tcity">Two Departures from Hà Nội</div>
-      <div class="tdesc"><strong>Doritte &amp; Richard</strong> — pickup 08:30, depart BR398 at 12:05<br/><strong>Adi, Verly, Sol &amp; Neil</strong> — pickup 15:45, depart EY431 at 19:40 via Abu Dhabi → Tel Aviv</div>
-    </div></div>
+  <!-- DAY 2 -->
+  <div class="tl-day">
+    <div class="tl-day-header" onclick="toggleDay(this)">
+      <div class="tl-day-num"><div class="tl-day-num-n">2</div><div class="tl-day-num-label">Tue 24 Mar</div></div>
+      <div class="tl-day-info"><div class="tl-day-date">Tuesday 24 March 2026</div><div class="tl-day-place">Hội An — Farm, Cooking & Ancient Town</div><div class="tl-day-tagline">Organic vegetables, cooking class, lantern streets</div></div>
+      <div class="tl-day-toggle">▼</div>
+    </div>
+    <div class="tl-events">
+      <div class="tl-event"><div class="tl-event-time est">~08:00</div><div class="tl-event-icon icon-meal">🥐</div><div class="tl-event-body"><div class="tl-event-title">Breakfast at Resort</div><div class="tl-event-desc">Full breakfast included. Fuel up for a busy day.</div></div></div>
+      <div class="tl-event"><div class="tl-event-time est">~09:00</div><div class="tl-event-icon icon-activity">🚲</div><div class="tl-event-body"><div class="tl-event-title">Trà Quế Organic Farm by Bicycle</div><div class="tl-event-desc">Cycle through Hội An's countryside to Trà Quế village. Walk through herb gardens, meet local farmers using traditional chemical-free techniques preserved for generations. Fun for kids — try raking the soil and watering the crops.</div><div class="tl-event-links"><a class="tl-event-link ev-activity" href="https://maps.google.com/maps?q=15.8984,108.3394" target="_blank">📍 Trà Quế Village</a></div></div></div>
+      <div class="tl-event"><div class="tl-event-time est">~10:30</div><div class="tl-event-icon icon-meal">👨‍🍳</div><div class="tl-event-body"><div class="tl-event-title">Cooking Class (Lunch included)</div><div class="tl-event-desc">Hands-on class preparing Vietnamese dishes using fresh farm ingredients. Lunch served as part of the class. Note: Doritte is vegetarian (eats seafood) — inform the guide beforehand (vegetarian preference can be disregarded for the cooking class itself).</div></div></div>
+      <div class="tl-event"><div class="tl-event-time est">~14:30</div><div class="tl-event-icon icon-activity">🏮</div><div class="tl-event-body"><div class="tl-event-title">Hội An Ancient Town</div><div class="tl-event-desc">Explore the UNESCO World Heritage old town — the iconic Japanese Covered Bridge (Chùa Cầu), Chinese Assembly Halls, riverside cafés, and hundreds of colourful lantern shops. The town is especially magical at dusk when the lanterns glow.</div><div class="tl-event-links"><a class="tl-event-link ev-activity" href="https://maps.google.com/maps?q=15.8801,108.3380" target="_blank">📍 Ancient Town</a></div></div></div>
+      <div class="tl-event"><div class="tl-event-time est">~19:00</div><div class="tl-event-icon icon-meal">🍽️</div><div class="tl-event-body"><div class="tl-event-title">Dinner — Hội An Old Town</div><div class="tl-event-desc">Countless great options — try White Rose dumplings (Bánh Bao Vạc), Cao Lầu noodles, or fresh seafood on the riverside. Resort shuttle back after dinner.</div></div></div>
+    </div>
   </div>
-</section>
 
-<!-- PASSENGERS -->
-<section id="passengers">
-  <div class="sl">The Crew</div>
-  <h2 class="st">Who's <em>Coming</em></h2>
-  <div class="pgrid">
-    <div class="pcard"><div class="pav">DH</div><div><div class="pname">Doritte Yael Hoek</div><div class="prole">Adult · Vegetarian (eats seafood)</div></div></div>
-    <div class="pcard"><div class="pav">RB</div><div><div class="pname">Richard Neil Borenstein</div><div class="prole">Adult</div></div></div>
-    <div class="pcard"><div class="pav">AH</div><div><div class="pname">Adi Hoek</div><div class="prole">Adult</div></div></div>
-    <div class="pcard"><div class="pav">VG</div><div><div class="pname">Verly Gafni Hoek</div><div class="prole">Adult</div></div></div>
-    <div class="pcard"><div class="pav">SH</div><div><div class="pname">Sol Hoek</div><div class="prole">Child · Age 7</div></div></div>
-    <div class="pcard"><div class="pav">NH</div><div><div class="pname">Neil Hoek</div><div class="prole">Child · Age 10</div></div></div>
+  <!-- DAY 3 -->
+  <div class="tl-day">
+    <div class="tl-day-header" onclick="toggleDay(this)">
+      <div class="tl-day-num"><div class="tl-day-num-n">3</div><div class="tl-day-num-label">Wed 25 Mar</div></div>
+      <div class="tl-day-info"><div class="tl-day-date">Wednesday 25 March 2026</div><div class="tl-day-place">Bà Nà Hills &amp; The Golden Bridge</div><div class="tl-day-tagline">Giant stone hands, French hill station, 1,487m up</div></div>
+      <div class="tl-day-toggle">▼</div>
+    </div>
+    <div class="tl-events">
+      <div class="tl-event"><div class="tl-event-time est">~07:30</div><div class="tl-event-icon icon-meal">🥐</div><div class="tl-event-body"><div class="tl-event-title">Early Breakfast</div><div class="tl-event-desc">Early start to beat the crowds on the cable car.</div></div></div>
+      <div class="tl-event"><div class="tl-event-time est">~08:30</div><div class="tl-event-icon icon-transfer">🚐</div><div class="tl-event-body"><div class="tl-event-title">Transfer to Bà Nà Hills (~40 min)</div><div class="tl-event-desc">Private vehicle from resort toward Da Nang. ~25km northwest.</div></div></div>
+      <div class="tl-event"><div class="tl-event-time est">~09:30</div><div class="tl-event-icon icon-activity">🚡</div><div class="tl-event-body"><div class="tl-event-title">Cable Car Up Bà Nà Hills</div><div class="tl-event-desc">World-record cable car (5,801m long!) ascending through misty rainforest to the French Hill Station at 1,487m. Often above the clouds — spectacular views on clear mornings.</div><div class="tl-event-links"><a class="tl-event-link ev-activity" href="https://maps.google.com/maps?q=15.9979,107.9918" target="_blank">📍 Bà Nà Hills</a></div></div></div>
+      <div class="tl-event"><div class="tl-event-time est">~10:00</div><div class="tl-event-icon icon-activity">🌉</div><div class="tl-event-body"><div class="tl-event-title">The Golden Bridge</div><div class="tl-event-desc">The famous 150m pedestrian bridge held aloft by two giant stone hands — one of Vietnam's most iconic sights. Arrive early for best photos before tour groups. Kids love it.</div></div></div>
+      <div class="tl-event"><div class="tl-event-time est">~11:00</div><div class="tl-event-icon icon-activity">🏰</div><div class="tl-event-body"><div class="tl-event-title">Explore the French Village &amp; Fantasy Park</div><div class="tl-event-desc">Wander the colonial French village, visit Le Jardin d'Amour gardens, and let the kids loose in Fantasy Park — Vietnam's largest indoor amusement park with rollercoasters and wax museum.</div></div></div>
+      <div class="tl-event"><div class="tl-event-time est">~13:00</div><div class="tl-event-icon icon-meal">🍽️</div><div class="tl-event-body"><div class="tl-event-title">Lunch at Summit</div><div class="tl-event-desc">Several restaurants at the top — expect a buffet or set menu. Not the finest food in Vietnam, but the setting is unbeatable.</div></div></div>
+      <div class="tl-event"><div class="tl-event-time est">~16:00</div><div class="tl-event-icon icon-transfer">🚐</div><div class="tl-event-body"><div class="tl-event-title">Cable Car Down &amp; Return to Resort</div><div class="tl-event-desc">Cable car descent, then private vehicle back to Palm Garden (~40 min). Evening at leisure — beach sunset, cocktails, pool.</div></div></div>
+    </div>
   </div>
-  <div class="info-bar">
-    📞 <strong>VietnamStay hotline:</strong> +84 985 459 921 &nbsp;·&nbsp;
-    👩 <strong>Trip designer Lily:</strong> +84 982 893 692<br/>
-    📋 <strong>Booking ref:</strong> SO85861 &nbsp;·&nbsp; <strong>Operator:</strong> VietnamStay / Aurora DMC
+
+  <!-- DAY 4 -->
+  <div class="tl-day" id="tl-d4">
+    <div class="tl-day-header" onclick="toggleDay(this)">
+      <div class="tl-day-num"><div class="tl-day-num-n">4</div><div class="tl-day-num-label">Thu 26 Mar</div></div>
+      <div class="tl-day-info"><div class="tl-day-date">Thursday 26 March 2026</div><div class="tl-day-place">Hội An → Sơn Trà → Huế</div><div class="tl-day-tagline">Monkeys, Hai Van Pass, Imperial City arrival</div></div>
+      <div class="tl-day-toggle">▼</div>
+    </div>
+    <div class="tl-events">
+      <div class="tl-event"><div class="tl-event-time est">~08:00</div><div class="tl-event-icon icon-meal">🥐</div><div class="tl-event-body"><div class="tl-event-title">Breakfast &amp; Check-out</div><div class="tl-event-desc">Last breakfast at Palm Garden. Check out by 12:00. Luggage loaded into vehicle.</div></div></div>
+      <div class="tl-event"><div class="tl-event-time est">~09:00</div><div class="tl-event-icon icon-activity">🐒</div><div class="tl-event-body"><div class="tl-event-title">Sơn Trà Peninsula</div><div class="tl-event-desc">30-min drive north to Da Nang's green lung. Home to the endangered red-shanked douc langur (one of the world's most colourful primates), wild macaques, and the Giant Lady Buddha at 67m — tallest in Southeast Asia. Gorgeous bay views.</div><div class="tl-event-links"><a class="tl-event-link ev-activity" href="https://maps.google.com/maps?q=16.1043,108.2762" target="_blank">📍 Sơn Trà Peninsula</a></div></div></div>
+      <div class="tl-event"><div class="tl-event-time est">~11:30</div><div class="tl-event-icon icon-transfer">🚐</div><div class="tl-event-body"><div class="tl-event-title">Drive North — Hải Vân Pass</div><div class="tl-event-desc">One of Vietnam's great scenic drives. The Hải Vân Pass ("Ocean Cloud Pass") climbs to 496m with sweeping views of the South China Sea. Old French fortifications at the summit. ~1.5 hrs to Huế total.</div><div class="tl-event-links"><a class="tl-event-link ev-transfer" href="https://maps.google.com/maps?q=16.1997,108.1120" target="_blank">📍 Hải Vân Pass</a></div></div></div>
+      <div class="tl-event"><div class="tl-event-time est">~13:30</div><div class="tl-event-icon icon-meal">🍽️</div><div class="tl-event-body"><div class="tl-event-title">Lunch en route or in Huế</div><div class="tl-event-desc">Stop in Huế for lunch — try Bún Bò Huế (spicy beef noodle soup) or Bánh Khoái (sizzling crêpes), both iconic Huế dishes.</div></div></div>
+      <div class="tl-event"><div class="tl-event-time">14:00</div><div class="tl-event-icon icon-hotel">🏛️</div><div class="tl-event-body"><div class="tl-event-title">Check in — Indochine Palace Hotel Hue</div><div class="tl-event-desc">5-star palace hotel at 105A Hùng Vương. 3 × Palace Deluxe rooms (connecting guaranteed).</div><div class="tl-event-links"><a class="tl-event-link ev-hotel" href="https://www.google.com/maps/search/?api=1&query=Indochine+Palace+Hotel+Hue&query_place_id=ChIJf4F_QBWhQTERoNIz5ZvO4cs" target="_blank">📍 Maps</a><a class="tl-event-link ev-hotel" href="https://indochinepalace.com" target="_blank">🌐 Website</a><span class="tl-event-link ev-hotel">Ref 71721</span></div></div></div>
+      <div class="tl-event"><div class="tl-event-time est">~17:00</div><div class="tl-event-icon icon-activity">🛶</div><div class="tl-event-body"><div class="tl-event-title">Optional: Perfume River Sunset Cruise</div><div class="tl-event-desc">Gentle dragon boat cruise on the Perfume River at dusk — Thiên Mụ Pagoda from the water, temples along the banks. Ask hotel to arrange.</div></div></div>
+    </div>
   </div>
-</section>
 
-<footer>
-  <div class="ftitle">Safe travels, Hoek family 🪷</div>
-  <div class="fdiv"></div>
-  <div class="fsub">Vietnam 2026 &nbsp;·&nbsp; 23 Mar – 05 Apr &nbsp;·&nbsp; Private family site</div>
-</footer>
+  <!-- DAY 5 -->
+  <div class="tl-day">
+    <div class="tl-day-header" onclick="toggleDay(this)">
+      <div class="tl-day-num"><div class="tl-day-num-n">5</div><div class="tl-day-num-label">Fri 27 Mar</div></div>
+      <div class="tl-day-info"><div class="tl-day-date">Friday 27 March 2026</div><div class="tl-day-place">Huế — Imperial City &amp; Royal Tombs</div><div class="tl-day-tagline">Vietnam's ancient imperial capital in full</div></div>
+      <div class="tl-day-toggle">▼</div>
+    </div>
+    <div class="tl-events">
+      <div class="tl-event"><div class="tl-event-time est">~08:00</div><div class="tl-event-icon icon-meal">🥐</div><div class="tl-event-body"><div class="tl-event-title">Breakfast at Hotel</div><div class="tl-event-desc">Excellent breakfast buffet at Indochine Palace — highly rated by guests.</div></div></div>
+      <div class="tl-event"><div class="tl-event-time est">~09:00</div><div class="tl-event-icon icon-activity">🏯</div><div class="tl-event-body"><div class="tl-event-title">The Imperial Citadel &amp; Forbidden Purple City</div><div class="tl-event-desc">The UNESCO World Heritage Complex of Huế Monuments. Walled citadel modelled on Beijing's Forbidden City, built 1804–1833. Allow 2–3 hours to explore the palaces, temples, and cannon-lined ramparts. <em>Note: Ladies should cover shoulders and knees inside the Citadel.</em></div><div class="tl-event-links"><a class="tl-event-link ev-activity" href="https://maps.google.com/maps?q=16.4698,107.5783" target="_blank">📍 Imperial Citadel</a></div></div></div>
+      <div class="tl-event"><div class="tl-event-time est">~11:30</div><div class="tl-event-icon icon-activity">⛩️</div><div class="tl-event-body"><div class="tl-event-title">Thiên Mụ Pagoda</div><div class="tl-event-desc">Seven-tiered Phước Duyên tower overlooking the Perfume River — Huế's most iconic landmark. The famous Austin car that carried monk Thích Quảng Đức to his 1963 self-immolation is displayed here.</div><div class="tl-event-links"><a class="tl-event-link ev-activity" href="https://maps.google.com/maps?q=16.4527,107.5441" target="_blank">📍 Thiên Mụ Pagoda</a></div></div></div>
+      <div class="tl-event"><div class="tl-event-time est">~13:00</div><div class="tl-event-icon icon-meal">🍽️</div><div class="tl-event-body"><div class="tl-event-title">Lunch</div><div class="tl-event-desc">Bún Bò Huế or a riverside restaurant near the pagoda.</div></div></div>
+      <div class="tl-event"><div class="tl-event-time est">~14:30</div><div class="tl-event-icon icon-activity">🪦</div><div class="tl-event-body"><div class="tl-event-title">Royal Tombs along the Perfume River</div><div class="tl-event-desc">Visit 1–2 of the royal tombs of the Nguyễn emperors. Khải Định Tomb is the most ornate (mosaics of ceramics and glass); Minh Mạng Tomb has serene garden landscapes. Each is ~30min by car south of Huế.</div><div class="tl-event-links"><a class="tl-event-link ev-activity" href="https://maps.google.com/maps?q=16.3997,107.5783" target="_blank">📍 Royal Tombs area</a></div></div></div>
+      <div class="tl-event"><div class="tl-event-time est">~19:00</div><div class="tl-event-icon icon-meal">🍽️</div><div class="tl-event-body"><div class="tl-event-title">Dinner — Huế cuisine</div><div class="tl-event-desc">Huế is Vietnam's culinary capital. Try Bánh Bèo (steamed rice cakes with shrimp), Bún Hến (clam vermicelli), or a royal cuisine set menu at the hotel. Early night — very early start tomorrow.</div></div></div>
+    </div>
+  </div>
 
-</div><!-- /main-content -->
+  <!-- DAY 6 -->
+  <div class="tl-day">
+    <div class="tl-day-header" onclick="toggleDay(this)">
+      <div class="tl-day-num"><div class="tl-day-num-n">6</div><div class="tl-day-num-label">Sat 28 Mar</div></div>
+      <div class="tl-day-info"><div class="tl-day-date">Saturday 28 March 2026</div><div class="tl-day-place">Huế → Hà Nội — VN1540</div><div class="tl-day-tagline">Early flight north, Hanoi arrival &amp; exploration</div></div>
+      <div class="tl-day-toggle">▼</div>
+    </div>
+    <div class="tl-events">
+      <div class="tl-event"><div class="tl-event-time est">~05:30</div><div class="tl-event-icon icon-meal">☕</div><div class="tl-event-body"><div class="tl-event-title">Very Early Morning</div><div class="tl-event-desc">Quick breakfast or grab from the hotel (arrange the night before). Pack all bags the evening before.</div></div></div>
+      <div class="tl-event"><div class="tl-event-time est">~06:00</div><div class="tl-event-icon icon-transfer">🚐</div><div class="tl-event-body"><div class="tl-event-title">Transfer to Phu Bai Airport</div><div class="tl-event-desc">~15km southeast of Huế city centre. Allow 30–40 mins to airport, then check in.</div></div></div>
+      <div class="tl-event"><div class="tl-event-time">07:50</div><div class="tl-event-icon icon-flight">✈️</div><div class="tl-event-body"><div class="tl-event-title">Depart Huế — VN1540</div><div class="tl-event-desc">Vietnam Airlines, Airbus A321. 1h 20min flight north to Hanoi. Booking FG9YNH. All 6 passengers.</div><div class="tl-event-links"><span class="tl-event-link ev-flight">VN1540 · HUI→HAN · FG9YNH</span></div></div></div>
+      <div class="tl-event"><div class="tl-event-time">09:10</div><div class="tl-event-icon icon-flight">✈️</div><div class="tl-event-body"><div class="tl-event-title">Land Hà Nội — Noi Bai T1</div><div class="tl-event-desc">Guide meets at arrivals. Private vehicle to Somerset Grand Hanoi (~45 min into the city).</div></div></div>
+      <div class="tl-event"><div class="tl-event-time">14:00</div><div class="tl-event-icon icon-hotel">🏙️</div><div class="tl-event-body"><div class="tl-event-title">Check in — Somerset Grand Hanoi</div><div class="tl-event-desc">1 × 3-bedroom Deluxe apartment (King + Queen + Twin beds). 49 Hai Bà Trưng Street, Hoan Kiem. Supermarket in the building!</div><div class="tl-event-links"><a class="tl-event-link ev-hotel" href="https://www.google.com/maps/search/?api=1&query=Somerset+Grand+Hanoi&query_place_id=ChIJDyi8FJerNTERkGa5aeymJIw" target="_blank">📍 Maps</a><a class="tl-event-link ev-hotel" href="https://www.somerset.com/en/vietnam/hanoi/somerset-grand-hanoi" target="_blank">🌐 Website</a><span class="tl-event-link ev-hotel">Ref 19371581</span></div></div></div>
+      <div class="tl-event"><div class="tl-event-time est">~15:30</div><div class="tl-event-icon icon-activity">🌿</div><div class="tl-event-body"><div class="tl-event-title">Hoan Kiem Lake &amp; Turtle Tower</div><div class="tl-event-desc">Gentle afternoon walk around the magical Sword Lake. Visit Ngọc Sơn Temple (Temple of the Jade Mountain) on its little island — the giant preserved Hoan Kiem turtle is on display.</div><div class="tl-event-links"><a class="tl-event-link ev-activity" href="https://maps.google.com/maps?q=21.0285,105.8524" target="_blank">📍 Hoan Kiem Lake</a></div></div></div>
+      <div class="tl-event"><div class="tl-event-time est">~17:00</div><div class="tl-event-icon icon-activity">🏛️</div><div class="tl-event-body"><div class="tl-event-title">Old Quarter &amp; Temple of Literature</div><div class="tl-event-desc">Wander the buzzing 36 guild streets of the Old Quarter. Temple of Literature (Văn Miếu) — Vietnam's first national university, founded 1070 — closes around 17:30.</div><div class="tl-event-links"><a class="tl-event-link ev-activity" href="https://maps.google.com/maps?q=21.0268,105.8355" target="_blank">📍 Temple of Literature</a></div></div></div>
+    </div>
+  </div>
+
+  <!-- DAY 7 -->
+  <div class="tl-day" id="tl-d7">
+    <div class="tl-day-header" onclick="toggleDay(this)">
+      <div class="tl-day-num"><div class="tl-day-num-n">7</div><div class="tl-day-num-label">Sun 29 Mar</div></div>
+      <div class="tl-day-info"><div class="tl-day-date">Sunday 29 March 2026</div><div class="tl-day-place">Hà Nội → Seaplane → Hạ Long Cruise</div><div class="tl-day-tagline">The most dramatic day — seaplane over limestone karsts</div></div>
+      <div class="tl-day-toggle">▼</div>
+    </div>
+    <div class="tl-events">
+      <div class="tl-event"><div class="tl-event-time est">~07:30</div><div class="tl-event-icon icon-meal">🥐</div><div class="tl-event-body"><div class="tl-event-title">Breakfast &amp; Luggage Pack</div><div class="tl-event-desc">Pack everything — you won't be back to Somerset until Day 9. Leave non-essentials in a luggage hold at the hotel if offered.</div></div></div>
+      <div class="tl-event"><div class="tl-event-time est">~08:30</div><div class="tl-event-icon icon-transfer">🚐</div><div class="tl-event-body"><div class="tl-event-title">Transfer to Tuan Chau Marina (~3.5 hrs)</div><div class="tl-event-desc">Private vehicle heading northeast toward Hạ Long Bay. Motorway drive (~160km). Arrive at Tuan Chau International Tourist Harbour.</div></div></div>
+      <div class="tl-event"><div class="tl-event-time">10:50</div><div class="tl-event-icon icon-activity">✈️</div><div class="tl-event-body"><div class="tl-event-title">🛩️ Seaplane Scenic Flight — 5 passengers</div><div class="tl-event-desc">25-minute breathtaking aerial flight over Hạ Long Bay's 1,969 limestone karst islands. The only way to truly appreciate the scale of this UNESCO masterpiece. <em>Doritte will not take this flight.</em> Weight limit: 100kg/ticket. Timing subject to weather.</div><div class="tl-event-links"><a class="tl-event-link ev-activity" href="https://maps.google.com/maps?q=20.9441,107.0726" target="_blank">📍 Tuan Chau Marina</a></div></div></div>
+      <div class="tl-event"><div class="tl-event-time">11:30</div><div class="tl-event-icon icon-hotel">🛳️</div><div class="tl-event-body"><div class="tl-event-title">Check in at Cruise Lounge</div><div class="tl-event-desc">Complete luggage check-in at the Signature Cruise waiting lounge at the harbour.</div><div class="tl-event-links"><a class="tl-event-link ev-hotel" href="https://www.signaturehalongcruise.com" target="_blank">🌐 Signature Cruise Website</a><span class="tl-event-link ev-hotel">Ref 19398</span></div></div></div>
+      <div class="tl-event"><div class="tl-event-time">12:00</div><div class="tl-event-icon icon-activity">⛵</div><div class="tl-event-body"><div class="tl-event-title">Board Cruise — Welcome Drink &amp; Safety Briefing</div><div class="tl-event-desc">Transferred by tender boat to the Signature Cruise. The Cruise Manager welcomes you aboard, safety briefing, itinerary overview while enjoying a signature welcome drink.</div></div></div>
+      <div class="tl-event"><div class="tl-event-time">13:00</div><div class="tl-event-icon icon-meal">🦐</div><div class="tl-event-body"><div class="tl-event-title">Lunch — Sailing into Bai Tu Long Bay</div><div class="tl-event-desc">Lunch served at the restaurant as the cruise departs toward Bai Tu Long Bay — a less-touristed gem of the Hạ Long complex. Limestone karsts emerge from jade water in every direction.</div></div></div>
+      <div class="tl-event"><div class="tl-event-time">14:45</div><div class="tl-event-icon icon-activity">🚣</div><div class="tl-event-body"><div class="tl-event-title">Vũng Viêng Floating Fishing Village — Kayak &amp; Bamboo Boat</div><div class="tl-event-desc">Kayak freely through the floating village, or take a traditional bamboo boat rowed by a local boatman. Discover the life and culture of the fishing community on the water.</div></div></div>
+      <div class="tl-event"><div class="tl-event-time est">~18:00</div><div class="tl-event-icon icon-activity">🌅</div><div class="tl-event-body"><div class="tl-event-title">Sunset &amp; Cocktails on Deck</div><div class="tl-event-desc">The sun setting over limestone karsts — one of the great sights in all of Asia. Drinks on the sundeck.</div></div></div>
+      <div class="tl-event"><div class="tl-event-time est">~19:00</div><div class="tl-event-icon icon-meal">🦞</div><div class="tl-event-body"><div class="tl-event-title">Dinner on Board</div><div class="tl-event-desc">Multi-course Vietnamese seafood dinner. Anchored overnight in the bay.</div></div></div>
+    </div>
+  </div>
+
+  <!-- DAY 8 -->
+  <div class="tl-day">
+    <div class="tl-day-header" onclick="toggleDay(this)">
+      <div class="tl-day-num"><div class="tl-day-num-n">8</div><div class="tl-day-num-label">Mon 30 Mar</div></div>
+      <div class="tl-day-info"><div class="tl-day-date">Monday 30 March 2026</div><div class="tl-day-place">Hạ Long → Ninh Bình</div><div class="tl-day-tagline">Cave, disembark, drive south to the karsts</div></div>
+      <div class="tl-day-toggle">▼</div>
+    </div>
+    <div class="tl-events">
+      <div class="tl-event"><div class="tl-event-time est">~06:00</div><div class="tl-event-icon icon-activity">🧘</div><div class="tl-event-body"><div class="tl-event-title">Optional: Tai Chi on Deck</div><div class="tl-event-desc">Sunrise Tai Chi session on the sundeck — the bay at dawn is extraordinary.</div></div></div>
+      <div class="tl-event"><div class="tl-event-time">08:00</div><div class="tl-event-icon icon-activity">🦇</div><div class="tl-event-body"><div class="tl-event-title">Thiên Cảnh Sơn Cave</div><div class="tl-event-desc">Three interconnected caverns strewn with stalactites and stalagmites. 200 steps up (kids will love the challenge!). Walk along white sand beach with panoramic Bai Tu Long views.</div></div></div>
+      <div class="tl-event"><div class="tl-event-time">09:00</div><div class="tl-event-icon icon-hotel">📦</div><div class="tl-event-body"><div class="tl-event-title">Check Out of Cruise — Pack Luggage</div><div class="tl-event-desc">Leave luggage outside cabin door — crew collects and readies at the pier.</div></div></div>
+      <div class="tl-event"><div class="tl-event-time">09:30</div><div class="tl-event-icon icon-meal">🍳</div><div class="tl-event-body"><div class="tl-event-title">Brunch Buffet — Cruising to Port</div><div class="tl-event-desc">Generous brunch while cruising back toward Halong International Harbour. One last look at the karsts.</div></div></div>
+      <div class="tl-event"><div class="tl-event-time">10:45</div><div class="tl-event-icon icon-transfer">🚐</div><div class="tl-event-body"><div class="tl-event-title">Disembark &amp; Drive to Ninh Bình</div><div class="tl-event-desc">Transfer by tender to harbour. Private vehicle south to Ninh Bình (~2.5 hours, ~180km). Arrive Emeralda Resort ~14:00.</div></div></div>
+      <div class="tl-event"><div class="tl-event-time">14:00</div><div class="tl-event-icon icon-hotel">🌾</div><div class="tl-event-body"><div class="tl-event-title">Check in — Emeralda Resort Tam Coc</div><div class="tl-event-desc">4-star resort in the Trang An UNESCO landscape. 3 × Deluxe rooms. Beautiful river and mountain views.</div><div class="tl-event-links"><a class="tl-event-link ev-hotel" href="https://www.google.com/maps/search/?api=1&query=Emeralda+Resort+Tam+Coc+Ninh+Binh&query_place_id=ChIJk2yfySkkNTERGhYC6kh382g" target="_blank">📍 Maps</a><a class="tl-event-link ev-hotel" href="https://www.emeraldaresort.com" target="_blank">🌐 Website</a><span class="tl-event-link ev-hotel">Ref 20038</span></div></div></div>
+    </div>
+  </div>
+
+  <!-- DAY 9 -->
+  <div class="tl-day">
+    <div class="tl-day-header" onclick="toggleDay(this)">
+      <div class="tl-day-num"><div class="tl-day-num-n">9</div><div class="tl-day-num-label">Tue 31 Mar</div></div>
+      <div class="tl-day-info"><div class="tl-day-date">Tuesday 31 March 2026</div><div class="tl-day-place">Ninh Bình — Caves, Bikes &amp; Citadel</div><div class="tl-day-tagline">Vietnam's ancient capital — on a sampan, a bicycle</div></div>
+      <div class="tl-day-toggle">▼</div>
+    </div>
+    <div class="tl-events">
+      <div class="tl-event"><div class="tl-event-time est">~08:00</div><div class="tl-event-icon icon-meal">🥐</div><div class="tl-event-body"><div class="tl-event-title">Breakfast at Resort</div><div class="tl-event-desc">Great breakfast with river views — one of the resort's highlights.</div></div></div>
+      <div class="tl-event"><div class="tl-event-time est">~09:00</div><div class="tl-event-icon icon-activity">🚣</div><div class="tl-event-body"><div class="tl-event-title">Tam Cốc River Caves — Sampan Boat</div><div class="tl-event-desc">Flat-bottomed sampan rowed by local women (with their feet!) through three cave tunnels carved by the Ngô Đồng River. Lush rice paddies frame each side; water buffalo wade nearby. ~2 hrs total. One of Vietnam's most serene experiences.</div><div class="tl-event-links"><a class="tl-event-link ev-activity" href="https://maps.google.com/maps?q=20.2271,105.9447" target="_blank">📍 Tam Cốc Boats</a></div></div></div>
+      <div class="tl-event"><div class="tl-event-time est">~11:30</div><div class="tl-event-icon icon-activity">🚲</div><div class="tl-event-body"><div class="tl-event-title">Cycle Through Rice Paddies</div><div class="tl-event-desc">Hire bikes from the resort or nearby (cheaper outside). Flat, easy cycling through the valley — rice fields, limestone peaks, and villages. Kids will love this.</div></div></div>
+      <div class="tl-event"><div class="tl-event-time est">~13:00</div><div class="tl-event-icon icon-meal">🍽️</div><div class="tl-event-body"><div class="tl-event-title">Lunch</div><div class="tl-event-desc">Local restaurants near Tam Coc — Ninh Bình is famous for Thịt Dê (goat meat) and Cơm Cháy (crispy rice). Also great fresh spring rolls.</div></div></div>
+      <div class="tl-event"><div class="tl-event-time est">~14:30</div><div class="tl-event-icon icon-activity">⛩️</div><div class="tl-event-body"><div class="tl-event-title">Bích Động Pagoda &amp; Hoa Lư Citadel</div><div class="tl-event-desc">Bích Động ("Jade Grotto") — an 18th-century pagoda built into a limestone cliff cave. Then Hoa Lư — ruins of Vietnam's ancient 10th-century imperial citadel, former capital before Hanoi.</div><div class="tl-event-links"><a class="tl-event-link ev-activity" href="https://maps.google.com/maps?q=20.2195,105.9364" target="_blank">📍 Bích Động</a><a class="tl-event-link ev-activity" href="https://maps.google.com/maps?q=20.2762,105.8972" target="_blank">📍 Hoa Lư Citadel</a></div></div></div>
+    </div>
+  </div>
+
+  <!-- DAY 10 -->
+  <div class="tl-day" id="tl-d10">
+    <div class="tl-day-header" onclick="toggleDay(this)">
+      <div class="tl-day-num"><div class="tl-day-num-n">10</div><div class="tl-day-num-label">Wed 1 Apr</div></div>
+      <div class="tl-day-info"><div class="tl-day-date">Wednesday 1 April 2026</div><div class="tl-day-place">Ninh Bình → Mai Châu</div><div class="tl-day-tagline">Drive west into the highlands — White Thai country</div></div>
+      <div class="tl-day-toggle">▼</div>
+    </div>
+    <div class="tl-events">
+      <div class="tl-event"><div class="tl-event-time est">~08:00</div><div class="tl-event-icon icon-meal">🥐</div><div class="tl-event-body"><div class="tl-event-title">Breakfast &amp; Check-out</div><div class="tl-event-desc">Last breakfast at Emeralda. Check out, luggage loaded.</div></div></div>
+      <div class="tl-event"><div class="tl-event-time est">~09:00</div><div class="tl-event-icon icon-transfer">🚐</div><div class="tl-event-body"><div class="tl-event-title">Drive to Mai Châu (~3 hours)</div><div class="tl-event-desc">~130km west through mountainous Hòa Bình province. The road climbs into the highlands — limestone scenery, minority villages, and terraced hillsides.</div></div></div>
+      <div class="tl-event"><div class="tl-event-time">14:00</div><div class="tl-event-icon icon-hotel">🏔️</div><div class="tl-event-body"><div class="tl-event-title">Check in — Mai Chau Ecolodge</div><div class="tl-event-desc">4-star ecolodge perched in the Mai Châu valley. 3 × Suite rooms (connecting guaranteed). Rice paddies and limestone mountains in every direction. Pool and spa available.</div><div class="tl-event-links"><a class="tl-event-link ev-hotel" href="https://www.google.com/maps/search/?api=1&query=Mai+Chau+Ecolodge+Vietnam&query_place_id=ChIJhwcfY1MINDERFnWr9OFoAr0" target="_blank">📍 Maps</a><a class="tl-event-link ev-hotel" href="https://maichau.ecolodge.asia/en/" target="_blank">🌐 Website</a><span class="tl-event-link ev-hotel">Ref 164184</span></div></div></div>
+      <div class="tl-event"><div class="tl-event-time est">~15:30</div><div class="tl-event-icon icon-activity">🚲</div><div class="tl-event-body"><div class="tl-event-title">Afternoon — Explore by Bicycle</div><div class="tl-event-desc">Free bikes at the ecolodge. Gentle cycling on paved trails through rice paddies and White Thai villages. Stilt houses, children playing, weavers at their looms — incredibly peaceful.</div></div></div>
+      <div class="tl-event"><div class="tl-event-time est">~18:30</div><div class="tl-event-icon icon-meal">🍽️</div><div class="tl-event-body"><div class="tl-event-title">Dinner at Lodge Restaurant</div><div class="tl-event-desc">Local dishes — try grilled fish in bamboo, sticky rice with banana leaf, and fresh mountain vegetables. Beautiful sunset over the valley.</div></div></div>
+    </div>
+  </div>
+
+  <!-- DAY 11 -->
+  <div class="tl-day">
+    <div class="tl-day-header" onclick="toggleDay(this)">
+      <div class="tl-day-num"><div class="tl-day-num-n">11</div><div class="tl-day-num-label">Thu 2 Apr</div></div>
+      <div class="tl-day-info"><div class="tl-day-date">Thursday 2 April 2026</div><div class="tl-day-place">Mai Châu — Village Hike &amp; Bamboo Rafting</div><div class="tl-day-tagline">Remote trails, Thai farmers, floating down the river</div></div>
+      <div class="tl-day-toggle">▼</div>
+    </div>
+    <div class="tl-events">
+      <div class="tl-event"><div class="tl-event-time est">~08:00</div><div class="tl-event-icon icon-meal">🥐</div><div class="tl-event-body"><div class="tl-event-title">Breakfast</div><div class="tl-event-desc">Lovely breakfast with valley views.</div></div></div>
+      <div class="tl-event"><div class="tl-event-time">09:30</div><div class="tl-event-icon icon-activity">🥾</div><div class="tl-event-body"><div class="tl-event-title">Guided Hike to Mai Hịch Village</div><div class="tl-event-desc">Wind through limestone mountains and rice fields to the remote Mai Hịch Valley. Meet White Thai farmers planting or harvesting rice, herding buffalo, weaving baskets. The guide provides cultural context throughout — an authentic experience far from the tourist trail.</div></div></div>
+      <div class="tl-event"><div class="tl-event-time est">~12:30</div><div class="tl-event-icon icon-meal">🍱</div><div class="tl-event-body"><div class="tl-event-title">Lunch</div><div class="tl-event-desc">Traditional meal with a local family or prepared picnic in the village.</div></div></div>
+      <div class="tl-event"><div class="tl-event-time est">~14:00</div><div class="tl-event-icon icon-activity">🚣</div><div class="tl-event-body"><div class="tl-event-title">Bamboo Rafting</div><div class="tl-event-desc">Float down a tranquil mountain stream on handcrafted bamboo rafts. Learn to paddle, steer, and drift through jungle-fringed channels. Calm and beautiful — great for the kids.</div></div></div>
+      <div class="tl-event"><div class="tl-event-time est">~16:00</div><div class="tl-event-icon icon-transfer">🚐</div><div class="tl-event-body"><div class="tl-event-title">Return to Ecolodge</div><div class="tl-event-desc">Transfer back. Pool, spa, or just watching the valley fade into evening from your terrace.</div></div></div>
+    </div>
+  </div>
+
+  <!-- DAY 12 -->
+  <div class="tl-day">
+    <div class="tl-day-header" onclick="toggleDay(this)">
+      <div class="tl-day-num"><div class="tl-day-num-n">12</div><div class="tl-day-num-label">Fri 3 Apr</div></div>
+      <div class="tl-day-info"><div class="tl-day-date">Friday 3 April 2026</div><div class="tl-day-place">Mai Châu → Hà Nội</div><div class="tl-day-tagline">3.5-hour drive back to the capital for the last time</div></div>
+      <div class="tl-day-toggle">▼</div>
+    </div>
+    <div class="tl-events">
+      <div class="tl-event"><div class="tl-event-time est">~08:00</div><div class="tl-event-icon icon-meal">🥐</div><div class="tl-event-body"><div class="tl-event-title">Breakfast &amp; Check-out</div><div class="tl-event-desc">Final breakfast in the valley. Say goodbye to the limestone peaks.</div></div></div>
+      <div class="tl-event"><div class="tl-event-time est">~10:00</div><div class="tl-event-icon icon-transfer">🚐</div><div class="tl-event-body"><div class="tl-event-title">Drive to Hà Nội (~3.5 hours)</div><div class="tl-event-desc">~160km east back to the capital. Arrive early afternoon.</div></div></div>
+      <div class="tl-event"><div class="tl-event-time">14:00</div><div class="tl-event-icon icon-hotel">🏙️</div><div class="tl-event-body"><div class="tl-event-title">Check in — Somerset Grand Hanoi (Final Stay)</div><div class="tl-event-desc">Back to the Somerset — same 3-bedroom apartment, same booking. Two final nights in Hanoi.</div><div class="tl-event-links"><a class="tl-event-link ev-hotel" href="https://www.google.com/maps/search/?api=1&query=Somerset+Grand+Hanoi&query_place_id=ChIJDyi8FJerNTERkGa5aeymJIw" target="_blank">📍 Maps</a><span class="tl-event-link ev-hotel">Ref 19371581</span></div></div></div>
+      <div class="tl-event"><div class="tl-event-time est">~16:00</div><div class="tl-event-icon icon-activity">🌙</div><div class="tl-event-body"><div class="tl-event-title">Evening — Night Market &amp; Final Dinner</div><div class="tl-event-desc">Đồng Xuân Night Market (Fri–Sun only — perfect timing). Then a proper last dinner — Chả Cá Lã Vọng (turmeric fish with dill, a Hanoi institution), or beer and snacks on Tạ Hiện Street (Bia Hơi Street).</div><div class="tl-event-links"><a class="tl-event-link ev-activity" href="https://maps.google.com/maps?q=21.0425,105.8458" target="_blank">📍 Đồng Xuân Night Market</a></div></div></div>
+    </div>
+  </div>
+
+  <!-- DAY 13 -->
+  <div class="tl-day">
+    <div class="tl-day-header" onclick="toggleDay(this)">
+      <div class="tl-day-num"><div class="tl-day-num-n">13</div><div class="tl-day-num-label">Sat 4 Apr</div></div>
+      <div class="tl-day-info"><div class="tl-day-date">Saturday 4 April 2026</div><div class="tl-day-place">Hà Nội — Free Day</div><div class="tl-day-tagline">Your day — mausoleum, markets, or just wander</div></div>
+      <div class="tl-day-toggle">▼</div>
+    </div>
+    <div class="tl-events">
+      <div class="tl-event"><div class="tl-event-time est">~07:00</div><div class="tl-event-icon icon-activity">🏛️</div><div class="tl-event-body"><div class="tl-event-title">Ho Chi Minh Mausoleum &amp; Complex</div><div class="tl-event-desc">Open Tue–Thu &amp; Sat–Sun, 8:00–11:00 only. Queue early. The preserved body of Uncle Ho is on display. The adjacent Presidential Palace gardens, Ho Chi Minh's stilt house, and the One Pillar Pagoda are all in the same complex. Free entry.</div><div class="tl-event-links"><a class="tl-event-link ev-activity" href="https://maps.google.com/maps?q=21.0369,105.8350" target="_blank">📍 Ho Chi Minh Mausoleum</a></div></div></div>
+      <div class="tl-event"><div class="tl-event-time est">~11:00</div><div class="tl-event-icon icon-activity">🎨</div><div class="tl-event-body"><div class="tl-event-title">Fine Arts Museum or Old Quarter</div><div class="tl-event-desc">Vietnam Museum of Fine Arts (impressive lacquerware and silk paintings) or browse the 36 guild streets — Hang Gai (silk), Hang Bac (silver), Hang Thiec (tin), each named for its historical trade. Good souvenir shopping.</div><div class="tl-event-links"><a class="tl-event-link ev-activity" href="https://maps.google.com/maps?q=21.0338,105.8432" target="_blank">📍 Fine Arts Museum</a></div></div></div>
+      <div class="tl-event"><div class="tl-event-time est">~13:00</div><div class="tl-event-icon icon-meal">🍽️</div><div class="tl-event-body"><div class="tl-event-title">Lunch — Classic Hanoi</div><div class="tl-event-desc">Phở Bò (beef noodle soup) for breakfast or lunch is very much the Hanoi tradition. Or Bún Chả (grilled pork with noodles — Obama's famous Hanoi meal) at Bún Chả Hương Liên.</div></div></div>
+      <div class="tl-event"><div class="tl-event-time est">~16:00</div><div class="tl-event-icon icon-activity">☕</div><div class="tl-event-body"><div class="tl-event-title">Cà Phê Trứng — Egg Coffee</div><div class="tl-event-desc">Hanoi's iconic invention — whipped egg yolk and condensed milk over espresso. Must try at Giảng Café or Đinh Café, both in the Old Quarter. Serve it hot or iced.</div><div class="tl-event-links"><a class="tl-event-link ev-activity" href="https://maps.google.com/maps?q=21.0337,105.8501" target="_blank">📍 Giảng Café</a></div></div></div>
+      <div class="tl-event"><div class="tl-event-time est">~19:00</div><div class="tl-event-icon icon-meal">🥂</div><div class="tl-event-body"><div class="tl-event-title">Last Dinner Together</div><div class="tl-event-desc">The two families dine together for the last time. Splurge on a rooftop restaurant or a Hanoi cooking experience. Early night — different departure times tomorrow.</div></div></div>
+    </div>
+  </div>
+
+  <!-- DAY 14 -->
+  <div class="tl-day" id="tl-d14">
+    <div class="tl-day-header" onclick="toggleDay(this)">
+      <div class="tl-day-num" style="background:var(--ink-light)"><div class="tl-day-num-n">14</div><div class="tl-day-num-label">Sun 5 Apr</div></div>
+      <div class="tl-day-info"><div class="tl-day-date">Sunday 5 April 2026 · DEPARTURE DAY</div><div class="tl-day-place">Hà Nội → Tel Aviv — Two Flights Home</div><div class="tl-day-tagline">Split departures — safe travels everyone 🪷</div></div>
+      <div class="tl-day-toggle">▼</div>
+    </div>
+    <div class="tl-events">
+
+      <div class="tl-event">
+        <div class="tl-event-time">08:30</div>
+        <div class="tl-event-icon icon-transfer">🚐</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Doritte &amp; Richard — Driver Pickup</div>
+          <div class="tl-event-desc">Driver collects Doritte and Richard from Somerset Grand Hanoi at 08:30 sharp. Transfer to Noi Bai International Airport (~45 min).</div>
+        </div>
+      </div>
+
+      <div class="tl-event">
+        <div class="tl-event-time">12:05</div>
+        <div class="tl-event-icon icon-flight">✈️</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Doritte &amp; Richard Depart — BR398</div>
+          <div class="tl-event-desc">EVA Air flight BR398 from Hanoi to Tel Aviv. Direct routing.</div>
+          <div class="tl-event-links"><span class="tl-event-link ev-flight">BR398 · EVA Air · HAN→TLV</span></div>
+        </div>
+      </div>
+
+      <div class="tl-event">
+        <div class="tl-event-time est">~10:00</div>
+        <div class="tl-event-icon icon-meal">🍽️</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Adi's Family — Final Morning in Hanoi</div>
+          <div class="tl-event-desc">Still ~5 hours before your pickup at 15:45. Have a leisurely last lunch in the Old Quarter. Last Phở. Last egg coffee. Don't forget to buy Van Phuc silk from Hang Gai street!</div>
+        </div>
+      </div>
+
+      <div class="tl-event">
+        <div class="tl-event-time">15:45</div>
+        <div class="tl-event-icon icon-transfer">🚐</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Adi, Verly, Sol &amp; Neil — Driver Pickup</div>
+          <div class="tl-event-desc">Driver collects the family from Somerset Grand Hanoi at 15:45. Transfer to Noi Bai International Airport (~45 min).</div>
+        </div>
+      </div>
+
+      <div class="tl-event">
+        <div class="tl-event-time">19:40</div>
+        <div class="tl-event-icon icon-flight">✈️</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Adi, Verly, Sol &amp; Neil Depart — EY431</div>
+          <div class="tl-event-desc">Etihad Airways flight EY431 from Hanoi via Abu Dhabi back to Tel Aviv. Arrives Tel Aviv Monday 6 April.</div>
+          <div class="tl-event-links"><span class="tl-event-link ev-flight">EY431 · Etihad · HAN→AUH→TLV</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div><!-- end day 14 -->
+
+  <footer>
+    <div class="ftitle">Safe travels, Hoek family 🪷</div>
+    <div class="fdiv"></div>
+    <div class="fsub">📞 VietnamStay: +84 985 459 921 &nbsp;·&nbsp; Lily: +84 982 893 692 &nbsp;·&nbsp; Booking SO85861</div>
+  </footer>
+
+</div><!-- /timeline-view -->
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script>
 /* ── PASSWORD ── */
-const PASS_HASH = "4126792aba172af73ab054fcd3b1203c241ddd8f99933180ef7956ceada4416b";
-const SESSION_KEY = "vietnam2026_unlocked";
+const PASS_HASH="4126792aba172af73ab054fcd3b1203c241ddd8f99933180ef7956ceada4416b";
+const SESSION_KEY="vietnam2026_unlocked";
+const VIEW_KEY="vietnam2026_view";
+
 async function sha256(str){const buf=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(str));return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,"0")).join("");}
+
 async function checkPassword(e){
   e.preventDefault();
   const hash=await sha256(document.getElementById("pw-input").value.trim());
-  if(hash===PASS_HASH){sessionStorage.setItem(SESSION_KEY,"true");unlock();}
+  if(hash===PASS_HASH){sessionStorage.setItem(SESSION_KEY,"true");showSelector();}
   else{const err=document.getElementById("pw-error");err.textContent="Incorrect password. Try again.";document.getElementById("pw-input").value="";document.getElementById("pw-input").focus();setTimeout(()=>err.textContent="",3000);}
 }
-function unlock(){
+
+function showSelector(){
   document.getElementById("lock-screen").classList.add("hidden");
-  document.getElementById("main-content").style.display="block";
-  window.scrollTo({top:0});
-  initMap();
+  document.getElementById("view-selector").classList.add("active");
 }
-window.addEventListener("DOMContentLoaded",()=>{if(sessionStorage.getItem(SESSION_KEY)==="true")unlock();});
+
+function showView(which){
+  document.getElementById("view-selector").classList.remove("active");
+  document.getElementById("overview-view").classList.remove("active");
+  document.getElementById("timeline-view").classList.remove("active");
+  document.getElementById(which+"-view").classList.add("active");
+  sessionStorage.setItem(VIEW_KEY, which);
+  window.scrollTo({top:0});
+  if(which==="overview") initMap();
+}
+
+window.addEventListener("DOMContentLoaded",()=>{
+  if(sessionStorage.getItem(SESSION_KEY)==="true"){
+    const savedView=sessionStorage.getItem(VIEW_KEY);
+    if(savedView==="overview"||savedView==="timeline"){showView(savedView);}
+    else{showSelector();}
+  }
+});
+
+/* ── TIMELINE TOGGLE ── */
+function toggleDay(header){
+  header.classList.toggle("open");
+  const events=header.nextElementSibling;
+  events.classList.toggle("open");
+}
 
 /* ── MAP ── */
-let mapInitialized = false;
+let mapInitialized=false;
 function initMap(){
-  if(mapInitialized) return;
-  mapInitialized = true;
+  if(mapInitialized)return;
+  mapInitialized=true;
+  const map=L.map("map",{center:[18.5,106.5],zoom:6,scrollWheelZoom:false});
+  L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",{attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/">CARTO</a>',maxZoom:19}).addTo(map);
 
-  const map = L.map('map', {
-    center: [18.5, 106.5],
-    zoom: 6,
-    scrollWheelZoom: false
-  });
-
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{
-    attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/">CARTO</a>',
-    maxZoom:19
-  }).addTo(map);
-
-  const stops = [
-    {
-      name:"Palm Garden Beach Resort & Spa",city:"Hội An",dates:"23–26 Mar 2026",
-      lat:15.9008,lng:108.3590,color:"#2e8b60",
-      mapsUrl:"https://www.google.com/maps/place/?q=place_id:ChIJd2hEc5MNQjERYLHo53B5sU8",
-      webUrl:"https://www.palmgardenresort.com.vn",emoji:"🏖️",num:1
-    },
-    {
-      name:"Indochine Palace Hotel",city:"Huế",dates:"26–28 Mar 2026",
-      lat:16.4612,lng:107.5983,color:"#6935a0",
-      mapsUrl:"https://www.google.com/maps/place/?q=place_id:ChIJf4F_QBWhQTERoNIz5ZvO4cs",
-      webUrl:"https://indochinepalace.com",emoji:"🏛️",num:2
-    },
-    {
-      name:"Somerset Grand Hanoi",city:"Hà Nội",dates:"28–31 Mar & 3–5 Apr 2026",
-      lat:21.0258,lng:105.8463,color:"#C8102E",
-      mapsUrl:"https://www.google.com/maps/place/?q=place_id:ChIJDyi8FJerNTERkGa5aeymJIw",
-      webUrl:"https://www.somerset.com/en/vietnam/hanoi/somerset-grand-hanoi",emoji:"🏙️",num:3
-    },
-    {
-      name:"Signature Cruise",city:"Hạ Long Bay",dates:"29–30 Mar 2026",
-      lat:20.9541,lng:107.0555,color:"#1278a0",
-      mapsUrl:"https://www.google.com/maps/place/?q=place_id:ChIJH9C-6cCrNTERKbg3i-RebSs",
-      webUrl:"https://www.signaturehalongcruise.com",emoji:"🛳️",num:4
-    },
-    {
-      name:"Emeralda Resort Tam Coc",city:"Ninh Bình",dates:"30 Mar – 1 Apr 2026",
-      lat:20.2168,lng:105.9351,color:"#528038",
-      mapsUrl:"https://www.google.com/maps/place/?q=place_id:ChIJk2yfySkkNTERGhYC6kh382g",
-      webUrl:"https://www.emeraldaresort.com",emoji:"🌾",num:5
-    },
-    {
-      name:"Mai Chau Ecolodge",city:"Mai Châu",dates:"1–3 Apr 2026",
-      lat:20.6577,lng:105.0698,color:"#9c7030",
-      mapsUrl:"https://www.google.com/maps/place/?q=place_id:ChIJhwcfY1MINDERFnWr9OFoAr0",
-      webUrl:"https://www.maichauecolodge.com",emoji:"🏔️",num:6
-    }
+  const stops=[
+    {name:"Palm Garden Beach Resort & Spa",city:"Hội An",dates:"23–26 Mar",lat:15.900800,lng:108.359024,color:"#2e8b60",mapsUrl:"https://www.google.com/maps/search/?api=1&query=Palm+Garden+Beach+Resort+Hoi+An&query_place_id=ChIJd2hEc5MNQjERYLHo53B5sU8",webUrl:"https://www.palmgardenresort.com.vn",emoji:"🏖️",num:1},
+    {name:"Indochine Palace Hotel",city:"Huế",dates:"26–28 Mar",lat:16.461225,lng:107.598319,color:"#6935a0",mapsUrl:"https://www.google.com/maps/search/?api=1&query=Indochine+Palace+Hotel+Hue&query_place_id=ChIJf4F_QBWhQTERoNIz5ZvO4cs",webUrl:"https://indochinepalace.com",emoji:"🏛️",num:2},
+    {name:"Somerset Grand Hanoi",city:"Hà Nội",dates:"28–31 Mar & 3–5 Apr",lat:21.025829,lng:105.846344,color:"#C8102E",mapsUrl:"https://www.google.com/maps/search/?api=1&query=Somerset+Grand+Hanoi&query_place_id=ChIJDyi8FJerNTERkGa5aeymJIw",webUrl:"https://www.somerset.com/en/vietnam/hanoi/somerset-grand-hanoi",emoji:"🏙️",num:3},
+    {name:"Signature Cruise",city:"Hạ Long Bay",dates:"29–30 Mar",lat:20.954095,lng:107.055541,color:"#1278a0",mapsUrl:"https://www.google.com/maps/search/?api=1&query=Signature+Halong+Cruise+Bai+Tu+Long&query_place_id=ChIJH9C-6cCrNTERKbg3i-RebSs",webUrl:"https://www.signaturehalongcruise.com",emoji:"🛳️",num:4},
+    {name:"Emeralda Resort Tam Coc",city:"Ninh Bình",dates:"30 Mar – 1 Apr",lat:20.216754,lng:105.935143,color:"#528038",mapsUrl:"https://www.google.com/maps/search/?api=1&query=Emeralda+Resort+Tam+Coc+Ninh+Binh&query_place_id=ChIJk2yfySkkNTERGhYC6kh382g",webUrl:"https://www.emeraldaresort.com",emoji:"🌾",num:5},
+    {name:"Mai Chau Ecolodge",city:"Mai Châu",dates:"1–3 Apr",lat:20.657749,lng:105.069752,color:"#9c7030",mapsUrl:"https://www.google.com/maps/search/?api=1&query=Mai+Chau+Ecolodge+Vietnam&query_place_id=ChIJhwcfY1MINDERFnWr9OFoAr0",webUrl:"https://maichau.ecolodge.asia/en/",emoji:"🏔️",num:6}
   ];
 
-  // Draw route line
-  const routeCoords = stops.map(s=>[s.lat,s.lng]);
-  L.polyline(routeCoords,{
-    color:'#C8102E', weight:2.5, opacity:.5, dashArray:'8,6'
-  }).addTo(map);
+  L.polyline(stops.map(s=>[s.lat,s.lng]),{color:"#C8102E",weight:2.5,opacity:.5,dashArray:"8,6"}).addTo(map);
 
-  // Custom markers
   stops.forEach(s=>{
-    const icon = L.divIcon({
-      html:`<div style="
-        width:36px;height:36px;border-radius:50%;
-        background:${s.color};
-        border:3px solid white;
-        box-shadow:0 3px 12px rgba(0,0,0,.25);
-        display:flex;align-items:center;justify-content:center;
-        font-family:'Playfair Display',serif;
-        font-size:14px;font-weight:700;color:white;
-        cursor:pointer;
-      ">${s.num}</div>`,
-      className:'',iconSize:[36,36],iconAnchor:[18,18],popupAnchor:[0,-20]
-    });
-
-    const popup = `
-      <div class="map-popup-name">${s.emoji} ${s.name}</div>
-      <div class="map-popup-city">${s.city}</div>
-      <div class="map-popup-dates">${s.dates}</div>
-      <div class="map-popup-links">
-        <a class="map-popup-link mpl-maps" href="${s.mapsUrl}" target="_blank">📍 Google Maps</a>
-        <a class="map-popup-link mpl-web" href="${s.webUrl}" target="_blank">🌐 Website</a>
-      </div>`;
-
+    const icon=L.divIcon({html:`<div style="width:34px;height:34px;border-radius:50%;background:${s.color};border:3px solid white;box-shadow:0 3px 12px rgba(0,0,0,.25);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:14px;font-weight:700;color:white;cursor:pointer;">${s.num}</div>`,className:"",iconSize:[34,34],iconAnchor:[17,17],popupAnchor:[0,-20]});
+    const popup=`<div class="map-popup-name">${s.emoji} ${s.name}</div><div class="map-popup-city">${s.city}</div><div class="map-popup-dates">${s.dates}</div><div class="map-popup-links"><a class="map-popup-link mpl-maps" href="${s.mapsUrl}" target="_blank">📍 Google Maps</a><a class="map-popup-link mpl-web" href="${s.webUrl}" target="_blank">🌐 Website</a></div>`;
     L.marker([s.lat,s.lng],{icon}).addTo(map).bindPopup(popup,{maxWidth:260});
   });
 }
