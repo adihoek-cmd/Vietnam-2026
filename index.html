@@ -7,1075 +7,460 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-
   <style>
     :root {
-      --red: #C8102E;
-      --red-dark: #8B0000;
-      --red-deep: #5C0A14;
-      --gold: #D4A017;
-      --gold-light: #F0C040;
-      --gold-pale: #F5E6A3;
-      --cream: #FAF5E4;
-      --cream-dark: #F0E6CC;
-      --ink: #1A0A05;
-      --ink-light: #3D1A10;
-      --smoke: rgba(255,255,255,0.06);
+      --red: #C8102E; --red-dark: #8B0000; --gold: #D4A017;
+      --gold-light: #F0C040; --gold-pale: #F5E6A3;
+      --cream: #FAF5E4; --cream-dark: #F0E6CC;
+      --ink: #1A0A05; --ink-light: #3D1A10;
     }
-
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
-    /* ─── PASSWORD SCREEN ─── */
-    #lock-screen {
-      position: fixed; inset: 0; z-index: 1000;
-      background: var(--ink);
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      gap: 32px;
-      transition: opacity 0.8s ease, visibility 0.8s ease;
-    }
-    #lock-screen.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+    /* LOCK */
+    #lock-screen { position:fixed;inset:0;z-index:1000;background:var(--ink);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;transition:opacity 0.8s ease,visibility 0.8s ease; }
+    #lock-screen.hidden { opacity:0;visibility:hidden;pointer-events:none; }
+    .lock-lotus { font-size:58px;animation:float 4s ease-in-out infinite; }
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+    .lock-title { font-family:'Playfair Display',serif;font-size:clamp(26px,6vw,48px);font-style:italic;color:var(--gold-light);text-align:center; }
+    .lock-sub { font-family:'Space Mono',monospace;font-size:10px;color:rgba(255,255,255,0.35);letter-spacing:0.25em;text-transform:uppercase; }
+    .lock-div { width:90px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent); }
+    .lock-form { display:flex;flex-direction:column;align-items:center;gap:12px;width:min(320px,88vw); }
+    .lock-input { width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(212,160,23,0.4);border-radius:4px;padding:12px 16px;font-family:'Space Mono',monospace;font-size:16px;color:var(--gold-pale);outline:none;text-align:center;letter-spacing:0.15em;transition:border-color 0.3s,box-shadow 0.3s; }
+    .lock-input:focus { border-color:var(--gold);box-shadow:0 0 18px rgba(212,160,23,0.2); }
+    .lock-input::placeholder { color:rgba(255,255,255,0.2); }
+    .lock-btn { width:100%;background:var(--red);color:var(--gold-pale);border:none;padding:12px;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;cursor:pointer;border-radius:4px;transition:background 0.2s; }
+    .lock-btn:hover { background:var(--red-dark); }
+    .lock-err { font-family:'Cormorant Garamond',serif;font-size:13px;color:#ff6b6b;height:16px;text-align:center; }
 
-    .lock-lotus {
-      font-size: 64px;
-      animation: float 4s ease-in-out infinite;
-    }
-    @keyframes float {
-      0%,100% { transform: translateY(0); }
-      50% { transform: translateY(-12px); }
-    }
+    /* BODY */
+    body { background:var(--cream);color:var(--ink);font-family:'Cormorant Garamond',serif;overflow-x:hidden; }
 
-    .lock-title {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(28px, 6vw, 52px);
-      font-style: italic;
-      color: var(--gold-light);
-      letter-spacing: 0.02em;
-      text-align: center;
-    }
-    .lock-sub {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 16px;
-      color: rgba(255,255,255,0.45);
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-    }
+    /* HERO */
+    .hero { position:relative;min-height:100svh;background:var(--ink);display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;padding:40px 20px; }
+    .hero::before { content:'';position:absolute;inset:0;background-image:radial-gradient(ellipse 80% 60% at 50% 50%,rgba(139,0,0,0.25) 0%,transparent 70%),repeating-linear-gradient(45deg,transparent 0px,transparent 30px,rgba(212,160,23,0.03) 30px,rgba(212,160,23,0.03) 31px); }
+    .hero::after { content:'';position:absolute;inset:20px;border:1px solid rgba(212,160,23,0.12);pointer-events:none; }
+    .hc { position:absolute;width:55px;height:55px;border-color:var(--gold);border-style:solid;opacity:0.45; }
+    .hc.tl{top:20px;left:20px;border-width:2px 0 0 2px} .hc.tr{top:20px;right:20px;border-width:2px 2px 0 0}
+    .hc.bl{bottom:20px;left:20px;border-width:0 0 2px 2px} .hc.br{bottom:20px;right:20px;border-width:0 2px 2px 0}
+    @keyframes fu { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
+    .hero-flag { font-size:38px;margin-bottom:4px;opacity:0;animation:fu 1s 0.15s forwards; }
+    .hero-ey { font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.38em;color:var(--gold);text-transform:uppercase;margin-bottom:16px;opacity:0;animation:fu 1s 0.3s forwards; }
+    .hero-title { font-family:'Playfair Display',serif;font-size:clamp(54px,11vw,130px);font-weight:900;color:var(--cream);line-height:0.9;text-align:center;letter-spacing:-0.02em;opacity:0;animation:fu 1s 0.5s forwards; }
+    .hero-title em { display:block;font-style:italic;color:var(--gold-light);font-size:0.64em; }
+    .hero-desc { font-family:'Cormorant Garamond',serif;font-size:clamp(14px,2.2vw,20px);color:rgba(255,255,255,0.45);margin-top:18px;letter-spacing:0.05em;text-align:center;font-style:italic;opacity:0;animation:fu 1s 0.7s forwards; }
+    .hero-dates { font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.22em;color:var(--gold);margin-top:10px;opacity:0;animation:fu 1s 0.9s forwards; }
+    .hero-yr { font-family:'Playfair Display',serif;font-size:clamp(70px,18vw,200px);font-weight:900;color:transparent;-webkit-text-stroke:1px rgba(212,160,23,0.18);position:absolute;bottom:-15px;letter-spacing:-0.05em;user-select:none;pointer-events:none; }
+    .hero-scroll { position:absolute;bottom:36px;display:flex;flex-direction:column;align-items:center;gap:7px;color:rgba(255,255,255,0.28);font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.28em;text-transform:uppercase;opacity:0;animation:fu 1s 1.5s forwards; }
+    .sc-line { width:1px;height:46px;background:linear-gradient(to bottom,var(--gold),transparent);animation:sp 2s ease-in-out infinite; }
+    @keyframes sp { 0%,100%{transform:scaleY(1);opacity:0.5} 50%{transform:scaleY(1.25);opacity:1} }
 
-    .lock-form {
-      display: flex; flex-direction: column; align-items: center; gap: 16px;
-      width: min(360px, 90vw);
-    }
-    .lock-input {
-      width: 100%;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(212,160,23,0.4);
-      border-radius: 4px;
-      padding: 14px 20px;
-      font-family: 'Space Mono', monospace;
-      font-size: 16px;
-      color: var(--gold-pale);
-      outline: none;
-      text-align: center;
-      letter-spacing: 0.15em;
-      transition: border-color 0.3s, box-shadow 0.3s;
-    }
-    .lock-input:focus {
-      border-color: var(--gold);
-      box-shadow: 0 0 20px rgba(212,160,23,0.2);
-    }
-    .lock-input::placeholder { color: rgba(255,255,255,0.2); letter-spacing: 0.08em; }
+    /* NAV */
+    .nav-strip { position:sticky;top:0;z-index:100;background:var(--ink);border-bottom:1px solid rgba(212,160,23,0.18);display:flex;align-items:center;justify-content:center;gap:clamp(10px,3.5vw,40px);padding:12px 16px;flex-wrap:wrap; }
+    .nav-link { font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.2s;white-space:nowrap; }
+    .nav-link:hover { color:var(--gold); }
 
-    .lock-btn {
-      width: 100%;
-      background: var(--red);
-      color: var(--gold-pale);
-      border: none;
-      padding: 14px;
-      font-family: 'Space Mono', monospace;
-      font-size: 13px;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      cursor: pointer;
-      border-radius: 4px;
-      transition: background 0.2s, transform 0.1s;
-    }
-    .lock-btn:hover { background: var(--red-dark); }
-    .lock-btn:active { transform: scale(0.98); }
+    /* SECTIONS */
+    section { padding:clamp(56px,9vw,100px) clamp(18px,5.5vw,72px); }
+    .sl { font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.38em;text-transform:uppercase;color:var(--red);margin-bottom:10px;display:flex;align-items:center;gap:12px; }
+    .sl::after { content:'';flex:1;max-width:70px;height:1px;background:var(--red);opacity:0.35; }
+    .st { font-family:'Playfair Display',serif;font-size:clamp(32px,5vw,64px);font-weight:700;line-height:1;margin-bottom:40px;color:var(--ink); }
+    .st em { font-style:italic;color:var(--red); }
+    .dark .sl { color:var(--gold); } .dark .sl::after { background:var(--gold); }
+    .dark .st { color:var(--cream); } .dark .st em { color:var(--gold-light); }
 
-    .lock-error {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 14px;
-      color: #ff6b6b;
-      height: 20px;
-      text-align: center;
-      transition: opacity 0.3s;
-    }
+    /* FLIGHTS */
+    #flights { background:var(--ink); }
+    .fgrid { display:grid;gap:12px; }
+    .fc { background:rgba(255,255,255,0.04);border:1px solid rgba(212,160,23,0.14);border-radius:8px;padding:22px 26px;display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center;transition:border-color 0.3s,background 0.3s; }
+    .fc:hover { border-color:rgba(212,160,23,0.38);background:rgba(255,255,255,0.065); }
+    .ftag { display:inline-block;background:rgba(200,16,46,0.3);color:var(--gold-pale);font-family:'Space Mono',monospace;font-size:8px;letter-spacing:0.16em;padding:2px 7px;border-radius:20px;margin-bottom:6px; }
+    .fcity { font-family:'Playfair Display',serif;font-size:clamp(16px,2.5vw,26px);font-weight:700;color:var(--cream); }
+    .fcode { font-family:'Space Mono',monospace;font-size:9px;color:var(--gold);letter-spacing:0.18em; }
+    .ftime { font-family:'Playfair Display',serif;font-size:clamp(18px,2.8vw,30px);color:var(--gold-light);font-weight:700;margin-top:3px; }
+    .fdate { font-family:'Space Mono',monospace;font-size:8px;color:rgba(255,255,255,0.28);letter-spacing:0.09em;margin-top:2px; }
+    .farrow { display:flex;flex-direction:column;align-items:center;gap:3px; }
+    .farr-line { width:clamp(28px,5.5vw,90px);height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent); }
+    .fnum { font-family:'Space Mono',monospace;font-size:9px;color:var(--gold);letter-spacing:0.1em; }
+    .fdur { font-family:'Space Mono',monospace;font-size:8px;color:rgba(255,255,255,0.28);letter-spacing:0.09em; }
+    .fmeta { grid-column:1/-1;border-top:1px solid rgba(212,160,23,0.1);padding-top:10px;display:flex;gap:18px;flex-wrap:wrap; }
+    .fmi { font-family:'Space Mono',monospace;font-size:9px;color:rgba(255,255,255,0.3);letter-spacing:0.09em; }
+    .fmi span { color:var(--gold); }
 
-    .lock-divider {
-      width: 120px; height: 1px;
-      background: linear-gradient(90deg, transparent, var(--gold), transparent);
-    }
+    /* HOTELS */
+    #hotels { background:var(--cream); }
+    .hgrid { display:grid;grid-template-columns:repeat(auto-fill,minmax(min(290px,100%),1fr));gap:18px; }
+    .hcard { background:white;border:1px solid rgba(0,0,0,0.07);border-radius:12px;overflow:hidden;transition:transform 0.3s,box-shadow 0.3s; }
+    .hcard:hover { transform:translateY(-3px);box-shadow:0 18px 45px rgba(0,0,0,0.09); }
+    .hbanner { height:68px;display:flex;align-items:center;justify-content:space-between;padding:0 20px; }
+    .hemoji { font-size:26px; }
+    .hstars { color:var(--gold-light);font-size:12px;letter-spacing:2px; }
+    .hbody { padding:18px 20px; }
+    .hcity { font-family:'Space Mono',monospace;font-size:8px;letter-spacing:0.22em;color:var(--red);text-transform:uppercase;margin-bottom:3px; }
+    .hname { font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--ink);margin-bottom:2px; }
+    .hnights { display:inline-block;background:var(--red);color:white;font-family:'Space Mono',monospace;font-size:8px;letter-spacing:0.09em;padding:2px 8px;border-radius:20px;margin:8px 0; }
+    .hdates { display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:10px; }
+    .hdb { background:var(--cream);border-radius:5px;padding:8px 11px; }
+    .hdl { font-family:'Space Mono',monospace;font-size:7px;letter-spacing:0.18em;color:rgba(0,0,0,0.38);text-transform:uppercase;margin-bottom:2px; }
+    .hdv { font-family:'Cormorant Garamond',serif;font-size:14px;font-weight:500;color:var(--ink); }
+    .href { font-family:'Space Mono',monospace;font-size:9px;color:rgba(0,0,0,0.3);padding-top:10px;border-top:1px dashed rgba(0,0,0,0.09);letter-spacing:0.07em; }
+    .href span { color:var(--red); }
 
-    /* ─── MAIN SITE ─── */
-    body {
-      background: var(--cream);
-      color: var(--ink);
-      font-family: 'Cormorant Garamond', serif;
-      overflow-x: hidden;
-    }
+    /* VISAS */
+    #visas { background:var(--ink); }
+    .vgrid { display:grid;grid-template-columns:repeat(auto-fill,minmax(min(250px,100%),1fr));gap:14px; }
+    .vcard { background:rgba(255,255,255,0.04);border:1px solid rgba(212,160,23,0.18);border-radius:10px;padding:20px 22px;transition:background 0.3s; }
+    .vcard:hover { background:rgba(255,255,255,0.07); }
+    .vtype { font-family:'Space Mono',monospace;font-size:8px;letter-spacing:0.22em;color:var(--gold);text-transform:uppercase;margin-bottom:5px; }
+    .vname { font-family:'Playfair Display',serif;font-size:20px;color:var(--cream);font-weight:700;margin-bottom:12px; }
+    .vd { display:flex;justify-content:space-between;align-items:baseline;padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.055); }
+    .vd:last-of-type { border-bottom:none; }
+    .vdk { font-family:'Space Mono',monospace;font-size:7.5px;letter-spacing:0.16em;color:rgba(255,255,255,0.28);text-transform:uppercase; }
+    .vdv { font-family:'Cormorant Garamond',serif;font-size:13px;color:rgba(255,255,255,0.68); }
+    .vdv.hi { color:var(--gold-light);font-weight:500; }
 
-    /* ─── HERO ─── */
-    .hero {
-      position: relative;
-      min-height: 100svh;
-      background: var(--ink);
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      overflow: hidden;
-      padding: 40px 20px;
-    }
+    /* ITINERARY */
+    #itinerary { background:var(--cream-dark); }
+    .tl { position:relative;display:flex;flex-direction:column;max-width:760px; }
+    .tl::before { content:'';position:absolute;left:26px;top:0;bottom:0;width:1px;background:linear-gradient(to bottom,var(--red),transparent); }
+    .ti { display:grid;grid-template-columns:52px 1fr;gap:18px;padding-bottom:28px; }
+    .tdot { width:52px;height:52px;border-radius:50%;background:var(--red);color:white;font-family:'Playfair Display',serif;font-size:16px;font-weight:700;display:flex;align-items:center;justify-content:center;position:relative;z-index:1;flex-shrink:0;box-shadow:0 3px 15px rgba(200,16,46,0.28); }
+    .tc { background:white;border-radius:9px;padding:16px 20px;border:1px solid rgba(0,0,0,0.055); }
+    .tdate { font-family:'Space Mono',monospace;font-size:8.5px;letter-spacing:0.16em;color:var(--red);margin-bottom:2px; }
+    .tcity { font-family:'Playfair Display',serif;font-size:19px;font-weight:700;color:var(--ink);margin-bottom:4px; }
+    .tdesc { font-family:'Cormorant Garamond',serif;font-size:15px;color:rgba(0,0,0,0.52);line-height:1.6; }
+    .sbadge { display:inline-block;background:var(--cream);border:1px solid rgba(200,16,46,0.18);color:var(--red);font-family:'Space Mono',monospace;font-size:7.5px;letter-spacing:0.1em;padding:2px 7px;border-radius:20px;margin-top:7px; }
 
-    /* Decorative background pattern */
-    .hero::before {
-      content: '';
-      position: absolute; inset: 0;
-      background-image:
-        radial-gradient(ellipse 80% 60% at 50% 50%, rgba(139,0,0,0.25) 0%, transparent 70%),
-        repeating-linear-gradient(
-          45deg,
-          transparent 0px,
-          transparent 30px,
-          rgba(212,160,23,0.03) 30px,
-          rgba(212,160,23,0.03) 31px
-        );
-    }
+    /* PASSENGERS */
+    #passengers { background:var(--cream); }
+    .pgrid { display:grid;grid-template-columns:repeat(auto-fill,minmax(min(210px,100%),1fr));gap:12px; }
+    .pcard { background:white;border:1px solid rgba(0,0,0,0.07);border-radius:9px;padding:16px 18px;display:flex;align-items:center;gap:12px; }
+    .pav { width:42px;height:42px;border-radius:50%;background:var(--red);color:white;font-family:'Playfair Display',serif;font-size:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0; }
+    .pname { font-family:'Playfair Display',serif;font-size:14px;font-weight:700;color:var(--ink);line-height:1.2; }
+    .prole { font-family:'Space Mono',monospace;font-size:8px;color:rgba(0,0,0,0.32);letter-spacing:0.1em;margin-top:2px; }
+    .info-bar { margin-top:20px;padding:14px 18px;background:rgba(200,16,46,0.06);border-left:3px solid var(--red);border-radius:4px;font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--ink-light);line-height:1.7; }
 
-    /* Decorative corner ornaments */
-    .hero::after {
-      content: '';
-      position: absolute; inset: 20px;
-      border: 1px solid rgba(212,160,23,0.15);
-      pointer-events: none;
-    }
+    /* FOOTER */
+    footer { background:var(--ink);padding:32px;text-align:center;border-top:1px solid rgba(212,160,23,0.13); }
+    .ftitle { font-family:'Playfair Display',serif;font-size:24px;font-style:italic;color:var(--gold-light);margin-bottom:5px; }
+    .fdiv { width:70px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:14px auto; }
+    .fsub { font-family:'Cormorant Garamond',serif;font-size:12px;color:rgba(255,255,255,0.28);letter-spacing:0.09em; }
 
-    .hero-corner {
-      position: absolute;
-      width: 60px; height: 60px;
-      border-color: var(--gold);
-      border-style: solid;
-      opacity: 0.5;
-    }
-    .hero-corner.tl { top: 20px; left: 20px; border-width: 2px 0 0 2px; }
-    .hero-corner.tr { top: 20px; right: 20px; border-width: 2px 2px 0 0; }
-    .hero-corner.bl { bottom: 20px; left: 20px; border-width: 0 0 2px 2px; }
-    .hero-corner.br { bottom: 20px; right: 20px; border-width: 0 2px 2px 0; }
-
-    .hero-eyebrow {
-      font-family: 'Space Mono', monospace;
-      font-size: 11px;
-      letter-spacing: 0.4em;
-      color: var(--gold);
-      text-transform: uppercase;
-      margin-bottom: 20px;
-      opacity: 0;
-      animation: fadeUp 1s 0.3s forwards;
-    }
-
-    .hero-title {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(56px, 12vw, 140px);
-      font-weight: 900;
-      color: var(--cream);
-      line-height: 0.9;
-      text-align: center;
-      letter-spacing: -0.02em;
-      opacity: 0;
-      animation: fadeUp 1s 0.5s forwards;
-    }
-    .hero-title em {
-      display: block;
-      font-style: italic;
-      color: var(--gold-light);
-      font-size: 0.65em;
-    }
-
-    .hero-year {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(80px, 20vw, 220px);
-      font-weight: 900;
-      color: transparent;
-      -webkit-text-stroke: 1px rgba(212,160,23,0.2);
-      position: absolute;
-      bottom: -20px;
-      letter-spacing: -0.05em;
-      user-select: none;
-      pointer-events: none;
-    }
-
-    .hero-desc {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(16px, 2.5vw, 22px);
-      color: rgba(255,255,255,0.5);
-      margin-top: 24px;
-      letter-spacing: 0.05em;
-      text-align: center;
-      font-style: italic;
-      opacity: 0;
-      animation: fadeUp 1s 0.7s forwards;
-    }
-
-    .hero-flag {
-      font-size: 40px;
-      margin-bottom: 8px;
-      opacity: 0;
-      animation: fadeUp 1s 0.2s forwards;
-    }
-
-    .hero-scroll {
-      position: absolute; bottom: 40px;
-      display: flex; flex-direction: column; align-items: center; gap: 8px;
-      color: rgba(255,255,255,0.3);
-      font-family: 'Space Mono', monospace;
-      font-size: 10px;
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      opacity: 0;
-      animation: fadeUp 1s 1.5s forwards;
-    }
-    .scroll-line {
-      width: 1px; height: 50px;
-      background: linear-gradient(to bottom, var(--gold), transparent);
-      animation: scrollPulse 2s ease-in-out infinite;
-    }
-    @keyframes scrollPulse {
-      0%, 100% { transform: scaleY(1); opacity: 0.5; }
-      50% { transform: scaleY(1.3); opacity: 1; }
-    }
-
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* ─── NAV STRIP ─── */
-    .nav-strip {
-      position: sticky; top: 0; z-index: 100;
-      background: var(--ink);
-      border-bottom: 1px solid rgba(212,160,23,0.2);
-      display: flex; align-items: center; justify-content: center;
-      gap: clamp(16px, 4vw, 48px);
-      padding: 14px 20px;
-    }
-    .nav-link {
-      font-family: 'Space Mono', monospace;
-      font-size: 10px;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.5);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-    .nav-link:hover { color: var(--gold); }
-
-    /* ─── SECTION BASE ─── */
-    section {
-      padding: clamp(60px, 10vw, 120px) clamp(20px, 6vw, 80px);
-    }
-
-    .section-label {
-      font-family: 'Space Mono', monospace;
-      font-size: 10px;
-      letter-spacing: 0.4em;
-      text-transform: uppercase;
-      color: var(--red);
-      margin-bottom: 12px;
-      display: flex; align-items: center; gap: 16px;
-    }
-    .section-label::after {
-      content: '';
-      flex: 1; max-width: 80px; height: 1px;
-      background: var(--red);
-      opacity: 0.4;
-    }
-
-    .section-title {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(36px, 6vw, 72px);
-      font-weight: 700;
-      line-height: 1;
-      margin-bottom: 48px;
-      color: var(--ink);
-    }
-    .section-title em { font-style: italic; color: var(--red); }
-
-    /* ─── FLIGHTS ─── */
-    #flights { background: var(--ink); color: var(--cream); }
-    #flights .section-label { color: var(--gold); }
-    #flights .section-label::after { background: var(--gold); }
-    #flights .section-title { color: var(--cream); }
-    #flights .section-title em { color: var(--gold-light); }
-
-    .flights-grid {
-      display: grid;
-      gap: 16px;
-    }
-
-    .flight-card {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(212,160,23,0.15);
-      border-radius: 8px;
-      padding: 28px 32px;
-      display: grid;
-      grid-template-columns: 1fr auto 1fr auto;
-      gap: 16px;
-      align-items: center;
-      transition: border-color 0.3s, background 0.3s;
-    }
-    .flight-card:hover {
-      border-color: rgba(212,160,23,0.4);
-      background: rgba(255,255,255,0.07);
-    }
-
-    .flight-city {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(20px, 3vw, 32px);
-      font-weight: 700;
-      color: var(--cream);
-    }
-    .flight-city-code {
-      font-family: 'Space Mono', monospace;
-      font-size: 11px;
-      color: var(--gold);
-      letter-spacing: 0.2em;
-    }
-    .flight-time {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(22px, 3.5vw, 36px);
-      color: var(--gold-light);
-      font-weight: 700;
-    }
-
-    .flight-arrow {
-      display: flex; flex-direction: column; align-items: center;
-      gap: 4px;
-      color: rgba(255,255,255,0.3);
-    }
-    .flight-arrow-line {
-      width: clamp(40px, 8vw, 120px);
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--gold), transparent);
-    }
-    .flight-arrow-icon { font-size: 18px; }
-    .flight-duration {
-      font-family: 'Space Mono', monospace;
-      font-size: 10px;
-      letter-spacing: 0.15em;
-      color: rgba(255,255,255,0.3);
-    }
-
-    .flight-meta {
-      display: flex; flex-direction: column; gap: 4px;
-      padding-left: 20px;
-      border-left: 1px solid rgba(212,160,23,0.2);
-    }
-    .flight-airline {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 14px;
-      color: rgba(255,255,255,0.6);
-    }
-    .flight-ref {
-      font-family: 'Space Mono', monospace;
-      font-size: 12px;
-      color: var(--gold);
-      letter-spacing: 0.15em;
-    }
-    .flight-date-badge {
-      font-family: 'Space Mono', monospace;
-      font-size: 10px;
-      color: rgba(255,255,255,0.35);
-      letter-spacing: 0.1em;
-    }
-
-    /* ─── HOTELS ─── */
-    #hotels { background: var(--cream); }
-
-    .hotels-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr));
-      gap: 24px;
-    }
-
-    .hotel-card {
-      background: white;
-      border: 1px solid rgba(0,0,0,0.08);
-      border-radius: 12px;
-      overflow: hidden;
-      transition: transform 0.3s, box-shadow 0.3s;
-    }
-    .hotel-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 20px 60px rgba(0,0,0,0.12);
-    }
-
-    .hotel-banner {
-      height: 80px;
-      background: linear-gradient(135deg, var(--red-dark), var(--red));
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 0 24px;
-    }
-    .hotel-emoji { font-size: 32px; }
-    .hotel-stars { color: var(--gold-light); font-size: 14px; letter-spacing: 2px; }
-
-    .hotel-body { padding: 24px; }
-
-    .hotel-name {
-      font-family: 'Playfair Display', serif;
-      font-size: 22px;
-      font-weight: 700;
-      color: var(--ink);
-      margin-bottom: 4px;
-    }
-    .hotel-city {
-      font-family: 'Space Mono', monospace;
-      font-size: 10px;
-      letter-spacing: 0.25em;
-      color: var(--red);
-      text-transform: uppercase;
-      margin-bottom: 16px;
-    }
-
-    .hotel-dates {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-bottom: 16px;
-    }
-    .hotel-date-box {
-      background: var(--cream);
-      border-radius: 6px;
-      padding: 10px 14px;
-    }
-    .hotel-date-label {
-      font-family: 'Space Mono', monospace;
-      font-size: 9px;
-      letter-spacing: 0.2em;
-      color: rgba(0,0,0,0.4);
-      text-transform: uppercase;
-      margin-bottom: 4px;
-    }
-    .hotel-date-val {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 16px;
-      font-weight: 500;
-      color: var(--ink);
-    }
-
-    .hotel-ref {
-      font-family: 'Space Mono', monospace;
-      font-size: 11px;
-      color: rgba(0,0,0,0.35);
-      padding-top: 14px;
-      border-top: 1px dashed rgba(0,0,0,0.1);
-      letter-spacing: 0.1em;
-    }
-    .hotel-ref span { color: var(--red); }
-
-    .hotel-nights {
-      display: inline-block;
-      background: var(--red);
-      color: white;
-      font-family: 'Space Mono', monospace;
-      font-size: 10px;
-      letter-spacing: 0.1em;
-      padding: 4px 10px;
-      border-radius: 20px;
-      margin-bottom: 12px;
-    }
-
-    /* ─── VISAS ─── */
-    #visas { background: var(--ink); }
-    #visas .section-label { color: var(--gold); }
-    #visas .section-label::after { background: var(--gold); }
-    #visas .section-title { color: var(--cream); }
-    #visas .section-title em { color: var(--gold-light); }
-
-    .visas-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr));
-      gap: 20px;
-    }
-
-    .visa-card {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(212,160,23,0.2);
-      border-radius: 12px;
-      padding: 28px;
-      position: relative;
-      overflow: hidden;
-      transition: background 0.3s;
-    }
-    .visa-card:hover { background: rgba(255,255,255,0.07); }
-
-    .visa-card::before {
-      content: '🛂';
-      position: absolute;
-      top: -10px; right: -10px;
-      font-size: 80px;
-      opacity: 0.05;
-    }
-
-    .visa-type {
-      font-family: 'Space Mono', monospace;
-      font-size: 10px;
-      letter-spacing: 0.3em;
-      color: var(--gold);
-      text-transform: uppercase;
-      margin-bottom: 8px;
-    }
-    .visa-name {
-      font-family: 'Playfair Display', serif;
-      font-size: 26px;
-      color: var(--cream);
-      font-weight: 700;
-      margin-bottom: 20px;
-    }
-
-    .visa-detail {
-      display: flex; justify-content: space-between; align-items: baseline;
-      padding: 10px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
-    }
-    .visa-detail:last-of-type { border-bottom: none; }
-    .visa-detail-key {
-      font-family: 'Space Mono', monospace;
-      font-size: 9px;
-      letter-spacing: 0.2em;
-      color: rgba(255,255,255,0.35);
-      text-transform: uppercase;
-    }
-    .visa-detail-val {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 15px;
-      color: rgba(255,255,255,0.75);
-    }
-    .visa-detail-val.highlight { color: var(--gold-light); font-weight: 500; }
-
-    /* ─── ITINERARY ─── */
-    #itinerary { background: var(--cream-dark); }
-
-    .timeline {
-      position: relative;
-      display: flex; flex-direction: column; gap: 0;
-      max-width: 800px;
-    }
-    .timeline::before {
-      content: '';
-      position: absolute;
-      left: 28px; top: 0; bottom: 0;
-      width: 1px;
-      background: linear-gradient(to bottom, var(--red), transparent);
-    }
-
-    .timeline-item {
-      display: grid;
-      grid-template-columns: 56px 1fr;
-      gap: 24px;
-      padding-bottom: 40px;
-    }
-
-    .timeline-dot {
-      width: 56px; height: 56px;
-      border-radius: 50%;
-      background: var(--red);
-      color: white;
-      font-family: 'Playfair Display', serif;
-      font-size: 18px;
-      font-weight: 700;
-      display: flex; align-items: center; justify-content: center;
-      position: relative; z-index: 1;
-      flex-shrink: 0;
-      box-shadow: 0 4px 20px rgba(200,16,46,0.3);
-    }
-
-    .timeline-content {
-      background: white;
-      border-radius: 12px;
-      padding: 20px 24px;
-      border: 1px solid rgba(0,0,0,0.06);
-    }
-    .timeline-date {
-      font-family: 'Space Mono', monospace;
-      font-size: 10px;
-      letter-spacing: 0.2em;
-      color: var(--red);
-      margin-bottom: 4px;
-    }
-    .timeline-city {
-      font-family: 'Playfair Display', serif;
-      font-size: 22px;
-      font-weight: 700;
-      color: var(--ink);
-      margin-bottom: 6px;
-    }
-    .timeline-desc {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 16px;
-      color: rgba(0,0,0,0.55);
-      line-height: 1.6;
-    }
-
-    .stay-badge {
-      display: inline-block;
-      background: var(--cream);
-      border: 1px solid rgba(200,16,46,0.2);
-      color: var(--red);
-      font-family: 'Space Mono', monospace;
-      font-size: 9px;
-      letter-spacing: 0.15em;
-      padding: 3px 8px;
-      border-radius: 20px;
-      margin-top: 8px;
-    }
-
-    /* ─── FOOTER ─── */
-    footer {
-      background: var(--ink);
-      padding: 40px 40px;
-      text-align: center;
-      border-top: 1px solid rgba(212,160,23,0.15);
-    }
-    .footer-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 28px;
-      font-style: italic;
-      color: var(--gold-light);
-      margin-bottom: 8px;
-    }
-    .footer-sub {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 14px;
-      color: rgba(255,255,255,0.3);
-      letter-spacing: 0.1em;
-    }
-    .footer-divider {
-      width: 80px; height: 1px;
-      background: linear-gradient(90deg, transparent, var(--gold), transparent);
-      margin: 20px auto;
-    }
-
-    /* ─── RESPONSIVE ─── */
-    @media (max-width: 640px) {
-      .flight-card {
-        grid-template-columns: 1fr;
-        gap: 12px;
-      }
-      .flight-meta {
-        padding-left: 0;
-        border-left: none;
-        border-top: 1px solid rgba(212,160,23,0.2);
-        padding-top: 12px;
-        flex-direction: row; flex-wrap: wrap; gap: 8px;
-      }
-      .flight-arrow-line { width: 60px; }
+    @media(max-width:580px){
+      .fc{grid-template-columns:1fr;gap:9px}
+      .farrow{flex-direction:row;justify-content:center}
+      .farr-line{width:38px}
     }
   </style>
 </head>
 <body>
 
-<!-- ═══ LOCK SCREEN ═══ -->
 <div id="lock-screen">
   <div class="lock-lotus">🪷</div>
   <div class="lock-title">Vietnam 2026</div>
   <div class="lock-sub">Hoek Family · Private</div>
-  <div class="lock-divider"></div>
+  <div class="lock-div"></div>
   <form class="lock-form" onsubmit="checkPassword(event)">
-    <input
-      id="pw-input"
-      class="lock-input"
-      type="password"
-      placeholder="Enter password"
-      autocomplete="current-password"
-      autofocus
-    />
+    <input id="pw-input" class="lock-input" type="password" placeholder="Enter password" autocomplete="current-password" autofocus/>
     <button class="lock-btn" type="submit">Unlock Trip Details</button>
-    <div class="lock-error" id="pw-error"></div>
+    <div class="lock-err" id="pw-error"></div>
   </form>
 </div>
 
-<!-- ═══ MAIN CONTENT ═══ -->
 <div id="main-content" style="display:none">
 
-  <!-- HERO -->
   <div class="hero">
-    <div class="hero-corner tl"></div>
-    <div class="hero-corner tr"></div>
-    <div class="hero-corner bl"></div>
-    <div class="hero-corner br"></div>
-
+    <div class="hc tl"></div><div class="hc tr"></div><div class="hc bl"></div><div class="hc br"></div>
     <div class="hero-flag">🇻🇳</div>
-    <div class="hero-eyebrow">Hoek Family · Private Trip</div>
-    <h1 class="hero-title">
-      Vietnam
-      <em>2026</em>
-    </h1>
-    <p class="hero-desc">Hanoi · Hội An · Ho Chi Minh City</p>
-
-    <div class="hero-year">2026</div>
-
-    <div class="hero-scroll">
-      <div class="scroll-line"></div>
-      Scroll
-    </div>
+    <div class="hero-ey">Hoek Family · 6 Travellers · Private</div>
+    <h1 class="hero-title">Vietnam<em>2026</em></h1>
+    <p class="hero-desc">Hội An &middot; Huế &middot; Hà Nội &middot; Hạ Long &middot; Ninh Bình &middot; Mai Châu</p>
+    <div class="hero-dates">23 MARCH – 05 APRIL 2026 &nbsp;·&nbsp; 14 DAYS / 13 NIGHTS</div>
+    <div class="hero-yr">2026</div>
+    <div class="hero-scroll"><div class="sc-line"></div>Scroll</div>
   </div>
 
-  <!-- NAV -->
   <nav class="nav-strip">
     <a class="nav-link" href="#flights">✈ Flights</a>
     <a class="nav-link" href="#hotels">🏨 Hotels</a>
     <a class="nav-link" href="#visas">🛂 Visas</a>
     <a class="nav-link" href="#itinerary">📍 Itinerary</a>
+    <a class="nav-link" href="#passengers">👨‍👩‍👧‍👦 Travellers</a>
   </nav>
 
-  <!-- ═══ FLIGHTS ═══ -->
-  <section id="flights">
-    <div class="section-label">Outbound &amp; Return</div>
-    <h2 class="section-title">Our <em>Flights</em></h2>
+  <!-- FLIGHTS -->
+  <section id="flights" class="dark">
+    <div class="sl">International &amp; Domestic</div>
+    <h2 class="st">Our <em>Flights</em></h2>
+    <div class="fgrid">
 
-    <div class="flights-grid">
-      <!-- OUTBOUND -->
-      <div class="flight-card">
-        <div>
-          <div class="flight-city">Amsterdam</div>
-          <div class="flight-city-code">AMS</div>
-          <div class="flight-time">09:05</div>
-          <div class="flight-date-badge">Mon 20 Apr 2026</div>
-        </div>
-        <div class="flight-arrow">
-          <div class="flight-arrow-line"></div>
-          <div class="flight-arrow-icon">✈</div>
-          <div class="flight-duration">~11h 45m</div>
-        </div>
-        <div>
-          <div class="flight-city">Hanoi</div>
-          <div class="flight-city-code">HAN</div>
-          <div class="flight-time">00:50+1</div>
-          <div class="flight-date-badge">Tue 21 Apr 2026</div>
-        </div>
-        <div class="flight-meta">
-          <div class="flight-airline">Vietnam Airlines</div>
-          <div class="flight-ref">VN 756</div>
-          <div class="flight-date-badge">Ref: UPDATE IN DATA</div>
-        </div>
+      <div class="fc">
+        <div><div class="ftag">OUTBOUND</div><div class="fcity">Tel Aviv</div><div class="fcode">TLV → Abu Dhabi → HAN</div><div class="ftime">—</div><div class="fdate">22 Mar 2026</div></div>
+        <div class="farrow"><div class="farr-line"></div><div class="fnum">EY432</div><div class="fdur">Etihad Airways</div></div>
+        <div><div style="height:20px"></div><div class="fcity">Hà Nội</div><div class="fcode">HAN · Noi Bai Int'l</div><div class="ftime">05:55</div><div class="fdate">23 Mar 2026</div></div>
+        <div class="fmeta"><div class="fmi">Flight <span>EY432</span></div><div class="fmi">All 6 passengers</div></div>
       </div>
 
-      <!-- INTERNAL: Hoi An to HCMC -->
-      <div class="flight-card">
-        <div>
-          <div class="flight-city">Đà Nẵng</div>
-          <div class="flight-city-code">DAD</div>
-          <div class="flight-time">07:30</div>
-          <div class="flight-date-badge">Fri 01 May 2026</div>
-        </div>
-        <div class="flight-arrow">
-          <div class="flight-arrow-line"></div>
-          <div class="flight-arrow-icon">✈</div>
-          <div class="flight-duration">~1h 20m</div>
-        </div>
-        <div>
-          <div class="flight-city">Ho Chi Minh</div>
-          <div class="flight-city-code">SGN</div>
-          <div class="flight-time">08:50</div>
-          <div class="flight-date-badge">Fri 01 May 2026</div>
-        </div>
-        <div class="flight-meta">
-          <div class="flight-airline">VietJet Air</div>
-          <div class="flight-ref">VJ 548</div>
-          <div class="flight-date-badge">Domestic</div>
-        </div>
+      <div class="fc">
+        <div><div class="ftag">DOMESTIC 1 — VietnamAirlines</div><div class="fcity">Hà Nội</div><div class="fcode">HAN · Noi Bai T1</div><div class="ftime">10:10</div><div class="fdate">Mon 23 Mar 2026</div></div>
+        <div class="farrow"><div class="farr-line"></div><div class="fnum">VN165</div><div class="fdur">1h 25m</div></div>
+        <div><div style="height:20px"></div><div class="fcity">Đà Nẵng</div><div class="fcode">DAD · Da Nang T1</div><div class="ftime">11:35</div><div class="fdate">Mon 23 Mar 2026</div></div>
+        <div class="fmeta"><div class="fmi">Booking <span>FG9YNH</span></div><div class="fmi">Aircraft <span>Airbus A321</span></div><div class="fmi">All 6 passengers</div></div>
       </div>
 
-      <!-- RETURN -->
-      <div class="flight-card">
-        <div>
-          <div class="flight-city">Ho Chi Minh</div>
-          <div class="flight-city-code">SGN</div>
-          <div class="flight-time">23:45</div>
-          <div class="flight-date-badge">Sun 10 May 2026</div>
-        </div>
-        <div class="flight-arrow">
-          <div class="flight-arrow-line"></div>
-          <div class="flight-arrow-icon">✈</div>
-          <div class="flight-duration">~12h 10m</div>
-        </div>
-        <div>
-          <div class="flight-city">Amsterdam</div>
-          <div class="flight-city-code">AMS</div>
-          <div class="flight-time">06:55+1</div>
-          <div class="flight-date-badge">Tue 12 May 2026</div>
-        </div>
-        <div class="flight-meta">
-          <div class="flight-airline">Vietnam Airlines</div>
-          <div class="flight-ref">VN 753</div>
-          <div class="flight-date-badge">Ref: UPDATE IN DATA</div>
-        </div>
+      <div class="fc">
+        <div><div class="ftag">DOMESTIC 2 — VietnamAirlines</div><div class="fcity">Huế</div><div class="fcode">HUI · Phu Bai Airport</div><div class="ftime">07:50</div><div class="fdate">Sat 28 Mar 2026</div></div>
+        <div class="farrow"><div class="farr-line"></div><div class="fnum">VN1540</div><div class="fdur">1h 20m</div></div>
+        <div><div style="height:20px"></div><div class="fcity">Hà Nội</div><div class="fcode">HAN · Noi Bai T1</div><div class="ftime">09:10</div><div class="fdate">Sat 28 Mar 2026</div></div>
+        <div class="fmeta"><div class="fmi">Booking <span>FG9YNH</span></div><div class="fmi">Aircraft <span>Airbus A321</span></div><div class="fmi">All 6 passengers</div></div>
       </div>
+
+      <div class="fc">
+        <div><div class="ftag">RETURN — DORITTE &amp; RICHARD</div><div class="fcity">Hà Nội</div><div class="fcode">HAN · Noi Bai</div><div class="ftime">12:05</div><div class="fdate">Sun 5 Apr · pickup 08:30</div></div>
+        <div class="farrow"><div class="farr-line"></div><div class="fnum">BR398</div><div class="fdur">EVA Air</div></div>
+        <div><div style="height:20px"></div><div class="fcity">Tel Aviv</div><div class="fcode">TLV</div><div class="ftime">—</div><div class="fdate">Sun 5 Apr 2026</div></div>
+        <div class="fmeta"><div class="fmi">Passengers <span>Doritte &amp; Richard</span></div></div>
+      </div>
+
+      <div class="fc">
+        <div><div class="ftag">RETURN — ADI, VERLY, SOL &amp; NEIL</div><div class="fcity">Hà Nội</div><div class="fcode">HAN · Noi Bai</div><div class="ftime">19:40</div><div class="fdate">Sun 5 Apr · pickup 15:45</div></div>
+        <div class="farrow"><div class="farr-line"></div><div class="fnum">EY431</div><div class="fdur">Etihad Airways</div></div>
+        <div><div style="height:20px"></div><div class="fcity">Tel Aviv</div><div class="fcode">TLV via Abu Dhabi</div><div class="ftime">—</div><div class="fdate">Mon 6 Apr 2026</div></div>
+        <div class="fmeta"><div class="fmi">Passengers <span>Adi, Verly, Sol &amp; Neil</span></div></div>
+      </div>
+
     </div>
   </section>
 
-  <!-- ═══ HOTELS ═══ -->
+  <!-- HOTELS -->
   <section id="hotels">
-    <div class="section-label">Accommodation</div>
-    <h2 class="section-title">Our <em>Hotels</em></h2>
+    <div class="sl">Confirmed Accommodation</div>
+    <h2 class="st">Our <em>Hotels</em></h2>
+    <div class="hgrid">
 
-    <div class="hotels-grid">
-
-      <!-- Hanoi -->
-      <div class="hotel-card">
-        <div class="hotel-banner">
-          <div class="hotel-emoji">🏛️</div>
-          <div class="hotel-stars">★★★★★</div>
-        </div>
-        <div class="hotel-body">
-          <div class="hotel-city">Hanoi · Night 1–4</div>
-          <div class="hotel-name">Sofitel Legend Metropole</div>
-          <div class="hotel-nights">4 nights</div>
-          <div class="hotel-dates">
-            <div class="hotel-date-box">
-              <div class="hotel-date-label">Check-in</div>
-              <div class="hotel-date-val">21 Apr 2026</div>
-            </div>
-            <div class="hotel-date-box">
-              <div class="hotel-date-label">Check-out</div>
-              <div class="hotel-date-val">25 Apr 2026</div>
-            </div>
-          </div>
-          <div class="hotel-ref">Ref: <span>UPDATE FROM EMAIL</span></div>
-        </div>
+      <div class="hcard">
+        <div class="hbanner" style="background:linear-gradient(135deg,#1a5e42,#2e8b60)"><div class="hemoji">🏖️</div><div class="hstars">★★★★★</div></div>
+        <div class="hbody"><div class="hcity">Hội An · Nights 1–3</div><div class="hname">Palm Garden Beach Resort & Spa</div><div class="hnights">3 nights</div><div class="hdates"><div class="hdb"><div class="hdl">Check-in</div><div class="hdv">23 Mar 2026</div></div><div class="hdb"><div class="hdl">Check-out</div><div class="hdv">26 Mar 2026</div></div></div><div class="href">Deluxe Garden View x3 · Ref: <span>70863</span></div></div>
       </div>
 
-      <!-- Halong Bay -->
-      <div class="hotel-card">
-        <div class="hotel-banner" style="background: linear-gradient(135deg, #1a4a5e, #0d7090)">
-          <div class="hotel-emoji">🛳️</div>
-          <div class="hotel-stars">★★★★★</div>
-        </div>
-        <div class="hotel-body">
-          <div class="hotel-city">Hạ Long Bay · Night 4–6</div>
-          <div class="hotel-name">Indochine Cruise</div>
-          <div class="hotel-nights">2 nights</div>
-          <div class="hotel-dates">
-            <div class="hotel-date-box">
-              <div class="hotel-date-label">Embark</div>
-              <div class="hotel-date-val">25 Apr 2026</div>
-            </div>
-            <div class="hotel-date-box">
-              <div class="hotel-date-label">Disembark</div>
-              <div class="hotel-date-val">27 Apr 2026</div>
-            </div>
-          </div>
-          <div class="hotel-ref">Ref: <span>UPDATE FROM EMAIL</span></div>
-        </div>
+      <div class="hcard">
+        <div class="hbanner" style="background:linear-gradient(135deg,#3b1f5e,#6935a0)"><div class="hemoji">🏛️</div><div class="hstars">★★★★★</div></div>
+        <div class="hbody"><div class="hcity">Huế · Nights 4–5</div><div class="hname">Indochine Palace Hotel Hue</div><div class="hnights">2 nights</div><div class="hdates"><div class="hdb"><div class="hdl">Check-in</div><div class="hdv">26 Mar 2026</div></div><div class="hdb"><div class="hdl">Check-out</div><div class="hdv">28 Mar 2026</div></div></div><div class="href">Palace Deluxe x3 (connecting) · Ref: <span>71721</span></div></div>
       </div>
 
-      <!-- Hoi An -->
-      <div class="hotel-card">
-        <div class="hotel-banner" style="background: linear-gradient(135deg, #7B5E2A, #C8A040)">
-          <div class="hotel-emoji">🏮</div>
-          <div class="hotel-stars">★★★★★</div>
-        </div>
-        <div class="hotel-body">
-          <div class="hotel-city">Hội An · Night 7–10</div>
-          <div class="hotel-name">Four Seasons The Nam Hai</div>
-          <div class="hotel-nights">3 nights</div>
-          <div class="hotel-dates">
-            <div class="hotel-date-box">
-              <div class="hotel-date-label">Check-in</div>
-              <div class="hotel-date-val">28 Apr 2026</div>
-            </div>
-            <div class="hotel-date-box">
-              <div class="hotel-date-label">Check-out</div>
-              <div class="hotel-date-val">01 May 2026</div>
-            </div>
-          </div>
-          <div class="hotel-ref">Ref: <span>UPDATE FROM EMAIL</span></div>
-        </div>
+      <div class="hcard">
+        <div class="hbanner" style="background:linear-gradient(135deg,#8B0000,#C8102E)"><div class="hemoji">🏙️</div><div class="hstars">★★★★</div></div>
+        <div class="hbody"><div class="hcity">Hà Nội · Nights 6–8</div><div class="hname">Somerset Grand Hanoi Hotel</div><div class="hnights">3 nights</div><div class="hdates"><div class="hdb"><div class="hdl">Check-in</div><div class="hdv">28 Mar 2026</div></div><div class="hdb"><div class="hdl">Check-out</div><div class="hdv">31 Mar 2026</div></div></div><div class="href">3-bed Deluxe (King+Queen+Twin) · Ref: <span>19371581</span></div></div>
       </div>
 
-      <!-- HCMC -->
-      <div class="hotel-card">
-        <div class="hotel-banner" style="background: linear-gradient(135deg, #2C2C54, #474787)">
-          <div class="hotel-emoji">🌃</div>
-          <div class="hotel-stars">★★★★★</div>
-        </div>
-        <div class="hotel-body">
-          <div class="hotel-city">Ho Chi Minh City · Night 10–13</div>
-          <div class="hotel-name">Park Hyatt Saigon</div>
-          <div class="hotel-nights">3 nights</div>
-          <div class="hotel-dates">
-            <div class="hotel-date-box">
-              <div class="hotel-date-label">Check-in</div>
-              <div class="hotel-date-val">01 May 2026</div>
-            </div>
-            <div class="hotel-date-box">
-              <div class="hotel-date-label">Check-out</div>
-              <div class="hotel-date-val">04 May 2026</div>
-            </div>
-          </div>
-          <div class="hotel-ref">Ref: <span>UPDATE FROM EMAIL</span></div>
-        </div>
+      <div class="hcard">
+        <div class="hbanner" style="background:linear-gradient(135deg,#0d4a65,#1278a0)"><div class="hemoji">🛳️</div><div class="hstars">★★★★</div></div>
+        <div class="hbody"><div class="hcity">Hạ Long Bay · Night 9</div><div class="hname">Signature Cruise – Bai Tu Long Bay</div><div class="hnights">1 night cruise</div><div class="hdates"><div class="hdb"><div class="hdl">Embark</div><div class="hdv">29 Mar 2026</div></div><div class="hdb"><div class="hdl">Disembark</div><div class="hdv">30 Mar 2026</div></div></div><div class="href">Junior Suite x3 (main deck) · Ref: <span>19398</span></div></div>
+      </div>
+
+      <div class="hcard">
+        <div class="hbanner" style="background:linear-gradient(135deg,#344e24,#528038)"><div class="hemoji">🌾</div><div class="hstars">★★★★</div></div>
+        <div class="hbody"><div class="hcity">Ninh Bình · Nights 10–11</div><div class="hname">Emeralda Resort Tam Coc</div><div class="hnights">2 nights</div><div class="hdates"><div class="hdb"><div class="hdl">Check-in</div><div class="hdv">30 Mar 2026</div></div><div class="hdb"><div class="hdl">Check-out</div><div class="hdv">01 Apr 2026</div></div></div><div class="href">Deluxe x3 · Ref: <span>20038</span></div></div>
+      </div>
+
+      <div class="hcard">
+        <div class="hbanner" style="background:linear-gradient(135deg,#5c4018,#9c7030)"><div class="hemoji">🏔️</div><div class="hstars">★★★★</div></div>
+        <div class="hbody"><div class="hcity">Mai Châu · Nights 12–13</div><div class="hname">Mai Chau Ecolodge</div><div class="hnights">2 nights</div><div class="hdates"><div class="hdb"><div class="hdl">Check-in</div><div class="hdv">01 Apr 2026</div></div><div class="hdb"><div class="hdl">Check-out</div><div class="hdv">03 Apr 2026</div></div></div><div class="href">Suite x3 (connecting) · Ref: <span>164184</span></div></div>
+      </div>
+
+      <div class="hcard">
+        <div class="hbanner" style="background:linear-gradient(135deg,#8B0000,#C8102E)"><div class="hemoji">🏙️</div><div class="hstars">★★★★</div></div>
+        <div class="hbody"><div class="hcity">Hà Nội · Final Nights</div><div class="hname">Somerset Grand Hanoi Hotel</div><div class="hnights">2 nights</div><div class="hdates"><div class="hdb"><div class="hdl">Check-in</div><div class="hdv">03 Apr 2026</div></div><div class="hdb"><div class="hdl">Check-out</div><div class="hdv">05 Apr 2026</div></div></div><div class="href">Same booking · Ref: <span>19371581</span></div></div>
       </div>
 
     </div>
   </section>
 
-  <!-- ═══ VISAS ═══ -->
-  <section id="visas">
-    <div class="section-label">Travel Documents</div>
-    <h2 class="section-title">Visas &amp; <em>Documents</em></h2>
+  <!-- VISAS -->
+  <section id="visas" class="dark">
+    <div class="sl">Electronic Visas</div>
+    <h2 class="st">Vietnam <em>E-Visas</em></h2>
+    <p style="font-family:'Cormorant Garamond',serif;font-size:14px;color:rgba(255,255,255,0.36);margin-bottom:28px;letter-spacing:0.05em;">All visas valid 21 Mar – 19 Apr 2026 &nbsp;·&nbsp; Single Entry Tourist</p>
+    <div class="vgrid">
 
-    <div class="visas-grid">
-      <div class="visa-card">
-        <div class="visa-type">E-Visa · Vietnam</div>
-        <div class="visa-name">Adi Hoek</div>
-        <div class="visa-detail">
-          <span class="visa-detail-key">Visa Type</span>
-          <span class="visa-detail-val">Tourist Single Entry</span>
-        </div>
-        <div class="visa-detail">
-          <span class="visa-detail-key">Valid From</span>
-          <span class="visa-detail-val highlight">20 Apr 2026</span>
-        </div>
-        <div class="visa-detail">
-          <span class="visa-detail-key">Valid To</span>
-          <span class="visa-detail-val highlight">12 May 2026</span>
-        </div>
-        <div class="visa-detail">
-          <span class="visa-detail-key">Application No.</span>
-          <span class="visa-detail-val">UPDATE FROM EMAIL</span>
-        </div>
+      <div class="vcard"><div class="vtype">E-Visa · Israel</div><div class="vname">Adi Hoek</div>
+        <div class="vd"><span class="vdk">Visa No.</span><span class="vdv hi">104902850/EV</span></div>
+        <div class="vd"><span class="vdk">Code</span><span class="vdv" style="font-size:11px">E251205ISR3231696396</span></div>
+        <div class="vd"><span class="vdk">Passport</span><span class="vdv">32316963</span></div>
+        <div class="vd"><span class="vdk">DOB</span><span class="vdv">09 Dec 1977</span></div>
       </div>
 
-      <div class="visa-card">
-        <div class="visa-type">E-Visa · Vietnam</div>
-        <div class="visa-name">Family Member</div>
-        <div class="visa-detail">
-          <span class="visa-detail-key">Visa Type</span>
-          <span class="visa-detail-val">Tourist Single Entry</span>
-        </div>
-        <div class="visa-detail">
-          <span class="visa-detail-key">Valid From</span>
-          <span class="visa-detail-val highlight">20 Apr 2026</span>
-        </div>
-        <div class="visa-detail">
-          <span class="visa-detail-key">Valid To</span>
-          <span class="visa-detail-val highlight">12 May 2026</span>
-        </div>
-        <div class="visa-detail">
-          <span class="visa-detail-key">Application No.</span>
-          <span class="visa-detail-val">UPDATE FROM EMAIL</span>
-        </div>
+      <div class="vcard"><div class="vtype">E-Visa · Israel</div><div class="vname">Verly Gafni Hoek</div>
+        <div class="vd"><span class="vdk">Visa No.</span><span class="vdv hi">104910766/EV</span></div>
+        <div class="vd"><span class="vdk">Code</span><span class="vdv" style="font-size:11px">E251205ISR4100083068</span></div>
+        <div class="vd"><span class="vdk">Passport</span><span class="vdv">41000830</span></div>
+        <div class="vd"><span class="vdk">DOB</span><span class="vdv">15 Sep 1981</span></div>
       </div>
+
+      <div class="vcard"><div class="vtype">E-Visa · Israel</div><div class="vname">Doritte Yael Hoek</div>
+        <div class="vd"><span class="vdk">Visa No.</span><span class="vdv hi">104902895/EV</span></div>
+        <div class="vd"><span class="vdk">Code</span><span class="vdv" style="font-size:11px">E251205ISR3167291542</span></div>
+        <div class="vd"><span class="vdk">Passport</span><span class="vdv">31672915</span></div>
+        <div class="vd"><span class="vdk">DOB</span><span class="vdv">02 Apr 1953</span></div>
+      </div>
+
+      <div class="vcard"><div class="vtype">E-Visa · Israel</div><div class="vname">Richard Neil Borenstein</div>
+        <div class="vd"><span class="vdk">Visa No.</span><span class="vdv hi">104903009/EV</span></div>
+        <div class="vd"><span class="vdk">Code</span><span class="vdv" style="font-size:11px">E251205ISR3633028227</span></div>
+        <div class="vd"><span class="vdk">Passport</span><span class="vdv">36330282</span></div>
+        <div class="vd"><span class="vdk">DOB</span><span class="vdv">20 Apr 1948</span></div>
+      </div>
+
+      <div class="vcard"><div class="vtype">E-Visa · Israel</div><div class="vname">Sol Hoek</div>
+        <div class="vd"><span class="vdk">Visa No.</span><span class="vdv hi">104910757/EV</span></div>
+        <div class="vd"><span class="vdk">Code</span><span class="vdv" style="font-size:11px">E251205ISR4066801830</span></div>
+        <div class="vd"><span class="vdk">Passport</span><span class="vdv">40668018</span></div>
+        <div class="vd"><span class="vdk">DOB</span><span class="vdv">24 Oct 2018</span></div>
+      </div>
+
+      <div class="vcard"><div class="vtype">E-Visa · Israel</div><div class="vname">Neil Hoek</div>
+        <div class="vd"><span class="vdk">Visa No.</span><span class="vdv hi">104902964/EV</span></div>
+        <div class="vd"><span class="vdk">Code</span><span class="vdv" style="font-size:11px">E251205ISR3555848468</span></div>
+        <div class="vd"><span class="vdk">Passport</span><span class="vdv">35558484</span></div>
+        <div class="vd"><span class="vdk">DOB</span><span class="vdv">04 Jan 2016</span></div>
+      </div>
+
     </div>
   </section>
 
-  <!-- ═══ ITINERARY ═══ -->
+  <!-- ITINERARY -->
   <section id="itinerary">
-    <div class="section-label">Day by Day</div>
-    <h2 class="section-title">The <em>Journey</em></h2>
+    <div class="sl">Day by Day</div>
+    <h2 class="st">The <em>Journey</em></h2>
+    <div class="tl">
 
-    <div class="timeline">
-      <div class="timeline-item">
-        <div class="timeline-dot">1</div>
-        <div class="timeline-content">
-          <div class="timeline-date">Mon 20 Apr · Departure Day</div>
-          <div class="timeline-city">Amsterdam → Hanoi</div>
-          <div class="timeline-desc">Early morning flight from Schiphol. Overnight to Vietnam — land Tuesday morning local time.</div>
+      <div class="ti"><div class="tdot">1</div><div class="tc">
+        <div class="tdate">Mon 23 Mar · Day 1</div><div class="tcity">Tel Aviv → Hà Nội → Hội An</div>
+        <div class="tdesc">Arrive Hanoi on EY432 at 5:55am. Proceed to the domestic terminal and fly VN165 (10:10 → 11:35) to Đà Nẵng, then private transfer to Hội An.</div>
+        <div class="sbadge">🏨 Palm Garden Beach Resort & Spa</div>
+      </div></div>
+
+      <div class="ti"><div class="tdot">2</div><div class="tc">
+        <div class="tdate">Tue 24 Mar · Day 2</div><div class="tcity">Hội An — Cooking Class & Ancient Town</div>
+        <div class="tdesc">Bicycle through Trà Quế organic farm, join a hands-on cooking class, then explore the lantern-lit UNESCO old town at leisure.</div>
+        <div class="sbadge">🏨 Palm Garden Beach Resort & Spa</div>
+      </div></div>
+
+      <div class="ti"><div class="tdot">3</div><div class="tc">
+        <div class="tdate">Wed 25 Mar · Day 3</div><div class="tcity">Hội An — Bà Nà Hill & Golden Bridge</div>
+        <div class="tdesc">Full day excursion up to the French Hill Station at 1,487m and the famous Golden Bridge cradled in giant stone hands, with panoramic views to the sea.</div>
+        <div class="sbadge">🏨 Palm Garden Beach Resort & Spa</div>
+      </div></div>
+
+      <div class="ti"><div class="tdot">4</div><div class="tc">
+        <div class="tdate">Thu 26 Mar · Day 4</div><div class="tcity">Hội An → Đà Nẵng → Sơn Trà → Huế</div>
+        <div class="tdesc">Morning on the Sơn Trà Peninsula with the Giant Lady Buddha and rare red-shanked douc langurs, then drive north over the dramatic Hải Vân Pass to the imperial city of Huế.</div>
+        <div class="sbadge">🏨 Indochine Palace Hotel Hue</div>
+      </div></div>
+
+      <div class="ti"><div class="tdot">5</div><div class="tc">
+        <div class="tdate">Fri 27 Mar · Day 5</div><div class="tcity">Huế — Imperial City</div>
+        <div class="tdesc">Explore the magnificent UNESCO Citadel and Imperial Enclosure, the royal tombs along the Perfume River, and the iconic Thiên Mụ Pagoda.</div>
+        <div class="sbadge">🏨 Indochine Palace Hotel Hue</div>
+      </div></div>
+
+      <div class="ti"><div class="tdot">6</div><div class="tc">
+        <div class="tdate">Sat 28 Mar · Day 6</div><div class="tcity">Huế → Hà Nội — VN1540</div>
+        <div class="tdesc">Early morning — depart Phu Bai at 07:50, arrive Hanoi 09:10. Afternoon exploring Hoan Kiem Lake, the Old Quarter's 36 guild streets, and the Temple of Literature.</div>
+        <div class="sbadge">🏨 Somerset Grand Hanoi Hotel</div>
+      </div></div>
+
+      <div class="ti"><div class="tdot">7</div><div class="tc">
+        <div class="tdate">Sun 29 Mar · Day 7</div><div class="tcity">Hà Nội → Hạ Long Bay 🛩️</div>
+        <div class="tdesc">Drive to Tuan Chau Marina. At 10:50 — 25-min scenic seaplane flight over Hạ Long Bay for 5 passengers (Doritte will skip the seaplane). Board Signature Cruise at noon, sail into the emerald waters of Bai Tu Long Bay. Kayaking through Vũng Viêng floating fishing village.</div>
+        <div class="sbadge">🛳️ Signature Cruise · Bai Tu Long Bay</div>
+      </div></div>
+
+      <div class="ti"><div class="tdot">8</div><div class="tc">
+        <div class="tdate">Mon 30 Mar · Day 8</div><div class="tcity">Hạ Long → Ninh Bình</div>
+        <div class="tdesc">Morning cave visit at Thiên Cảnh Sơn — 200 steps up through spectacular stalactites. Brunch buffet on deck while cruising to port, then disembark and drive south to the karst landscape of Ninh Bình.</div>
+        <div class="sbadge">🏨 Emeralda Resort Tam Coc</div>
+      </div></div>
+
+      <div class="ti"><div class="tdot">9</div><div class="tc">
+        <div class="tdate">Tue 31 Mar · Day 9</div><div class="tcity">Ninh Bình</div>
+        <div class="tdesc">Full day exploring Vietnam's ancient former capital — sampan boat through the Tam Cốc river caves, cycling through emerald rice paddies, visiting Bích Động Pagoda and the Hoa Lư citadel ruins.</div>
+        <div class="sbadge">🏨 Emeralda Resort Tam Coc</div>
+      </div></div>
+
+      <div class="ti"><div class="tdot">10</div><div class="tc">
+        <div class="tdate">Wed 1 Apr · Day 10</div><div class="tcity">Ninh Bình → Mai Châu</div>
+        <div class="tdesc">Drive west into the highlands to the peaceful Mai Châu valley, home of the White Thai ethnic minority — stilt houses, handwoven silk, and rice fields ringed by limestone mountains.</div>
+        <div class="sbadge">🏨 Mai Chau Ecolodge</div>
+      </div></div>
+
+      <div class="ti"><div class="tdot">11</div><div class="tc">
+        <div class="tdate">Thu 2 Apr · Day 11</div><div class="tcity">Mai Châu — Village Hike & Rafting</div>
+        <div class="tdesc">Pickup at 9:30 for a hike to remote Mai Hịch Village through rice meadows and limestone mountains. Meet Thai farmers, learn traditional crafts, then end the day bamboo rafting along a tranquil stream.</div>
+        <div class="sbadge">🏨 Mai Chau Ecolodge</div>
+      </div></div>
+
+      <div class="ti"><div class="tdot">12</div><div class="tc">
+        <div class="tdate">Fri 3 Apr · Day 12</div><div class="tcity">Mai Châu → Hà Nội</div>
+        <div class="tdesc">Leisure morning, then 3.5-hour drive back to Hanoi. Final evening in the capital — night market, last Vietnamese dinner, maybe a bia hơi on the pavement.</div>
+        <div class="sbadge">🏨 Somerset Grand Hanoi Hotel</div>
+      </div></div>
+
+      <div class="ti"><div class="tdot">13</div><div class="tc">
+        <div class="tdate">Sat 4 Apr · Day 13</div><div class="tcity">Hà Nội — Free Day</div>
+        <div class="tdesc">A final free day at your own pace. Wander the Old Quarter, visit the Ho Chi Minh Mausoleum complex, grab last-minute gifts at Đồng Xuân Market, or simply soak it all in over a café trứng.</div>
+        <div class="sbadge">🏨 Somerset Grand Hanoi Hotel</div>
+      </div></div>
+
+      <div class="ti"><div class="tdot">🏠</div><div class="tc">
+        <div class="tdate">Sun 5 Apr · Day 14 — Homeward</div><div class="tcity">Two Departures from Hà Nội</div>
+        <div class="tdesc">
+          <strong>Doritte &amp; Richard</strong> — driver pickup 08:30 → BR398 departs 12:05<br/>
+          <strong>Adi, Verly, Sol &amp; Neil</strong> — driver pickup 15:45 → EY431 departs 19:40 via Abu Dhabi → Tel Aviv
         </div>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-dot">2</div>
-        <div class="timeline-content">
-          <div class="timeline-date">Tue 21 – Fri 24 Apr</div>
-          <div class="timeline-city">Hanoi</div>
-          <div class="timeline-desc">Explore the Old Quarter, visit Hoan Kiem Lake, the Temple of Literature, and indulge in bún chả and phở in the city's legendary street food scene.</div>
-          <div class="stay-badge">4 nights · Sofitel Metropole</div>
-        </div>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-dot">3</div>
-        <div class="timeline-content">
-          <div class="timeline-date">Sat 25 – Sun 26 Apr</div>
-          <div class="timeline-city">Hạ Long Bay</div>
-          <div class="timeline-desc">Board the Indochine cruise for two nights sailing through the iconic karst landscapes, kayaking through sea caves and watching the sun set over emerald waters.</div>
-          <div class="stay-badge">2 nights · Cruise</div>
-        </div>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-dot">4</div>
-        <div class="timeline-content">
-          <div class="timeline-date">Mon 27 Apr</div>
-          <div class="timeline-city">Hanoi → Đà Nẵng → Hội An</div>
-          <div class="timeline-desc">Fly south to Đà Nẵng, then transfer to the lantern-lit streets of ancient Hội An.</div>
-        </div>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-dot">5</div>
-        <div class="timeline-content">
-          <div class="timeline-date">Tue 28 Apr – Thu 30 Apr</div>
-          <div class="timeline-city">Hội An</div>
-          <div class="timeline-desc">Wander the UNESCO World Heritage old town, visit tailor shops, cycle through rice paddies, and relax on An Bằng Beach.</div>
-          <div class="stay-badge">3 nights · Four Seasons Nam Hai</div>
-        </div>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-dot">6</div>
-        <div class="timeline-content">
-          <div class="timeline-date">Fri 01 May – Sun 03 May</div>
-          <div class="timeline-city">Ho Chi Minh City</div>
-          <div class="timeline-desc">The city that never sleeps. Explore Bến Thành Market, Reunification Palace, rooftop bars and the buzzing District 1 food scene.</div>
-          <div class="stay-badge">3 nights · Park Hyatt Saigon</div>
-        </div>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-dot">🏠</div>
-        <div class="timeline-content">
-          <div class="timeline-date">Mon 04 May · Homeward</div>
-          <div class="timeline-city">Ho Chi Minh City → Amsterdam</div>
-          <div class="timeline-desc">Late night departure, arriving back in Amsterdam with memories to last a lifetime — and maybe some bánh mì in the bag.</div>
-        </div>
-      </div>
+      </div></div>
+
     </div>
   </section>
 
-  <!-- FOOTER -->
+  <!-- PASSENGERS -->
+  <section id="passengers">
+    <div class="sl">The Crew</div>
+    <h2 class="st">Who's <em>Coming</em></h2>
+    <div class="pgrid">
+      <div class="pcard"><div class="pav">DH</div><div><div class="pname">Doritte Yael Hoek</div><div class="prole">Adult · Vegetarian (eats seafood)</div></div></div>
+      <div class="pcard"><div class="pav">RB</div><div><div class="pname">Richard Neil Borenstein</div><div class="prole">Adult</div></div></div>
+      <div class="pcard"><div class="pav">AH</div><div><div class="pname">Adi Hoek</div><div class="prole">Adult</div></div></div>
+      <div class="pcard"><div class="pav">VG</div><div><div class="pname">Verly Gafni Hoek</div><div class="prole">Adult</div></div></div>
+      <div class="pcard"><div class="pav">SH</div><div><div class="pname">Sol Hoek</div><div class="prole">Child · Age 7</div></div></div>
+      <div class="pcard"><div class="pav">NH</div><div><div class="pname">Neil Hoek</div><div class="prole">Child · Age 10</div></div></div>
+    </div>
+    <div class="info-bar">
+      📞 <strong>VietnamStay hotline (Vietnam):</strong> +84 985 459 921<br/>
+      👩 <strong>Trip designer Lily:</strong> +84 982 893 692<br/>
+      📋 <strong>Booking reference:</strong> SO85861 &nbsp;·&nbsp; <strong>Operator:</strong> VietnamStay / Aurora DMC
+    </div>
+  </section>
+
   <footer>
-    <div class="footer-title">Safe travels, Hoek family 🪷</div>
-    <div class="footer-divider"></div>
-    <div class="footer-sub">Vietnam 2026 · Private family trip page</div>
+    <div class="ftitle">Safe travels, Hoek family 🪷</div>
+    <div class="fdiv"></div>
+    <div class="fsub">Vietnam 2026 &nbsp;·&nbsp; 23 Mar – 05 Apr &nbsp;·&nbsp; Private family site</div>
   </footer>
 
-</div><!-- /main-content -->
+</div>
 
 <script>
-  // Password is stored as a simple hash (sha-256 of the word)
-  // Change PASS_HASH to the sha256 of your chosen password
-  const PASS_HASH = "4126792aba172af73ab054fcd3b1203c241ddd8f99933180ef7956ceada4416b"; // will be replaced by build script
-
-  // Session unlock
+  const PASS_HASH = "4126792aba172af73ab054fcd3b1203c241ddd8f99933180ef7956ceada4416b";
   const SESSION_KEY = "vietnam2026_unlocked";
-
   async function sha256(str) {
     const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
     return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,"0")).join("");
   }
-
   async function checkPassword(e) {
     e.preventDefault();
-    const input = document.getElementById("pw-input").value.trim();
-    const hash = await sha256(input);
-    if (hash === PASS_HASH) {
-      sessionStorage.setItem(SESSION_KEY, "true");
-      unlock();
-    } else {
+    const hash = await sha256(document.getElementById("pw-input").value.trim());
+    if (hash === PASS_HASH) { sessionStorage.setItem(SESSION_KEY,"true"); unlock(); }
+    else {
       const err = document.getElementById("pw-error");
       err.textContent = "Incorrect password. Try again.";
       document.getElementById("pw-input").value = "";
@@ -1083,21 +468,14 @@
       setTimeout(() => err.textContent = "", 3000);
     }
   }
-
   function unlock() {
     document.getElementById("lock-screen").classList.add("hidden");
     document.getElementById("main-content").style.display = "block";
-    // Smooth scroll to top
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({top:0});
   }
-
-  // Check session on load
   window.addEventListener("DOMContentLoaded", () => {
-    if (sessionStorage.getItem(SESSION_KEY) === "true") {
-      unlock();
-    }
+    if (sessionStorage.getItem(SESSION_KEY) === "true") unlock();
   });
 </script>
-
 </body>
 </html>
