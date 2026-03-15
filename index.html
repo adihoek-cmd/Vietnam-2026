@@ -104,6 +104,12 @@
     .fmeta{grid-column:1/-1;border-top:1px solid rgba(212,160,23,.1);padding-top:10px;display:flex;gap:16px;flex-wrap:wrap;}
     .fmi{font-family:'Space Mono',monospace;font-size:9px;color:rgba(255,255,255,.3);letter-spacing:.09em;}
     .fmi span{color:var(--gold);}
+    .fseats{grid-column:1/-1;border-top:1px solid rgba(212,160,23,.1);padding-top:12px;display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px;}
+    .fseat-pax{background:rgba(255,255,255,.04);border:1px solid rgba(212,160,23,.1);border-radius:5px;padding:7px 10px;display:flex;flex-direction:column;gap:2px;}
+    .fseat-name{font-family:'Space Mono',monospace;font-size:7.5px;letter-spacing:.1em;color:rgba(255,255,255,.38);text-transform:uppercase;}
+    .fseat-num{font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:var(--gold-light);}
+    .fseat-ticket{font-family:'Space Mono',monospace;font-size:7px;color:rgba(255,255,255,.2);letter-spacing:.06em;margin-top:1px;}
+    .fleg-title{grid-column:1/-1;font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.2em;color:rgba(212,160,23,.5);text-transform:uppercase;margin-bottom:-2px;}
 
     /* ══════════════════ HOTELS ══════════════════ */
     #hotels{background:var(--cream);}
@@ -316,39 +322,88 @@
     <h2 class="st">Our <em>Flights</em></h2>
     <div class="fgrid">
 
+      <!-- LEG 1: TLV→AUH -->
       <div class="fc">
-        <div><div class="ftag">OUTBOUND</div><div class="fcity">Tel Aviv</div><div class="fcode">TLV → Abu Dhabi → HAN</div><div class="ftime">—</div><div class="fdate">Sun 22 Mar 2026</div></div>
-        <div class="farrow"><div class="farr-line"></div><div class="fnum">EY432</div><div class="fdur">Etihad Airways</div></div>
-        <div><div style="height:20px"></div><div class="fcity">Hà Nội</div><div class="fcode">HAN · Noi Bai</div><div class="ftime">05:55</div><div class="fdate">Mon 23 Mar 2026</div></div>
-        <div class="fmeta"><div class="fmi">Flight <span>EY432</span></div><div class="fmi">All 6 passengers</div></div>
+        <div><div class="ftag">OUTBOUND LEG 1 · ETIHAD AIRWAYS</div><div class="fcity">Tel Aviv</div><div class="fcode">TLV · Ben Gurion T3</div><div class="ftime">14:10</div><div class="fdate">Sun 22 Mar 2026</div></div>
+        <div class="farrow"><div class="farr-line"></div><div class="fnum">EY594</div><div class="fdur">3h 00m</div></div>
+        <div><div style="height:20px"></div><div class="fcity">Abu Dhabi</div><div class="fcode">AUH · Zayed Int'l T-A</div><div class="ftime">19:10</div><div class="fdate">Sun 22 Mar 2026</div></div>
+        <div class="fmeta">
+          <div class="fmi">Booking <span>8MIJJN</span></div>
+          <div class="fmi">Economy M</div>
+          <div class="fmi">Baggage <span>25kg</span></div>
+          <div class="fmi">All 6 passengers</div>
+        </div>
+        <div class="fseats">
+          <div class="fleg-title">Seats · EY594 TLV→AUH</div>
+          <div class="fseat-pax"><div class="fseat-name">Adi Hoek</div><div class="fseat-num">14A</div><div class="fseat-ticket">607 2412804732</div></div>
+          <div class="fseat-pax"><div class="fseat-name">Verly Gafni Hoek</div><div class="fseat-num">14B</div><div class="fseat-ticket">607 2412804731</div></div>
+          <div class="fseat-pax"><div class="fseat-name">Neil Hoek</div><div class="fseat-num">14C</div><div class="fseat-ticket">607 2412804733</div></div>
+          <div class="fseat-pax"><div class="fseat-name">Sol Hoek</div><div class="fseat-num">15D</div><div class="fseat-ticket">607 2412804734</div></div>
+          <div class="fseat-pax" style="border-color:rgba(212,160,23,.22);"><div class="fseat-name">Doritte Hoek</div><div class="fseat-num" style="font-size:12px;color:rgba(255,255,255,.35);">sep. booking</div></div>
+          <div class="fseat-pax" style="border-color:rgba(212,160,23,.22);"><div class="fseat-name">Richard Borenstein</div><div class="fseat-num" style="font-size:12px;color:rgba(255,255,255,.35);">sep. booking</div></div>
+        </div>
       </div>
 
+      <!-- LEG 2: AUH→HAN -->
+      <div class="fc">
+        <div><div class="ftag">OUTBOUND LEG 2 · ETIHAD AIRWAYS</div><div class="fcity">Abu Dhabi</div><div class="fcode">AUH · Zayed Int'l T-A</div><div class="ftime">20:50</div><div class="fdate">Sun 22 Mar 2026</div></div>
+        <div class="farrow"><div class="farr-line"></div><div class="fnum">EY432</div><div class="fdur">6h 05m</div></div>
+        <div><div style="height:20px"></div><div class="fcity">Hà Nội</div><div class="fcode">HAN · Noi Bai T2</div><div class="ftime">05:55</div><div class="fdate">Mon 23 Mar 2026</div></div>
+        <div class="fmeta">
+          <div class="fmi">Booking <span>8MIJJN</span></div>
+          <div class="fmi">Economy M</div>
+          <div class="fmi">Baggage <span>25kg</span></div>
+          <div class="fmi">All 6 passengers</div>
+        </div>
+        <div class="fseats">
+          <div class="fleg-title">Seats · EY432 AUH→HAN</div>
+          <div class="fseat-pax"><div class="fseat-name">Adi Hoek</div><div class="fseat-num">28A</div></div>
+          <div class="fseat-pax"><div class="fseat-name">Verly Gafni Hoek</div><div class="fseat-num">28B</div></div>
+          <div class="fseat-pax"><div class="fseat-name">Neil Hoek</div><div class="fseat-num">28C</div></div>
+          <div class="fseat-pax"><div class="fseat-name">Sol Hoek</div><div class="fseat-num">28D</div></div>
+          <div class="fseat-pax" style="border-color:rgba(212,160,23,.22);"><div class="fseat-name">Doritte Hoek</div><div class="fseat-num" style="font-size:12px;color:rgba(255,255,255,.35);">sep. booking</div></div>
+          <div class="fseat-pax" style="border-color:rgba(212,160,23,.22);"><div class="fseat-name">Richard Borenstein</div><div class="fseat-num" style="font-size:12px;color:rgba(255,255,255,.35);">sep. booking</div></div>
+        </div>
+      </div>
+
+      <!-- DOMESTIC 1 -->
       <div class="fc">
         <div><div class="ftag">DOMESTIC 1 — Vietnam Airlines</div><div class="fcity">Hà Nội</div><div class="fcode">HAN · Noi Bai T1</div><div class="ftime">10:10</div><div class="fdate">Mon 23 Mar 2026</div></div>
         <div class="farrow"><div class="farr-line"></div><div class="fnum">VN165</div><div class="fdur">1h 25m</div></div>
         <div><div style="height:20px"></div><div class="fcity">Đà Nẵng</div><div class="fcode">DAD · Da Nang T1</div><div class="ftime">11:35</div><div class="fdate">Mon 23 Mar 2026</div></div>
-        <div class="fmeta"><div class="fmi">Booking <span>FG9YNH</span></div><div class="fmi">Airbus A321</div><div class="fmi">All 6 pax</div></div>
+        <div class="fmeta"><div class="fmi">Booking <span>FG9YNH</span></div><div class="fmi">Airbus A321</div><div class="fmi">Baggage <span>23kg</span></div><div class="fmi">All 6 pax</div></div>
       </div>
 
+      <!-- DOMESTIC 2 -->
       <div class="fc">
         <div><div class="ftag">DOMESTIC 2 — Vietnam Airlines</div><div class="fcity">Huế</div><div class="fcode">HUI · Phu Bai Airport</div><div class="ftime">07:50</div><div class="fdate">Sat 28 Mar 2026</div></div>
         <div class="farrow"><div class="farr-line"></div><div class="fnum">VN1540</div><div class="fdur">1h 20m</div></div>
         <div><div style="height:20px"></div><div class="fcity">Hà Nội</div><div class="fcode">HAN · Noi Bai T1</div><div class="ftime">09:10</div><div class="fdate">Sat 28 Mar 2026</div></div>
-        <div class="fmeta"><div class="fmi">Booking <span>FG9YNH</span></div><div class="fmi">Airbus A321</div><div class="fmi">All 6 pax</div></div>
+        <div class="fmeta"><div class="fmi">Booking <span>FG9YNH</span></div><div class="fmi">Airbus A321</div><div class="fmi">Baggage <span>23kg</span></div><div class="fmi">All 6 pax</div></div>
       </div>
 
+      <!-- RETURN: Doritte & Richard -->
       <div class="fc">
-        <div><div class="ftag">RETURN — DORITTE &amp; RICHARD</div><div class="fcity">Hà Nội</div><div class="fcode">HAN · Noi Bai</div><div class="ftime">12:05</div><div class="fdate">Sun 5 Apr · pickup 08:30</div></div>
-        <div class="farrow"><div class="farr-line"></div><div class="fnum">BR398</div><div class="fdur">EVA Air</div></div>
-        <div><div style="height:20px"></div><div class="fcity">Tel Aviv</div><div class="fcode">TLV</div><div class="ftime">—</div><div class="fdate">Sun 5 Apr 2026</div></div>
-        <div class="fmeta"><div class="fmi">Passengers <span>Doritte &amp; Richard</span></div></div>
+        <div><div class="ftag">RETURN — DORITTE &amp; RICHARD · EVA AIR</div><div class="fcity">Hà Nội</div><div class="fcode">HAN · Noi Bai · pickup 08:30</div><div class="ftime">12:05</div><div class="fdate">Sun 5 Apr 2026</div></div>
+        <div class="farrow"><div class="farr-line"></div><div class="fnum">BR398</div><div class="fdur">Direct</div></div>
+        <div><div style="height:20px"></div><div class="fcity">Tel Aviv</div><div class="fcode">TLV · Ben Gurion</div><div class="ftime">—</div><div class="fdate">Sun 5 Apr 2026</div></div>
+        <div class="fmeta"><div class="fmi">Passengers <span>Doritte &amp; Richard</span></div><div class="fmi">Pickup at <span>08:30</span></div></div>
       </div>
 
+      <!-- RETURN LEG 1: HAN→AUH -->
       <div class="fc">
-        <div><div class="ftag">RETURN — ADI, VERLY, SOL &amp; NEIL</div><div class="fcity">Hà Nội</div><div class="fcode">HAN · Noi Bai</div><div class="ftime">19:40</div><div class="fdate">Sun 5 Apr · pickup 15:45</div></div>
-        <div class="farrow"><div class="farr-line"></div><div class="fnum">EY431</div><div class="fdur">Etihad Airways</div></div>
-        <div><div style="height:20px"></div><div class="fcity">Tel Aviv</div><div class="fcode">TLV via Abu Dhabi</div><div class="ftime">—</div><div class="fdate">Mon 6 Apr 2026</div></div>
-        <div class="fmeta"><div class="fmi">Passengers <span>Adi, Verly, Sol &amp; Neil</span></div></div>
+        <div><div class="ftag">RETURN LEG 1 — ADI, VERLY, SOL &amp; NEIL</div><div class="fcity">Hà Nội</div><div class="fcode">HAN · Noi Bai · pickup 15:45</div><div class="ftime">20:40</div><div class="fdate">Sun 5 Apr 2026</div></div>
+        <div class="farrow"><div class="farr-line"></div><div class="fnum">EY431</div><div class="fdur">6h 50m</div></div>
+        <div><div style="height:20px"></div><div class="fcity">Abu Dhabi</div><div class="fcode">AUH · Zayed Int'l T-A</div><div class="ftime">00:30</div><div class="fdate">Mon 6 Apr 2026</div></div>
+        <div class="fmeta"><div class="fmi">Etihad Airways</div><div class="fmi">Booking <span>8MIJJN</span></div><div class="fmi">Baggage <span>25kg</span></div><div class="fmi">Seats <span>TBA</span></div></div>
+      </div>
+
+      <!-- RETURN LEG 2: AUH→TLV -->
+      <div class="fc">
+        <div><div class="ftag">RETURN LEG 2 — ADI, VERLY, SOL &amp; NEIL</div><div class="fcity">Abu Dhabi</div><div class="fcode">AUH · Zayed Int'l T-A</div><div class="ftime">02:45</div><div class="fdate">Mon 6 Apr 2026</div></div>
+        <div class="farrow"><div class="farr-line"></div><div class="fnum">EY609</div><div class="fdur">3h 25m</div></div>
+        <div><div style="height:20px"></div><div class="fcity">Tel Aviv</div><div class="fcode">TLV · Ben Gurion T3</div><div class="ftime">05:10</div><div class="fdate">Mon 6 Apr 2026</div></div>
+        <div class="fmeta"><div class="fmi">Etihad Airways</div><div class="fmi">Booking <span>8MIJJN</span></div><div class="fmi">Baggage <span>25kg</span></div><div class="fmi">Seats <span>TBA</span></div></div>
       </div>
 
     </div>
@@ -497,7 +552,7 @@
       <div class="ti"><div class="tdot">11</div><div class="tc"><div class="tdate">Thu 2 Apr · Day 11</div><div class="tcity">Mai Châu — Village Hike & Rafting</div><div class="tdesc">Pickup 9:30, hike to Mai Hịch Village, meet Thai farmers, traditional crafts, bamboo rafting.</div><div class="sbadge">🏨 Mai Chau Ecolodge</div></div></div>
       <div class="ti"><div class="tdot">12</div><div class="tc"><div class="tdate">Fri 3 Apr · Day 12</div><div class="tcity">Mai Châu → Hà Nội</div><div class="tdesc">Leisure morning, 3.5-hour drive back to Hanoi. Final evening — night market, last dinner.</div><div class="sbadge">🏨 Somerset Grand Hanoi Hotel</div></div></div>
       <div class="ti"><div class="tdot">13</div><div class="tc"><div class="tdate">Sat 4 Apr · Day 13</div><div class="tcity">Hà Nội — Free Day</div><div class="tdesc">Ho Chi Minh Mausoleum, Old Quarter, Đồng Xuân Market, or a café trứng and shopping.</div><div class="sbadge">🏨 Somerset Grand Hanoi Hotel</div></div></div>
-      <div class="ti"><div class="tdot">🏠</div><div class="tc"><div class="tdate">Sun 5 Apr · Day 14 — Homeward</div><div class="tcity">Two Departures from Hà Nội</div><div class="tdesc"><strong>Doritte &amp; Richard</strong> — pickup 08:30, BR398 departs 12:05<br/><strong>Adi, Verly, Sol &amp; Neil</strong> — pickup 15:45, EY431 departs 19:40 via Abu Dhabi → Tel Aviv</div></div></div>
+      <div class="ti"><div class="tdot">🏠</div><div class="tc"><div class="tdate">Sun 5 Apr · Day 14 — Homeward</div><div class="tcity">Two Departures from Hà Nội</div><div class="tdesc"><strong>Doritte &amp; Richard</strong> — pickup 08:30, BR398 departs 12:05<br/><strong>Adi, Verly, Sol &amp; Neil</strong> — pickup 15:45, EY431 departs 20:40 → AUH, then EY609 02:45 → TLV 05:10 (Mon 6 Apr)</div></div></div>
     </div>
   </section>
 
@@ -564,8 +619,8 @@
         <div class="tl-event-icon icon-flight">✈️</div>
         <div class="tl-event-body">
           <div class="tl-event-title">Land in Hà Nội — EY432</div>
-          <div class="tl-event-desc">Arrive at Noi Bai International Airport. Clear customs and immigration — Israeli passports, e-visa codes ready. All 6 passengers.</div>
-          <div class="tl-event-links"><span class="tl-event-link ev-flight">EY432 · Etihad Airways</span></div>
+          <div class="tl-event-desc">Arrive at Noi Bai International Airport T2. Clear immigration — have e-visa codes ready on phone. <strong>EY594</strong> departed TLV 14:10 → AUH 19:10 · <strong>EY432</strong> departed AUH 20:50 → HAN 05:55. All 6 passengers, booking <strong>8MIJJN</strong>.</div>
+          <div class="tl-event-links"><span class="tl-event-link ev-flight">EY594 TLV→AUH · EY432 AUH→HAN</span><span class="tl-event-link ev-flight">Booking 8MIJJN · 25kg baggage</span></div>
         </div>
       </div>
 
@@ -876,17 +931,27 @@
         <div class="tl-event-icon icon-transfer">🚐</div>
         <div class="tl-event-body">
           <div class="tl-event-title">Adi, Verly, Sol &amp; Neil — Driver Pickup</div>
-          <div class="tl-event-desc">Driver collects the family from Somerset Grand Hanoi at 15:45. Transfer to Noi Bai International Airport (~45 min).</div>
+          <div class="tl-event-desc">Driver collects the family from Somerset Grand Hanoi at 15:45 sharp. Transfer to Noi Bai International Airport (~45 min).</div>
         </div>
       </div>
 
       <div class="tl-event">
-        <div class="tl-event-time">19:40</div>
+        <div class="tl-event-time">20:40</div>
         <div class="tl-event-icon icon-flight">✈️</div>
         <div class="tl-event-body">
-          <div class="tl-event-title">Adi, Verly, Sol &amp; Neil Depart — EY431</div>
-          <div class="tl-event-desc">Etihad Airways flight EY431 from Hanoi via Abu Dhabi back to Tel Aviv. Arrives Tel Aviv Monday 6 April.</div>
-          <div class="tl-event-links"><span class="tl-event-link ev-flight">EY431 · Etihad · HAN→AUH→TLV</span></div>
+          <div class="tl-event-title">Depart Hà Nội — EY431</div>
+          <div class="tl-event-desc">Etihad Airways EY431, Hanoi → Abu Dhabi. 6h 50min. Arrives AUH 00:30 Mon 6 Apr. Seats TBA. Booking 8MIJJN, 25kg baggage.</div>
+          <div class="tl-event-links"><span class="tl-event-link ev-flight">EY431 · HAN→AUH · Booking 8MIJJN</span></div>
+        </div>
+      </div>
+
+      <div class="tl-event">
+        <div class="tl-event-time">02:45</div>
+        <div class="tl-event-icon icon-flight">✈️</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Abu Dhabi → Tel Aviv — EY609</div>
+          <div class="tl-event-desc">Etihad Airways EY609, Abu Dhabi → Tel Aviv Ben Gurion T3. 3h 25min. Arrives TLV 05:10 Mon 6 Apr. Seats TBA. Booking 8MIJJN, 25kg baggage.</div>
+          <div class="tl-event-links"><span class="tl-event-link ev-flight">EY609 · AUH→TLV · Arrives 05:10</span></div>
         </div>
       </div>
 
