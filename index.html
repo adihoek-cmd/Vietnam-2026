@@ -43,7 +43,22 @@
     .lock-btn:hover{background:var(--red-dark);}
     .lock-err{font-family:'Cormorant Garamond',serif;font-size:13px;color:#ff6b6b;height:16px;text-align:center;}
 
-    /* ── COUNTDOWN ── */
+    /* ── TABS ── */
+let leafletMap = null;
+function switchTab(tab){
+  document.querySelectorAll('#overview-view .tab-section').forEach(s => s.classList.remove('tab-active'));
+  const target = tab === 'home' ? document.getElementById('tab-home') : document.getElementById(tab);
+  if(target) target.classList.add('tab-active');
+  document.querySelectorAll('#overview-view .tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
+  window.scrollTo({top:0});
+  if(tab === 'tripmap'){
+    initMap();
+    setTimeout(() => { if(leafletMap) leafletMap.invalidateSize(); }, 80);
+  }
+  try{ sessionStorage.setItem('vn26_tab', tab); }catch(e){}
+}
+
+/* ── COUNTDOWN ── */
     .countdown{display:flex;gap:clamp(10px,3vw,22px);justify-content:center;margin-top:16px;opacity:0;animation:fu 1s 1.1s forwards;}
     .cd-unit{display:flex;flex-direction:column;align-items:center;gap:3px;}
     .cd-num{font-family:'Playfair Display',serif;font-size:clamp(24px,5vw,44px);font-weight:900;color:var(--gold-light);line-height:1;background:rgba(255,255,255,.05);border:1px solid rgba(212,160,23,.25);border-radius:8px;padding:10px clamp(10px,2.5vw,18px);min-width:clamp(52px,10vw,80px);text-align:center;}
@@ -87,7 +102,7 @@
     #overview-view.active,#timeline-view.active{display:block;}
 
     /* ══════════════════ HERO ══════════════════ */
-    .hero{position:relative;min-height:100svh;background:var(--ink);display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;padding:40px 20px;}
+    .hero{position:relative;min-height:calc(100svh - 48px);background:var(--ink);display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;padding:40px 20px;}
     .hero::before{content:'';position:absolute;inset:0;background-image:radial-gradient(ellipse 80% 60% at 50% 50%,rgba(139,0,0,.25) 0%,transparent 70%),repeating-linear-gradient(45deg,transparent 0px,transparent 30px,rgba(212,160,23,.03) 30px,rgba(212,160,23,.03) 31px);}
     .hero::after{content:'';position:absolute;inset:20px;border:1px solid rgba(212,160,23,.12);pointer-events:none;}
     .hc{position:absolute;width:55px;height:55px;border-color:var(--gold);border-style:solid;opacity:.45;}
@@ -106,7 +121,13 @@
     @keyframes sp{0%,100%{transform:scaleY(1);opacity:.5}50%{transform:scaleY(1.25);opacity:1}}
 
     /* ══════════════════ NAV ══════════════════ */
-    .nav-strip{position:sticky;top:0;z-index:100;background:var(--ink);border-bottom:1px solid rgba(212,160,23,.18);display:flex;align-items:center;justify-content:center;gap:clamp(6px,2.5vw,30px);padding:11px 14px;flex-wrap:wrap;}
+    .nav-strip{position:sticky;top:0;z-index:100;background:var(--ink);border-bottom:1px solid rgba(212,160,23,.18);display:flex;align-items:center;justify-content:center;gap:clamp(4px,1.5vw,14px);padding:9px 10px;flex-wrap:wrap;}
+    .tab-btn{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);background:none;border:1px solid transparent;border-radius:20px;padding:7px 12px;cursor:pointer;transition:color .2s,background .2s,border-color .2s;white-space:nowrap;}
+    .tab-btn:hover{color:var(--gold);}
+    .tab-btn.active{color:var(--gold-pale);background:rgba(200,16,46,.35);border-color:rgba(212,160,23,.4);}
+    #overview-view .tab-section{display:none;}
+    #overview-view .tab-section.tab-active{display:block;animation:tabIn .35s ease;}
+    @keyframes tabIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
     .nav-link{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.45);text-decoration:none;transition:color .2s;white-space:nowrap;}
     .nav-link:hover{color:var(--gold);}
     .nav-switch{background:rgba(212,160,23,.15);border:1px solid rgba(212,160,23,.35);color:var(--gold);border-radius:20px;padding:4px 12px;cursor:pointer;font-family:'Space Mono',monospace;font-size:8.5px;letter-spacing:.15em;text-transform:uppercase;text-decoration:none;transition:background .2s;white-space:nowrap;}
@@ -281,6 +302,8 @@
     .icon-transfer{background:rgba(100,180,255,.12);}
 
     @media(max-width:580px){
+      .nav-strip{flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+      .nav-strip::-webkit-scrollbar{display:none;}
       .fc{grid-template-columns:1fr;gap:9px;}
       .farrow{flex-direction:row;justify-content:center;}
       .farr-line{width:38px;}
@@ -329,6 +352,18 @@
 ══════════════════════════════════════════════════════ -->
 <div id="overview-view">
 
+  <nav class="nav-strip">
+    <button class="tab-btn active" data-tab="home" onclick="switchTab('home')">🏠 Home</button>
+    <button class="tab-btn" data-tab="flights" onclick="switchTab('flights')">✈ Flights</button>
+    <button class="tab-btn" data-tab="hotels" onclick="switchTab('hotels')">🏨 Hotels</button>
+    <button class="tab-btn" data-tab="tripmap" onclick="switchTab('tripmap')">🗺 Map</button>
+    <button class="tab-btn" data-tab="visas" onclick="switchTab('visas')">🛂 Visas</button>
+    <button class="tab-btn" data-tab="itinerary" onclick="switchTab('itinerary')">📍 Days</button>
+    <button class="tab-btn" data-tab="passengers" onclick="switchTab('passengers')">👨‍👩‍👧‍👦 Crew</button>
+    <a class="nav-switch" onclick="showView('timeline')" href="#">📅 Timeline</a>
+  </nav>
+
+  <div id="tab-home" class="tab-section tab-active">
   <div class="hero">
     <div class="hc tl"></div><div class="hc tr"></div><div class="hc bl"></div><div class="hc br"></div>
     <div class="hero-flag">🇻🇳</div>
@@ -340,19 +375,11 @@
     <div class="hero-yr">2026</div>
     <div class="hero-scroll"><div class="sc-line"></div>Scroll</div>
   </div>
+  </div>
 
-  <nav class="nav-strip">
-    <a class="nav-link" href="#flights">✈ Flights</a>
-    <a class="nav-link" href="#hotels">🏨 Hotels</a>
-    <a class="nav-link" href="#tripmap">🗺 Map</a>
-    <a class="nav-link" href="#visas">🛂 Visas</a>
-    <a class="nav-link" href="#itinerary">📍 Days</a>
-    <a class="nav-link" href="#passengers">👨‍👩‍👧‍👦 Crew</a>
-    <a class="nav-switch" onclick="showView('timeline')" href="#">📅 Switch to Timeline</a>
-  </nav>
 
   <!-- FLIGHTS -->
-  <section id="flights" class="dark">
+  <section id="flights" class="dark tab-section">
     <div class="sl">International &amp; Domestic</div>
     <h2 class="st">Our <em>Flights</em></h2>
     <div class="fgrid">
@@ -445,7 +472,7 @@
   </section>
 
   <!-- HOTELS -->
-  <section id="hotels">
+  <section id="hotels" class="tab-section">
     <div class="sl">Confirmed Accommodation — SO85988</div>
     <h2 class="st">Our <em>Hotels</em></h2>
     <div class="hgrid">
@@ -544,7 +571,7 @@
   </section>
 
   <!-- TRIP MAP -->
-  <section id="tripmap" class="dark" style="padding-bottom:0">
+  <section id="tripmap" class="dark tab-section" style="padding-bottom:0">
     <div class="map-header">
       <div class="sl">Interactive Route</div>
       <h2 class="st">Trip <em>Map</em></h2>
@@ -564,7 +591,7 @@
   </section>
 
   <!-- VISAS -->
-  <section id="visas" class="dark">
+  <section id="visas" class="dark tab-section">
     <div class="sl">Electronic Visas</div>
     <h2 class="st">Vietnam <em>E-Visas</em></h2>
     <p style="font-family:'Cormorant Garamond',serif;font-size:14px;color:rgba(255,255,255,.36);margin-bottom:28px;letter-spacing:.05em;">⚠️ Original e-visas valid Mar–Apr 2026 only. <strong>New e-visas required for Sep 2026</strong> — apply at evisa.xuatnhapcanh.gov.vn · $25/person · Single Entry</p>
@@ -579,7 +606,7 @@
   </section>
 
   <!-- ITINERARY SUMMARY -->
-  <section id="itinerary">
+  <section id="itinerary" class="tab-section">
     <div class="sl">Day by Day</div>
     <h2 class="st">The <em>Journey</em></h2>
     <div class="tl">
@@ -609,7 +636,7 @@
   </section>
 
   <!-- PASSENGERS -->
-  <section id="passengers">
+  <section id="passengers" class="tab-section">
     <div class="sl">The Crew</div>
     <h2 class="st">Who's <em>Coming</em></h2>
     <div class="pgrid">
@@ -1055,13 +1082,22 @@ function showView(which){
   document.getElementById(which+"-view").classList.add("active");
   sessionStorage.setItem(VIEW_KEY, which);
   window.scrollTo({top:0});
-  if(which==="overview") initMap();
+  if(which==="overview"){
+    const savedTab = sessionStorage.getItem('vn26_tab') || 'home';
+    switchTab(savedTab);
+  }
 }
 
 window.addEventListener("DOMContentLoaded",()=>{
   if(sessionStorage.getItem(SESSION_KEY)==="true"){
     const savedView=sessionStorage.getItem(VIEW_KEY);
-    if(savedView==="overview"||savedView==="timeline"){showView(savedView);}
+    if(savedView==="overview"||savedView==="timeline"){
+      showView(savedView);
+      if(savedView==="overview"){
+        const savedTab = sessionStorage.getItem('vn26_tab');
+        if(savedTab && typeof switchTab === 'function') switchTab(savedTab);
+      }
+    }
     else{showSelector();}
   }
 });
@@ -1079,6 +1115,7 @@ function initMap(){
   if(mapInitialized)return;
   mapInitialized=true;
     const map=L.map("map",{center:[16.5,106.8],zoom:5,scrollWheelZoom:false});
+  leafletMap=map;
   L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",{attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/">CARTO</a>',maxZoom:19}).addTo(map);
   const stops=[
     {name:"Somerset Grand Hanoi",city:"Hà Nội",dates:"8–11 Sep 2026",lat:21.025829,lng:105.846344,color:"#C8102E",mapsUrl:"https://www.google.com/maps/search/?api=1&query=Somerset+Grand+Hanoi&query_place_id=ChIJDyi8FJerNTERkGa5aeymJIw",webUrl:"https://www.somerset.com/en/vietnam/hanoi/somerset-grand-hanoi",emoji:"🏙️",num:1},
