@@ -43,22 +43,7 @@
     .lock-btn:hover{background:var(--red-dark);}
     .lock-err{font-family:'Cormorant Garamond',serif;font-size:13px;color:#ff6b6b;height:16px;text-align:center;}
 
-    /* ── TABS ── */
-let leafletMap = null;
-function switchTab(tab){
-  document.querySelectorAll('#overview-view .tab-section').forEach(s => s.classList.remove('tab-active'));
-  const target = tab === 'home' ? document.getElementById('tab-home') : document.getElementById(tab);
-  if(target) target.classList.add('tab-active');
-  document.querySelectorAll('#overview-view .tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
-  window.scrollTo({top:0});
-  if(tab === 'tripmap'){
-    initMap();
-    setTimeout(() => { if(leafletMap) leafletMap.invalidateSize(); }, 80);
-  }
-  try{ sessionStorage.setItem('vn26_tab', tab); }catch(e){}
-}
-
-/* ── COUNTDOWN ── */
+    /* ── COUNTDOWN ── */
     .countdown{display:flex;gap:clamp(10px,3vw,22px);justify-content:center;margin-top:16px;opacity:0;animation:fu 1s 1.1s forwards;}
     .cd-unit{display:flex;flex-direction:column;align-items:center;gap:3px;}
     .cd-num{font-family:'Playfair Display',serif;font-size:clamp(24px,5vw,44px);font-weight:900;color:var(--gold-light);line-height:1;background:rgba(255,255,255,.05);border:1px solid rgba(212,160,23,.25);border-radius:8px;padding:10px clamp(10px,2.5vw,18px);min-width:clamp(52px,10vw,80px);text-align:center;}
@@ -676,366 +661,1178 @@ function switchTab(tab){
     <a class="nav-switch" onclick="showView('overview')" href="#">🗺️ Switch to Overview</a>
     <span style="color:rgba(255,255,255,.2);font-family:'Space Mono',monospace;font-size:9px;">|</span>
     <a class="nav-link" href="#tl-d1">Day 1</a>
-    <a class="nav-link" href="#tl-d4">Day 4</a>
-    <a class="nav-link" href="#tl-d7">Day 7</a>
+    <a class="nav-link" href="#tl-d6">Day 6</a>
     <a class="nav-link" href="#tl-d10">Day 10</a>
     <a class="nav-link" href="#tl-d14">Day 14</a>
+    <a class="nav-link" href="#tl-d17">Day 17</a>
+    <a class="nav-link" href="#tl-d22">Day 22</a>
   </nav>
 
-  <!-- helper macros rendered inline below -->
-
-  <!-- DAY 1 -->
   <div class="tl-day" id="tl-d1">
     <div class="tl-day-header open" onclick="toggleDay(this)">
-      <div class="tl-day-num"><div class="tl-day-num-n">1</div><div class="tl-day-num-label">Mon 23 Mar</div></div>
-      <div class="tl-day-info"><div class="tl-day-date">Monday 23 March 2026</div><div class="tl-day-place">Tel Aviv → Hà Nội → Hội An</div><div class="tl-day-tagline">Arrival day — two flights, one long journey</div></div>
+      <div class="tl-day-num"><div class="tl-day-num-n">1</div><div class="tl-day-num-label">Tue 8 Sep</div></div>
+      <div class="tl-day-info"><div class="tl-day-date">Tuesday 8 September 2026</div><div class="tl-day-place">Hà Nội — Arrival</div><div class="tl-day-tagline">One direct flight, straight into the capital</div></div>
       <div class="tl-day-toggle">▼</div>
     </div>
     <div class="tl-events open">
-
       <div class="tl-event">
-        <div class="tl-event-time">05:55</div>
+        <div class="tl-event-time">14:05</div>
         <div class="tl-event-icon icon-flight">✈️</div>
         <div class="tl-event-body">
-          <div class="tl-event-title">Land in Hà Nội — EY432</div>
-          <div class="tl-event-desc">Arrive at Noi Bai International Airport T2. Clear immigration — have e-visa codes ready on phone. <strong>EY594</strong> departed TLV 14:10 → AUH 19:10 · <strong>EY432</strong> departed AUH 20:50 → HAN 05:55. All 6 passengers, booking <strong>8MIJJN</strong>.</div>
-          <div class="tl-event-links"><span class="tl-event-link ev-flight">EY594 TLV→AUH · EY432 AUH→HAN</span><span class="tl-event-link ev-flight">Booking 8MIJJN · 25kg baggage</span></div>
+          <div class="tl-event-title">Land in Hà Nội — IZ595</div>
+          <div class="tl-event-desc">Arkia direct from Tel Aviv (departed Mon 7 Sep, 22:30). Clear immigration — have new e-visa codes ready on your phones.</div>
+          <div class="tl-event-links"><span class="tl-event-link ev-flight">IZ595 · Arkia · Booking 13048969</span></div>
         </div>
       </div>
-
       <div class="tl-event">
-        <div class="tl-event-time est">~06:45</div>
-        <div class="tl-event-icon icon-transfer">🚶</div>
-        <div class="tl-event-body">
-          <div class="tl-event-title">Transfer to Domestic Terminal</div>
-          <div class="tl-event-desc">Collect bags, clear arrivals, then walk or take shuttle to Terminal 1 domestic. Allow ~90 min before VN165 — use the time for breakfast in the terminal.</div>
-        </div>
-      </div>
-
-      <div class="tl-event">
-        <div class="tl-event-time">10:10</div>
-        <div class="tl-event-icon icon-flight">✈️</div>
-        <div class="tl-event-body">
-          <div class="tl-event-title">Fly to Đà Nẵng — VN165</div>
-          <div class="tl-event-desc">Vietnam Airlines domestic flight. Airbus A321. 1h 25min. Booking code FG9YNH. Arrives Đà Nẵng 11:35.</div>
-          <div class="tl-event-links"><span class="tl-event-link ev-flight">VN165 · Booking FG9YNH</span></div>
-        </div>
-      </div>
-
-      <div class="tl-event">
-        <div class="tl-event-time">11:35</div>
+        <div class="tl-event-time est">~15:00</div>
         <div class="tl-event-icon icon-transfer">🚐</div>
         <div class="tl-event-body">
-          <div class="tl-event-title">Land Đà Nẵng → Transfer to Hội An</div>
-          <div class="tl-event-desc">Private air-conditioned vehicle from Da Nang Airport to Palm Garden Resort. ~30–40 minutes (30km south along the coast).</div>
+          <div class="tl-event-title">Meet Guide at Exit Column 14</div>
+          <div class="tl-event-desc">After customs, head to exit gate column 14. Your guide holds a welcome signboard with your name. Private vehicle to the hotel (~45 min).</div>
+          
         </div>
       </div>
-
       <div class="tl-event">
-        <div class="tl-event-time est">~13:00</div>
+        <div class="tl-event-time est">~16:00</div>
+        <div class="tl-event-icon icon-hotel">🏙️</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Check in — Somerset Grand Hanoi</div>
+          <div class="tl-event-desc">3-bedroom Executive apartment (King + Queen + Twin). 49 Hai Bà Trưng St, Hoan Kiem — supermarket in the building.</div>
+          <div class="tl-event-links"><a class="tl-event-link ev-hotel" href="https://www.google.com/maps/search/?api=1&query=Somerset+Grand+Hanoi&query_place_id=ChIJDyi8FJerNTERkGa5aeymJIw" target="_blank">📍 Maps</a><a class="tl-event-link ev-hotel" href="https://www.somerset.com/en/vietnam/hanoi/somerset-grand-hanoi" target="_blank">🌐 Website</a><span class="tl-event-link ev-hotel">Ref SO85988</span></div>
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-event-time est">~18:30</div>
         <div class="tl-event-icon icon-meal">🍜</div>
         <div class="tl-event-body">
-          <div class="tl-event-title">Lunch at Resort</div>
-          <div class="tl-event-desc">Check-in after 14:00 — have lunch at the resort restaurant first. Try the Cao Lầu noodles, a Hội An speciality.</div>
+          <div class="tl-event-title">Easy First Evening</div>
+          <div class="tl-event-desc">Short stroll to Hoan Kiem Lake, first phở or bún chả nearby, early night — big day tomorrow.</div>
+          
         </div>
       </div>
+    </div>
+  </div>
 
+  <div class="tl-day">
+    <div class="tl-day-header" onclick="toggleDay(this)">
+      <div class="tl-day-num"><div class="tl-day-num-n">2</div><div class="tl-day-num-label">Wed 9 Sep</div></div>
+      <div class="tl-day-info"><div class="tl-day-date">Wednesday 9 September 2026</div><div class="tl-day-place">Hà Nội — City Highlights</div><div class="tl-day-tagline">Uncle Ho, pagodas, Old Quarter, egg coffee · B</div></div>
+      <div class="tl-day-toggle">▼</div>
+    </div>
+    <div class="tl-events">
+      <div class="tl-event">
+        <div class="tl-event-time est">~08:00</div>
+        <div class="tl-event-icon icon-meal">🥐</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Breakfast at Somerset</div>
+          <div class="tl-event-desc">Included.</div>
+          
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-event-time est">~09:00</div>
+        <div class="tl-event-icon icon-activity">🏛️</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Ho Chi Minh Complex</div>
+          <div class="tl-event-desc">Mausoleum, Presidential Palace botanical gardens, Uncle Ho stilt house, One Pillar Pagoda (1049), then Tran Quoc Pagoda — Hanoi oldest — on West Lake.</div>
+          <div class="tl-event-links"><a class="tl-event-link ev-activity" href="https://www.google.com/maps/search/?api=1&query=Ho+Chi+Minh+Mausoleum+Hanoi" target="_blank">📍 Mausoleum</a></div>
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-event-time est">~14:00</div>
+        <div class="tl-event-icon icon-activity">📜</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Temple of Literature</div>
+          <div class="tl-event-desc">Vietnam first university (11th century) — featured on the back of the 100,000 dong note. Check one from your wallet!</div>
+          <div class="tl-event-links"><a class="tl-event-link ev-activity" href="https://www.google.com/maps/search/?api=1&query=Temple+of+Literature+Hanoi" target="_blank">📍 Maps</a></div>
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-event-time est">~15:30</div>
+        <div class="tl-event-icon icon-activity">🏮</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Old Quarter Walk</div>
+          <div class="tl-event-desc">The 36 guild streets — tube houses, shophouses, markets where each street once specialized in one craft.</div>
+          
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-event-time est">~17:00</div>
+        <div class="tl-event-icon icon-meal">☕</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Hidden Café — Egg Coffee Demo</div>
+          <div class="tl-event-desc">A creative alley space built from recycled materials. Watch how the famous cà phê trứng is made, then drink it.</div>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tl-day">
+    <div class="tl-day-header" onclick="toggleDay(this)">
+      <div class="tl-day-num"><div class="tl-day-num-n">3</div><div class="tl-day-num-label">Thu 10 Sep</div></div>
+      <div class="tl-day-info"><div class="tl-day-date">Thursday 10 September 2026</div><div class="tl-day-place">Hà Nội — Cooking Class at a Garden House</div><div class="tl-day-tagline">Cyclo, wet market, hands-on cooking · B/L</div></div>
+      <div class="tl-day-toggle">▼</div>
+    </div>
+    <div class="tl-events">
+      <div class="tl-event">
+        <div class="tl-event-time est">~08:30</div>
+        <div class="tl-event-icon icon-activity">🛺</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Cyclo Ride from Hotel</div>
+          <div class="tl-event-desc">Vibrant cyclo ride through the Old Quarter to meet your cooking instructor. Private-basis class.</div>
+          
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-event-time est">~09:00</div>
+        <div class="tl-event-icon icon-activity">🥬</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Thanh Ha Wet Market</div>
+          <div class="tl-event-desc">Walk the market with your guide — fruits, vegetables, spices, street food samples.</div>
+          
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-event-time est">~10:00</div>
+        <div class="tl-event-icon icon-activity">🏡</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Garden House</div>
+          <div class="tl-event-desc">A tranquil oasis — sacred worship hall, serene fish pond, lush vegetable garden. Pick fresh herbs for your dishes.</div>
+          
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-event-time est">~10:30</div>
+        <div class="tl-event-icon icon-meal">👨‍🍳</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Hands-on Cooking Class + Lunch</div>
+          <div class="tl-event-desc">Menu: nem (fried rolls), bún bò nam bộ, bò cuốn lá lốt, phở gà, palm sugar cake dessert. Eat everything you make!</div>
+          
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-event-time est">~14:00</div>
+        <div class="tl-event-icon icon-activity">🌿</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Afternoon at Leisure</div>
+          <div class="tl-event-desc">Transfer back. Pool, shopping, or a nap.</div>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tl-day">
+    <div class="tl-day-header" onclick="toggleDay(this)">
+      <div class="tl-day-num"><div class="tl-day-num-n">4</div><div class="tl-day-num-label">Fri 11 Sep</div></div>
+      <div class="tl-day-info"><div class="tl-day-date">Friday 11 September 2026</div><div class="tl-day-place">Hà Nội → Mai Châu</div><div class="tl-day-tagline">Into the White Thai valley · B/L</div></div>
+      <div class="tl-day-toggle">▼</div>
+    </div>
+    <div class="tl-events">
+      <div class="tl-event">
+        <div class="tl-event-time est">~08:30</div>
+        <div class="tl-event-icon icon-transfer">🚐</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Drive to Mai Châu (~3 hrs)</div>
+          <div class="tl-event-desc">Scenic drive southwest into Hòa Bình province. Lunch at a local restaurant with local specialties.</div>
+          
+        </div>
+      </div>
       <div class="tl-event">
         <div class="tl-event-time">14:00</div>
+        <div class="tl-event-icon icon-hotel">🏔️</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Check in — Mai Chau Ecolodge</div>
+          <div class="tl-event-desc">Deluxe Paddy View rooms. Rice paddies and limestone peaks in every direction.</div>
+          <div class="tl-event-links"><a class="tl-event-link ev-hotel" href="https://www.google.com/maps/search/?api=1&query=Mai+Chau+Ecolodge+Vietnam&query_place_id=ChIJhwcfY1MINDERFnWr9OFoAr0" target="_blank">📍 Maps</a><a class="tl-event-link ev-hotel" href="https://maichau.ecolodge.asia/en/" target="_blank">🌐 Website</a></div>
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-event-time est">~15:00</div>
+        <div class="tl-event-icon icon-activity">🚶</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Village Walk & Hill Tribe Chats</div>
+          <div class="tl-event-desc">Mountain and rice field scenery. Meet villagers — rice planting, buffalo herding, traditional houses, handicrafts.</div>
+          
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-event-time est">~16:30</div>
+        <div class="tl-event-icon icon-activity">🎨</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Turmeric Fabric Dyeing</div>
+          <div class="tl-event-desc">Hands-on dyeing — the warm yellow symbolizes prosperity and happiness in Thai culture.</div>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tl-day">
+    <div class="tl-day-header" onclick="toggleDay(this)">
+      <div class="tl-day-num"><div class="tl-day-num-n">5</div><div class="tl-day-num-label">Sat 12 Sep</div></div>
+      <div class="tl-day-info"><div class="tl-day-date">Saturday 12 September 2026</div><div class="tl-day-place">Mai Châu — Mai Hịch Village by Bicycle</div><div class="tl-day-tagline">Bamboo groves, stilt houses · B/L</div></div>
+      <div class="tl-day-toggle">▼</div>
+    </div>
+    <div class="tl-events">
+      <div class="tl-event">
+        <div class="tl-event-time est">~08:30</div>
+        <div class="tl-event-icon icon-activity">🚲</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Cycle to Mai Hịch Village</div>
+          <div class="tl-event-desc">Remote valley of the White Thai. Quiet paths shaded by bamboo, farmers in the fields, weavers at their looms, wooden house building.</div>
+          
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-event-time est">~12:30</div>
+        <div class="tl-event-icon icon-meal">🍱</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Lunch</div>
+          <div class="tl-event-desc">Local meal in the village or at the lodge.</div>
+          
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-event-time est">~14:00</div>
+        <div class="tl-event-icon icon-activity">🏊</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Afternoon at Leisure</div>
+          <div class="tl-event-desc">Pool, spa, hammock. The valley at golden hour is unforgettable.</div>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tl-day" id="tl-d6">
+    <div class="tl-day-header" onclick="toggleDay(this)">
+      <div class="tl-day-num"><div class="tl-day-num-n">6</div><div class="tl-day-num-label">Sun 13 Sep</div></div>
+      <div class="tl-day-info"><div class="tl-day-date">Sunday 13 September 2026</div><div class="tl-day-place">Mai Châu → Pú Luông</div><div class="tl-day-tagline">Hanging bridge, bamboo raft, water wheels · B/L</div></div>
+      <div class="tl-day-toggle">▼</div>
+    </div>
+    <div class="tl-events">
+      <div class="tl-event">
+        <div class="tl-event-time est">~08:30</div>
+        <div class="tl-event-icon icon-activity">🚲</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Morning Cycling</div>
+          <div class="tl-event-desc">One more leisure ride through rice fields and villages.</div>
+          
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-event-time est">~11:30</div>
+        <div class="tl-event-icon icon-transfer">🚐</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Drive to Pú Luông (1.5 hrs)</div>
+          <div class="tl-event-desc">Into the Nature Reserve — mountain air, terraced fields. Lunch surrounded by beautiful scenery.</div>
+          
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-event-time est">~14:30</div>
+        <div class="tl-event-icon icon-activity">🌉</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Hanging Bridge & Village Walk</div>
+          <div class="tl-event-desc">Cross into one of the region most picturesque villages — terraced rice fields, stilt houses, a winding stream.</div>
+          
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-event-time est">~15:30</div>
+        <div class="tl-event-icon icon-activity">🚣</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Bamboo Rafting at the Dam</div>
+          <div class="tl-event-desc">Glide upstream on a handcrafted raft alongside friendly locals.</div>
+          
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-event-time est">~16:30</div>
+        <div class="tl-event-icon icon-activity">☸️</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">The Giant Water Wheels</div>
+          <div class="tl-event-desc">Centuries-old feats of engineering channeling water into the fields. Scenic loop back.</div>
+          
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-event-time est">~17:30</div>
+        <div class="tl-event-icon icon-hotel">🌿</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Check in — Pu Luong Retreat</div>
+          <div class="tl-event-desc">Deluxe rooms over the valley. Tomorrow: easy hike, 4–6 km, mostly flat paved road.</div>
+          <div class="tl-event-links"><a class="tl-event-link ev-hotel" href="https://www.google.com/maps/search/?api=1&query=Pu+Luong+Retreat+Thanh+Hoa+Vietnam" target="_blank">📍 Maps</a><a class="tl-event-link ev-hotel" href="https://www.puluongretreat.com" target="_blank">🌐 Website</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tl-day">
+    <div class="tl-day-header" onclick="toggleDay(this)">
+      <div class="tl-day-num"><div class="tl-day-num-n">7</div><div class="tl-day-num-label">Mon 14 Sep</div></div>
+      <div class="tl-day-info"><div class="tl-day-date">Monday 14 September 2026</div><div class="tl-day-place">Pú Luông — Valley, Weavers & Hieu Waterfall</div><div class="tl-day-tagline">S-road views, Thai weaving · B/L</div></div>
+      <div class="tl-day-toggle">▼</div>
+    </div>
+    <div class="tl-events">
+      <div class="tl-event">
+        <div class="tl-event-time est">~08:00</div>
+        <div class="tl-event-icon icon-activity">🥾</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Descend into the Valley</div>
+          <div class="tl-event-desc">Early start. Winding roads through mountains and rice terraces past the scenic S-shaped road. Panorama of Uoi Village at the foot of a towering mountain.</div>
+          
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-event-time est">~10:30</div>
+        <div class="tl-event-icon icon-activity">🧵</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Lan Village — Thai Weaving</div>
+          <div class="tl-event-desc">Inside a stilt house, watch the looms in action — generations of spun, dyed, woven heritage patterns.</div>
+          
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-event-time est">~13:00</div>
+        <div class="tl-event-icon icon-meal">🍱</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Lunch</div>
+          <div class="tl-event-desc">Local.</div>
+          
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-event-time est">~14:00</div>
+        <div class="tl-event-icon icon-activity">🚲</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Cycle to Hieu Waterfall</div>
+          <div class="tl-event-desc">Farmland, wild fields, ponds, rivers, mountains — ending at the hidden waterfall in the Nature Reserve.</div>
+          
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-event-time est">~16:30</div>
+        <div class="tl-event-icon icon-activity">🌄</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Evening at Leisure</div>
+          <div class="tl-event-desc">Infinity pool over the rice terraces.</div>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tl-day">
+    <div class="tl-day-header" onclick="toggleDay(this)">
+      <div class="tl-day-num"><div class="tl-day-num-n">8</div><div class="tl-day-num-label">Tue 15 Sep</div></div>
+      <div class="tl-day-info"><div class="tl-day-date">Tuesday 15 September 2026</div><div class="tl-day-place">Pú Luông → Ninh Bình</div><div class="tl-day-tagline">Bich Dong grotto & Tam Coc sampan · B/L</div></div>
+      <div class="tl-day-toggle">▼</div>
+    </div>
+    <div class="tl-events">
+      <div class="tl-event">
+        <div class="tl-event-time est">~08:00</div>
+        <div class="tl-event-icon icon-transfer">🚐</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Drive to Ninh Bình (~3 hrs)</div>
+          <div class="tl-event-desc">Karst mountains, misty caves, historical relics.</div>
+          
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-event-time est">~11:30</div>
+        <div class="tl-event-icon icon-activity">⛩️</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Bích Động Grotto</div>
+          <div class="tl-event-desc">Conferred by a king as Vietnam second most beautiful grotto. Stone steps through cave temples, sweeping views of mountains, pagodas and fields.</div>
+          <div class="tl-event-links"><a class="tl-event-link ev-activity" href="https://www.google.com/maps/search/?api=1&query=Bich+Dong+Pagoda+Ninh+Binh" target="_blank">📍 Maps</a></div>
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-event-time est">~14:30</div>
+        <div class="tl-event-icon icon-activity">🚣</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Tam Cốc Sampan Boat</div>
+          <div class="tl-event-desc">A local rower guides you along the Ngo Dong River through the three natural caves, between towering cliffs and golden rice paddies.</div>
+          
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-event-time est">~16:30</div>
+        <div class="tl-event-icon icon-activity">🛕</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Village Trail to Thai Vi Temple</div>
+          <div class="tl-event-desc">Endless rice fields and a mysterious grotto with a sacred shrine.</div>
+          
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-event-time est">~17:30</div>
+        <div class="tl-event-icon icon-hotel">🌾</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Check in — Emeralda Resort Tam Coc</div>
+          <div class="tl-event-desc">Superior rooms in the Trang An UNESCO landscape.</div>
+          <div class="tl-event-links"><a class="tl-event-link ev-hotel" href="https://www.google.com/maps/search/?api=1&query=Emeralda+Resort+Tam+Coc+Ninh+Binh&query_place_id=ChIJk2yfySkkNTERGhYC6kh382g" target="_blank">📍 Maps</a><a class="tl-event-link ev-hotel" href="https://www.emeraldaresort.com" target="_blank">🌐 Website</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tl-day">
+    <div class="tl-day-header" onclick="toggleDay(this)">
+      <div class="tl-day-num"><div class="tl-day-num-n">9</div><div class="tl-day-num-label">Wed 16 Sep</div></div>
+      <div class="tl-day-info"><div class="tl-day-date">Wednesday 16 September 2026</div><div class="tl-day-place">Ninh Bình — Farmer for a Day & Hang Mua</div><div class="tl-day-tagline">Catch fish, climb the Dance Cave · B/L</div></div>
+      <div class="tl-day-toggle">▼</div>
+    </div>
+    <div class="tl-events">
+      <div class="tl-event">
+        <div class="tl-event-time est">~09:00</div>
+        <div class="tl-event-icon icon-activity">🧑‍🌾</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Farmer Encounter</div>
+          <div class="tl-event-desc">Visit a local farmer and roll up your sleeves — catching fish or crabs, bailing water to the rice fields. Buffalo working around you (rice season depending).</div>
+          
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-event-time est">~12:00</div>
+        <div class="tl-event-icon icon-meal">🍚</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Home-style Lunch</div>
+          <div class="tl-event-desc">Rustic and cozy, surrounded by rice fields and limestone mountains.</div>
+          
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-event-time est">~14:30</div>
+        <div class="tl-event-icon icon-activity">🧗</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Hang Mua — the Dance Cave</div>
+          <div class="tl-event-desc">465 uneven limestone steps up Ngoa Long Mountain for THE panoramic view of Tam Coc — known as Ha Long Bay on Land. The kids will race you up.</div>
+          <div class="tl-event-links"><a class="tl-event-link ev-activity" href="https://www.google.com/maps/search/?api=1&query=Hang+Mua+Ninh+Binh" target="_blank">📍 Maps</a></div>
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-event-time est">~17:00</div>
+        <div class="tl-event-icon icon-activity">🏊</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Pool & Rest</div>
+          <div class="tl-event-desc">Well earned.</div>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tl-day" id="tl-d10">
+    <div class="tl-day-header" onclick="toggleDay(this)">
+      <div class="tl-day-num"><div class="tl-day-num-n">10</div><div class="tl-day-num-label">Thu 17 Sep</div></div>
+      <div class="tl-day-info"><div class="tl-day-date">Thursday 17 September 2026</div><div class="tl-day-place">Ninh Bình → Hạ Long — Board the Cruise</div><div class="tl-day-tagline">Athena Royal · Bai Tu Long Bay · B/L/D</div></div>
+      <div class="tl-day-toggle">▼</div>
+    </div>
+    <div class="tl-events">
+      <div class="tl-event">
+        <div class="tl-event-time est">~08:15</div>
+        <div class="tl-event-icon icon-transfer">🚐</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Drive to Hạ Long (3.5 hrs)</div>
+          <div class="tl-event-desc">To Halong International Cruise Port. Farewell to your land guide.</div>
+          
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-event-time">12:00</div>
+        <div class="tl-event-icon icon-hotel">🛳️</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Welcome at Cruise Port</div>
+          <div class="tl-event-desc">Luggage check-in at the waiting lounge.</div>
+          <div class="tl-event-links"><span class="tl-event-link ev-hotel">Athena Royal Cruise · Ref SO85988</span><a class="tl-event-link ev-hotel" href="https://www.athenaroyalcruise.com" target="_blank">🌐 Website</a></div>
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-event-time">12:45</div>
+        <div class="tl-event-icon icon-activity">⛵</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Board the Cruise</div>
+          <div class="tl-event-desc">Welcome drink, safety brief, itinerary from the manager and crew.</div>
+          
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-event-time">13:00</div>
+        <div class="tl-event-icon icon-meal">🦐</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Lunch — Sailing to Bai Tu Long</div>
+          <div class="tl-event-desc">Served as the cruise departs into the hidden gem of the Ha Long complex.</div>
+          
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-event-time">15:00</div>
+        <div class="tl-event-icon icon-activity">🚣</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Cong Do — Kayak & Swim</div>
+          <div class="tl-event-desc">Kayaking among majestic limestone islands, swimming at pristine white-sand beaches. Massage available — reserve with the cruise manager.</div>
+          
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-event-time">17:30</div>
+        <div class="tl-event-icon icon-activity">👨‍🍳</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Cooking Demo + Happy Hour</div>
+          <div class="tl-event-desc">Hands-on with the head chef, then Buy-1-Get-1 drinks at sunset.</div>
+          
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-event-time">19:00</div>
+        <div class="tl-event-icon icon-meal">🦞</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Fusion Set Dinner</div>
+          <div class="tl-event-desc">Then movies, board games, squid fishing, massage. Overnight on board.</div>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tl-day">
+    <div class="tl-day-header" onclick="toggleDay(this)">
+      <div class="tl-day-num"><div class="tl-day-num-n">11</div><div class="tl-day-num-label">Fri 18 Sep</div></div>
+      <div class="tl-day-info"><div class="tl-day-date">Friday 18 September 2026</div><div class="tl-day-place">Hạ Long — Full Cruise Day</div><div class="tl-day-tagline">Tai Chi, Vung Vieng floating village · B/L/D</div></div>
+      <div class="tl-day-toggle">▼</div>
+    </div>
+    <div class="tl-events">
+      <div class="tl-event">
+        <div class="tl-event-time">06:00</div>
+        <div class="tl-event-icon icon-activity">🧘</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Tai Chi on the Sun Deck</div>
+          <div class="tl-event-desc">30 minutes as the bay wakes up.</div>
+          
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-event-time">07:00</div>
+        <div class="tl-event-icon icon-meal">🥐</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Breakfast</div>
+          <div class="tl-event-desc">In the restaurant.</div>
+          
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-event-time">08:30</div>
+        <div class="tl-event-icon icon-activity">⛵</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Day Boat Explorer</div>
+          <div class="tl-event-desc">Cruise deeper into the breathtaking scenery.</div>
+          
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-event-time">09:45</div>
+        <div class="tl-event-icon icon-activity">🚣</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Vũng Viêng Floating Fishing Village</div>
+          <div class="tl-event-desc">Renowned for pearl culturing. Kayak through the peaceful village waters.</div>
+          
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-event-time">12:30</div>
+        <div class="tl-event-icon icon-meal">🍱</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Vietnamese Lunch on the Day Boat</div>
+          <div class="tl-event-desc"></div>
+          
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-event-time">13:30</div>
+        <div class="tl-event-icon icon-activity">🍵</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Tea Break</div>
+          <div class="tl-event-desc">Vietnamese tea culture as the explorer returns through Bai Tu Long to the main cruise.</div>
+          
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-event-time">17:30</div>
+        <div class="tl-event-icon icon-activity">👨‍🍳</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Cooking Demo + Happy Hour</div>
+          <div class="tl-event-desc">A different dish tonight.</div>
+          
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-event-time">19:00</div>
+        <div class="tl-event-icon icon-meal">🦀</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Dinner & Evening on Board</div>
+          <div class="tl-event-desc">Movies, squid fishing, massage. Overnight anchored in the bay.</div>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tl-day">
+    <div class="tl-day-header" onclick="toggleDay(this)">
+      <div class="tl-day-num"><div class="tl-day-num-n">12</div><div class="tl-day-num-label">Sat 19 Sep</div></div>
+      <div class="tl-day-info"><div class="tl-day-date">Saturday 19 September 2026</div><div class="tl-day-place">Hạ Long → Hà Nội → Fly to Huế</div><div class="tl-day-tagline">Cave at dawn, brunch, imperial city · B/Brunch</div></div>
+      <div class="tl-day-toggle">▼</div>
+    </div>
+    <div class="tl-events">
+      <div class="tl-event">
+        <div class="tl-event-time">06:00</div>
+        <div class="tl-event-icon icon-activity">🧘</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Sunrise Tai Chi</div>
+          <div class="tl-event-desc">As the cruise glides toward Thien Canh Son Cave.</div>
+          
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-event-time">07:30</div>
+        <div class="tl-event-icon icon-activity">🦇</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Thiên Cảnh Sơn Cave</div>
+          <div class="tl-event-desc">Two chambers of striking stalactites — ~200 stone steps, then the white-sand beach with Bai Tu Long views.</div>
+          
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-event-time">09:00</div>
+        <div class="tl-event-icon icon-hotel">📦</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Pack & Check Out</div>
+          <div class="tl-event-desc">Bags outside the cabin door — crew takes them to the pier.</div>
+          
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-event-time">09:30</div>
+        <div class="tl-event-icon icon-meal">🍳</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Brunch Buffet</div>
+          <div class="tl-event-desc">While heading back to port. Disembark 10:45 by tender boat.</div>
+          
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-event-time est">~11:00</div>
+        <div class="tl-event-icon icon-transfer">🚐</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Drive to Hà Nội Airport (2.5 hrs)</div>
+          <div class="tl-event-desc"></div>
+          
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-event-time">16:35</div>
+        <div class="tl-event-icon icon-flight">✈️</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Fly HAN → HUE</div>
+          <div class="tl-event-desc">Vietnam Airlines, 16:35 → 17:55. Guide meets you at the exit gate with a signboard.</div>
+          <div class="tl-event-links"><span class="tl-event-link ev-flight">HAN→HUI · via SO85988</span></div>
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-event-time est">~18:30</div>
+        <div class="tl-event-icon icon-hotel">🏛️</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Check in — Senna Hue</div>
+          <div class="tl-event-desc">Premium rooms in the imperial city.</div>
+          <div class="tl-event-links"><a class="tl-event-link ev-hotel" href="https://www.google.com/maps/search/?api=1&query=Senna+Hue+Hotel+Vietnam" target="_blank">📍 Maps</a><a class="tl-event-link ev-hotel" href="https://www.sennahotel.com" target="_blank">🌐 Website</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tl-day">
+    <div class="tl-day-header" onclick="toggleDay(this)">
+      <div class="tl-day-num"><div class="tl-day-num-n">13</div><div class="tl-day-num-label">Sun 20 Sep</div></div>
+      <div class="tl-day-info"><div class="tl-day-date">Sunday 20 September 2026</div><div class="tl-day-place">Huế — Imperial City</div><div class="tl-day-tagline">Citadel, royal cakes, Khai Dinh tomb · B</div></div>
+      <div class="tl-day-toggle">▼</div>
+    </div>
+    <div class="tl-events">
+      <div class="tl-event">
+        <div class="tl-event-time est">~08:30</div>
+        <div class="tl-event-icon icon-activity">🛺</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Cyclo to the Imperial Citadel</div>
+          <div class="tl-event-desc">Short cyclo ride to the UNESCO Complex of Hue Monuments. Magnificent architecture, gardens, royal court intrigue.</div>
+          <div class="tl-event-links"><a class="tl-event-link ev-activity" href="https://www.google.com/maps/search/?api=1&query=Imperial+City+Hue" target="_blank">📍 Citadel</a></div>
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-event-time est">~11:00</div>
+        <div class="tl-event-icon icon-activity">🍰</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Phap Lam Cake Making</div>
+          <div class="tl-event-desc">Hands-on session with this traditional Hue royal delicacy.</div>
+          
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-event-time est">~14:00</div>
+        <div class="tl-event-icon icon-activity">🪦</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Khai Dinh Tomb</div>
+          <div class="tl-event-desc">The 12th Nguyen king magnificent compound on Chau Chu Mountain — dragon pillars, mosaics of the Four Seasons and Five Blessings. 127 steps up.</div>
+          
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-event-time est">~16:00</div>
+        <div class="tl-event-icon icon-activity">⛩️</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Thiên Mụ Pagoda</div>
+          <div class="tl-event-desc">The seven-storied tower (1601) over the Perfume River — one of Vietnam most recognizable icons.</div>
+          
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-event-time est">~19:00</div>
+        <div class="tl-event-icon icon-meal">🍜</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Dinner — Huế Cuisine</div>
+          <div class="tl-event-desc">Bún Bò Huế, Bánh Bèo, or a royal set menu. Dress note: shoulders and knees covered in temples and the Citadel.</div>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tl-day" id="tl-d14">
+    <div class="tl-day-header" onclick="toggleDay(this)">
+      <div class="tl-day-num"><div class="tl-day-num-n">14</div><div class="tl-day-num-label">Mon 21 Sep</div></div>
+      <div class="tl-day-info"><div class="tl-day-date">Monday 21 September 2026</div><div class="tl-day-place">Huế → Hải Vân Pass → Sơn Trà → Hội An</div><div class="tl-day-tagline">One of Vietnam great coastal drives · B</div></div>
+      <div class="tl-day-toggle">▼</div>
+    </div>
+    <div class="tl-events">
+      <div class="tl-event">
+        <div class="tl-event-time est">~08:30</div>
+        <div class="tl-event-icon icon-transfer">🚐</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Over the Hải Vân Pass</div>
+          <div class="tl-event-desc">Breathtaking views of green mountains and Lang Co Beach — a living painting of hills, clear water, drifting clouds.</div>
+          <div class="tl-event-links"><a class="tl-event-link ev-transfer" href="https://www.google.com/maps/search/?api=1&query=Hai+Van+Pass" target="_blank">📍 Hai Van Pass</a></div>
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-event-time est">~11:00</div>
+        <div class="tl-event-icon icon-activity">🐒</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Sơn Trà Peninsula</div>
+          <div class="tl-event-desc">The Goddess of Mercy at Linh Ứng Pagoda crowning the skyline. Viewpoint stops — look for playful monkeys.</div>
+          
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-event-time est">~14:30</div>
         <div class="tl-event-icon icon-hotel">🏖️</div>
         <div class="tl-event-body">
           <div class="tl-event-title">Check in — Palm Garden Beach Resort & Spa</div>
-          <div class="tl-event-desc">3 × Deluxe Garden View rooms (connecting). 5-star beachfront resort on Cua Dai Beach.</div>
-          <div class="tl-event-links">
-            <a class="tl-event-link ev-hotel" href="https://www.google.com/maps/search/?api=1&query=Palm+Garden+Beach+Resort+Hoi+An&query_place_id=ChIJd2hEc5MNQjERYLHo53B5sU8" target="_blank">📍 Maps</a>
-            <a class="tl-event-link ev-hotel" href="https://www.palmgardenresort.com.vn" target="_blank">🌐 Website</a>
-            <span class="tl-event-link ev-hotel">Ref 70863</span>
-          </div>
+          <div class="tl-event-desc">Superior Partly Ocean View rooms on Cua Dai Beach. Rest of the day: BEACH.</div>
+          <div class="tl-event-links"><a class="tl-event-link ev-hotel" href="https://www.google.com/maps/search/?api=1&query=Palm+Garden+Beach+Resort+Hoi+An&query_place_id=ChIJd2hEc5MNQjERYLHo53B5sU8" target="_blank">📍 Maps</a><a class="tl-event-link ev-hotel" href="https://www.palmgardenresort.com.vn" target="_blank">🌐 Website</a></div>
         </div>
       </div>
+    </div>
+  </div>
 
+  <div class="tl-day">
+    <div class="tl-day-header" onclick="toggleDay(this)">
+      <div class="tl-day-num"><div class="tl-day-num-n">15</div><div class="tl-day-num-label">Tue 22 Sep</div></div>
+      <div class="tl-day-info"><div class="tl-day-date">Tuesday 22 September 2026</div><div class="tl-day-place">Hội An — Ancient Town & Countryside</div><div class="tl-day-tagline">Basket boats, lanterns, night market · B</div></div>
+      <div class="tl-day-toggle">▼</div>
+    </div>
+    <div class="tl-events">
       <div class="tl-event">
-        <div class="tl-event-time est">~17:00</div>
+        <div class="tl-event-time est">~09:00</div>
         <div class="tl-event-icon icon-activity">🏖️</div>
         <div class="tl-event-body">
-          <div class="tl-event-title">Afternoon — Settle &amp; Beach</div>
-          <div class="tl-event-desc">After a long night and morning of travel — pools, Cua Dai beach, and an early dinner. The kids deserve it.</div>
+          <div class="tl-event-title">Morning at Leisure</div>
+          <div class="tl-event-desc">Beach and pool.</div>
+          
         </div>
       </div>
-
-    </div>
-  </div>
-
-  <!-- DAY 2 -->
-  <div class="tl-day">
-    <div class="tl-day-header" onclick="toggleDay(this)">
-      <div class="tl-day-num"><div class="tl-day-num-n">2</div><div class="tl-day-num-label">Tue 24 Mar</div></div>
-      <div class="tl-day-info"><div class="tl-day-date">Tuesday 24 March 2026</div><div class="tl-day-place">Hội An — Farm, Cooking & Ancient Town</div><div class="tl-day-tagline">Organic vegetables, cooking class, lantern streets</div></div>
-      <div class="tl-day-toggle">▼</div>
-    </div>
-    <div class="tl-events">
-      <div class="tl-event"><div class="tl-event-time est">~08:00</div><div class="tl-event-icon icon-meal">🥐</div><div class="tl-event-body"><div class="tl-event-title">Breakfast at Resort</div><div class="tl-event-desc">Full breakfast included. Fuel up for a busy day.</div></div></div>
-      <div class="tl-event"><div class="tl-event-time est">~09:00</div><div class="tl-event-icon icon-activity">🚲</div><div class="tl-event-body"><div class="tl-event-title">Trà Quế Organic Farm by Bicycle</div><div class="tl-event-desc">Cycle through Hội An's countryside to Trà Quế village. Walk through herb gardens, meet local farmers using traditional chemical-free techniques preserved for generations. Fun for kids — try raking the soil and watering the crops.</div><div class="tl-event-links"><a class="tl-event-link ev-activity" href="https://maps.google.com/maps?q=15.8984,108.3394" target="_blank">📍 Trà Quế Village</a></div></div></div>
-      <div class="tl-event"><div class="tl-event-time est">~10:30</div><div class="tl-event-icon icon-meal">👨‍🍳</div><div class="tl-event-body"><div class="tl-event-title">Cooking Class (Lunch included)</div><div class="tl-event-desc">Hands-on class preparing Vietnamese dishes using fresh farm ingredients. Lunch served as part of the class. Note: Doritte is vegetarian (eats seafood) — inform the guide beforehand (vegetarian preference can be disregarded for the cooking class itself).</div></div></div>
-      <div class="tl-event"><div class="tl-event-time est">~14:30</div><div class="tl-event-icon icon-activity">🏮</div><div class="tl-event-body"><div class="tl-event-title">Hội An Ancient Town</div><div class="tl-event-desc">Explore the UNESCO World Heritage old town — the iconic Japanese Covered Bridge (Chùa Cầu), Chinese Assembly Halls, riverside cafés, and hundreds of colourful lantern shops. The town is especially magical at dusk when the lanterns glow.</div><div class="tl-event-links"><a class="tl-event-link ev-activity" href="https://maps.google.com/maps?q=15.8801,108.3380" target="_blank">📍 Ancient Town</a></div></div></div>
-      <div class="tl-event"><div class="tl-event-time est">~19:00</div><div class="tl-event-icon icon-meal">🍽️</div><div class="tl-event-body"><div class="tl-event-title">Dinner — Hội An Old Town</div><div class="tl-event-desc">Countless great options — try White Rose dumplings (Bánh Bao Vạc), Cao Lầu noodles, or fresh seafood on the riverside. Resort shuttle back after dinner.</div></div></div>
-    </div>
-  </div>
-
-  <!-- DAY 3 -->
-  <div class="tl-day">
-    <div class="tl-day-header" onclick="toggleDay(this)">
-      <div class="tl-day-num"><div class="tl-day-num-n">3</div><div class="tl-day-num-label">Wed 25 Mar</div></div>
-      <div class="tl-day-info"><div class="tl-day-date">Wednesday 25 March 2026</div><div class="tl-day-place">Bà Nà Hills &amp; The Golden Bridge</div><div class="tl-day-tagline">Giant stone hands, French hill station, 1,487m up</div></div>
-      <div class="tl-day-toggle">▼</div>
-    </div>
-    <div class="tl-events">
-      <div class="tl-event"><div class="tl-event-time est">~07:30</div><div class="tl-event-icon icon-meal">🥐</div><div class="tl-event-body"><div class="tl-event-title">Early Breakfast</div><div class="tl-event-desc">Early start to beat the crowds on the cable car.</div></div></div>
-      <div class="tl-event"><div class="tl-event-time est">~08:30</div><div class="tl-event-icon icon-transfer">🚐</div><div class="tl-event-body"><div class="tl-event-title">Transfer to Bà Nà Hills (~40 min)</div><div class="tl-event-desc">Private vehicle from resort toward Da Nang. ~25km northwest.</div></div></div>
-      <div class="tl-event"><div class="tl-event-time est">~09:30</div><div class="tl-event-icon icon-activity">🚡</div><div class="tl-event-body"><div class="tl-event-title">Cable Car Up Bà Nà Hills</div><div class="tl-event-desc">World-record cable car (5,801m long!) ascending through misty rainforest to the French Hill Station at 1,487m. Often above the clouds — spectacular views on clear mornings.</div><div class="tl-event-links"><a class="tl-event-link ev-activity" href="https://maps.google.com/maps?q=15.9979,107.9918" target="_blank">📍 Bà Nà Hills</a></div></div></div>
-      <div class="tl-event"><div class="tl-event-time est">~10:00</div><div class="tl-event-icon icon-activity">🌉</div><div class="tl-event-body"><div class="tl-event-title">The Golden Bridge</div><div class="tl-event-desc">The famous 150m pedestrian bridge held aloft by two giant stone hands — one of Vietnam's most iconic sights. Arrive early for best photos before tour groups. Kids love it.</div></div></div>
-      <div class="tl-event"><div class="tl-event-time est">~11:00</div><div class="tl-event-icon icon-activity">🏰</div><div class="tl-event-body"><div class="tl-event-title">Explore the French Village &amp; Fantasy Park</div><div class="tl-event-desc">Wander the colonial French village, visit Le Jardin d'Amour gardens, and let the kids loose in Fantasy Park — Vietnam's largest indoor amusement park with rollercoasters and wax museum.</div></div></div>
-      <div class="tl-event"><div class="tl-event-time est">~13:00</div><div class="tl-event-icon icon-meal">🍽️</div><div class="tl-event-body"><div class="tl-event-title">Lunch at Summit</div><div class="tl-event-desc">Several restaurants at the top — expect a buffet or set menu. Not the finest food in Vietnam, but the setting is unbeatable.</div></div></div>
-      <div class="tl-event"><div class="tl-event-time est">~16:00</div><div class="tl-event-icon icon-transfer">🚐</div><div class="tl-event-body"><div class="tl-event-title">Cable Car Down &amp; Return to Resort</div><div class="tl-event-desc">Cable car descent, then private vehicle back to Palm Garden (~40 min). Evening at leisure — beach sunset, cocktails, pool.</div></div></div>
-    </div>
-  </div>
-
-  <!-- DAY 4 -->
-  <div class="tl-day" id="tl-d4">
-    <div class="tl-day-header" onclick="toggleDay(this)">
-      <div class="tl-day-num"><div class="tl-day-num-n">4</div><div class="tl-day-num-label">Thu 26 Mar</div></div>
-      <div class="tl-day-info"><div class="tl-day-date">Thursday 26 March 2026</div><div class="tl-day-place">Hội An → Sơn Trà → Huế</div><div class="tl-day-tagline">Monkeys, Hai Van Pass, Imperial City arrival</div></div>
-      <div class="tl-day-toggle">▼</div>
-    </div>
-    <div class="tl-events">
-      <div class="tl-event"><div class="tl-event-time est">~08:00</div><div class="tl-event-icon icon-meal">🥐</div><div class="tl-event-body"><div class="tl-event-title">Breakfast &amp; Check-out</div><div class="tl-event-desc">Last breakfast at Palm Garden. Check out by 12:00. Luggage loaded into vehicle.</div></div></div>
-      <div class="tl-event"><div class="tl-event-time est">~09:00</div><div class="tl-event-icon icon-activity">🐒</div><div class="tl-event-body"><div class="tl-event-title">Sơn Trà Peninsula</div><div class="tl-event-desc">30-min drive north to Da Nang's green lung. Home to the endangered red-shanked douc langur (one of the world's most colourful primates), wild macaques, and the Giant Lady Buddha at 67m — tallest in Southeast Asia. Gorgeous bay views.</div><div class="tl-event-links"><a class="tl-event-link ev-activity" href="https://maps.google.com/maps?q=16.1043,108.2762" target="_blank">📍 Sơn Trà Peninsula</a></div></div></div>
-      <div class="tl-event"><div class="tl-event-time est">~11:30</div><div class="tl-event-icon icon-transfer">🚐</div><div class="tl-event-body"><div class="tl-event-title">Drive North — Hải Vân Pass</div><div class="tl-event-desc">One of Vietnam's great scenic drives. The Hải Vân Pass ("Ocean Cloud Pass") climbs to 496m with sweeping views of the South China Sea. Old French fortifications at the summit. ~1.5 hrs to Huế total.</div><div class="tl-event-links"><a class="tl-event-link ev-transfer" href="https://maps.google.com/maps?q=16.1997,108.1120" target="_blank">📍 Hải Vân Pass</a></div></div></div>
-      <div class="tl-event"><div class="tl-event-time est">~13:30</div><div class="tl-event-icon icon-meal">🍽️</div><div class="tl-event-body"><div class="tl-event-title">Lunch en route or in Huế</div><div class="tl-event-desc">Stop in Huế for lunch — try Bún Bò Huế (spicy beef noodle soup) or Bánh Khoái (sizzling crêpes), both iconic Huế dishes.</div></div></div>
-      <div class="tl-event"><div class="tl-event-time">14:00</div><div class="tl-event-icon icon-hotel">🏛️</div><div class="tl-event-body"><div class="tl-event-title">Check in — Indochine Palace Hotel Hue</div><div class="tl-event-desc">5-star palace hotel at 105A Hùng Vương. 3 × Palace Deluxe rooms (connecting guaranteed).</div><div class="tl-event-links"><a class="tl-event-link ev-hotel" href="https://www.google.com/maps/search/?api=1&query=Indochine+Palace+Hotel+Hue&query_place_id=ChIJf4F_QBWhQTERoNIz5ZvO4cs" target="_blank">📍 Maps</a><a class="tl-event-link ev-hotel" href="https://indochinepalace.com" target="_blank">🌐 Website</a><span class="tl-event-link ev-hotel">Ref 71721</span></div></div></div>
-      <div class="tl-event"><div class="tl-event-time est">~17:00</div><div class="tl-event-icon icon-activity">🛶</div><div class="tl-event-body"><div class="tl-event-title">Optional: Perfume River Sunset Cruise</div><div class="tl-event-desc">Gentle dragon boat cruise on the Perfume River at dusk — Thiên Mụ Pagoda from the water, temples along the banks. Ask hotel to arrange.</div></div></div>
-    </div>
-  </div>
-
-  <!-- DAY 5 -->
-  <div class="tl-day">
-    <div class="tl-day-header" onclick="toggleDay(this)">
-      <div class="tl-day-num"><div class="tl-day-num-n">5</div><div class="tl-day-num-label">Fri 27 Mar</div></div>
-      <div class="tl-day-info"><div class="tl-day-date">Friday 27 March 2026</div><div class="tl-day-place">Huế — Imperial City &amp; Royal Tombs</div><div class="tl-day-tagline">Vietnam's ancient imperial capital in full</div></div>
-      <div class="tl-day-toggle">▼</div>
-    </div>
-    <div class="tl-events">
-      <div class="tl-event"><div class="tl-event-time est">~08:00</div><div class="tl-event-icon icon-meal">🥐</div><div class="tl-event-body"><div class="tl-event-title">Breakfast at Hotel</div><div class="tl-event-desc">Excellent breakfast buffet at Indochine Palace — highly rated by guests.</div></div></div>
-      <div class="tl-event"><div class="tl-event-time est">~09:00</div><div class="tl-event-icon icon-activity">🏯</div><div class="tl-event-body"><div class="tl-event-title">The Imperial Citadel &amp; Forbidden Purple City</div><div class="tl-event-desc">The UNESCO World Heritage Complex of Huế Monuments. Walled citadel modelled on Beijing's Forbidden City, built 1804–1833. Allow 2–3 hours to explore the palaces, temples, and cannon-lined ramparts. <em>Note: Ladies should cover shoulders and knees inside the Citadel.</em></div><div class="tl-event-links"><a class="tl-event-link ev-activity" href="https://maps.google.com/maps?q=16.4698,107.5783" target="_blank">📍 Imperial Citadel</a></div></div></div>
-      <div class="tl-event"><div class="tl-event-time est">~11:30</div><div class="tl-event-icon icon-activity">⛩️</div><div class="tl-event-body"><div class="tl-event-title">Thiên Mụ Pagoda</div><div class="tl-event-desc">Seven-tiered Phước Duyên tower overlooking the Perfume River — Huế's most iconic landmark. The famous Austin car that carried monk Thích Quảng Đức to his 1963 self-immolation is displayed here.</div><div class="tl-event-links"><a class="tl-event-link ev-activity" href="https://maps.google.com/maps?q=16.4527,107.5441" target="_blank">📍 Thiên Mụ Pagoda</a></div></div></div>
-      <div class="tl-event"><div class="tl-event-time est">~13:00</div><div class="tl-event-icon icon-meal">🍽️</div><div class="tl-event-body"><div class="tl-event-title">Lunch</div><div class="tl-event-desc">Bún Bò Huế or a riverside restaurant near the pagoda.</div></div></div>
-      <div class="tl-event"><div class="tl-event-time est">~14:30</div><div class="tl-event-icon icon-activity">🪦</div><div class="tl-event-body"><div class="tl-event-title">Royal Tombs along the Perfume River</div><div class="tl-event-desc">Visit 1–2 of the royal tombs of the Nguyễn emperors. Khải Định Tomb is the most ornate (mosaics of ceramics and glass); Minh Mạng Tomb has serene garden landscapes. Each is ~30min by car south of Huế.</div><div class="tl-event-links"><a class="tl-event-link ev-activity" href="https://maps.google.com/maps?q=16.3997,107.5783" target="_blank">📍 Royal Tombs area</a></div></div></div>
-      <div class="tl-event"><div class="tl-event-time est">~19:00</div><div class="tl-event-icon icon-meal">🍽️</div><div class="tl-event-body"><div class="tl-event-title">Dinner — Huế cuisine</div><div class="tl-event-desc">Huế is Vietnam's culinary capital. Try Bánh Bèo (steamed rice cakes with shrimp), Bún Hến (clam vermicelli), or a royal cuisine set menu at the hotel. Early night — very early start tomorrow.</div></div></div>
-    </div>
-  </div>
-
-  <!-- DAY 6 -->
-  <div class="tl-day">
-    <div class="tl-day-header" onclick="toggleDay(this)">
-      <div class="tl-day-num"><div class="tl-day-num-n">6</div><div class="tl-day-num-label">Sat 28 Mar</div></div>
-      <div class="tl-day-info"><div class="tl-day-date">Saturday 28 March 2026</div><div class="tl-day-place">Huế → Hà Nội — VN1540</div><div class="tl-day-tagline">Early flight north, Hanoi arrival &amp; exploration</div></div>
-      <div class="tl-day-toggle">▼</div>
-    </div>
-    <div class="tl-events">
-      <div class="tl-event"><div class="tl-event-time est">~05:30</div><div class="tl-event-icon icon-meal">☕</div><div class="tl-event-body"><div class="tl-event-title">Very Early Morning</div><div class="tl-event-desc">Quick breakfast or grab from the hotel (arrange the night before). Pack all bags the evening before.</div></div></div>
-      <div class="tl-event"><div class="tl-event-time est">~06:00</div><div class="tl-event-icon icon-transfer">🚐</div><div class="tl-event-body"><div class="tl-event-title">Transfer to Phu Bai Airport</div><div class="tl-event-desc">~15km southeast of Huế city centre. Allow 30–40 mins to airport, then check in.</div></div></div>
-      <div class="tl-event"><div class="tl-event-time">07:50</div><div class="tl-event-icon icon-flight">✈️</div><div class="tl-event-body"><div class="tl-event-title">Depart Huế — VN1540</div><div class="tl-event-desc">Vietnam Airlines, Airbus A321. 1h 20min flight north to Hanoi. Booking FG9YNH. All 6 passengers.</div><div class="tl-event-links"><span class="tl-event-link ev-flight">VN1540 · HUI→HAN · FG9YNH</span></div></div></div>
-      <div class="tl-event"><div class="tl-event-time">09:10</div><div class="tl-event-icon icon-flight">✈️</div><div class="tl-event-body"><div class="tl-event-title">Land Hà Nội — Noi Bai T1</div><div class="tl-event-desc">Guide meets at arrivals. Private vehicle to Somerset Grand Hanoi (~45 min into the city).</div></div></div>
-      <div class="tl-event"><div class="tl-event-time">14:00</div><div class="tl-event-icon icon-hotel">🏙️</div><div class="tl-event-body"><div class="tl-event-title">Check in — Somerset Grand Hanoi</div><div class="tl-event-desc">1 × 3-bedroom Deluxe apartment (King + Queen + Twin beds). 49 Hai Bà Trưng Street, Hoan Kiem. Supermarket in the building!</div><div class="tl-event-links"><a class="tl-event-link ev-hotel" href="https://www.google.com/maps/search/?api=1&query=Somerset+Grand+Hanoi&query_place_id=ChIJDyi8FJerNTERkGa5aeymJIw" target="_blank">📍 Maps</a><a class="tl-event-link ev-hotel" href="https://www.somerset.com/en/vietnam/hanoi/somerset-grand-hanoi" target="_blank">🌐 Website</a><span class="tl-event-link ev-hotel">Ref 19371581</span></div></div></div>
-      <div class="tl-event"><div class="tl-event-time est">~15:30</div><div class="tl-event-icon icon-activity">🌿</div><div class="tl-event-body"><div class="tl-event-title">Hoan Kiem Lake &amp; Turtle Tower</div><div class="tl-event-desc">Gentle afternoon walk around the magical Sword Lake. Visit Ngọc Sơn Temple (Temple of the Jade Mountain) on its little island — the giant preserved Hoan Kiem turtle is on display.</div><div class="tl-event-links"><a class="tl-event-link ev-activity" href="https://maps.google.com/maps?q=21.0285,105.8524" target="_blank">📍 Hoan Kiem Lake</a></div></div></div>
-      <div class="tl-event"><div class="tl-event-time est">~17:00</div><div class="tl-event-icon icon-activity">🏛️</div><div class="tl-event-body"><div class="tl-event-title">Old Quarter &amp; Temple of Literature</div><div class="tl-event-desc">Wander the buzzing 36 guild streets of the Old Quarter. Temple of Literature (Văn Miếu) — Vietnam's first national university, founded 1070 — closes around 17:30.</div><div class="tl-event-links"><a class="tl-event-link ev-activity" href="https://maps.google.com/maps?q=21.0268,105.8355" target="_blank">📍 Temple of Literature</a></div></div></div>
-    </div>
-  </div>
-
-  <!-- DAY 7 -->
-  <div class="tl-day" id="tl-d7">
-    <div class="tl-day-header" onclick="toggleDay(this)">
-      <div class="tl-day-num"><div class="tl-day-num-n">7</div><div class="tl-day-num-label">Sun 29 Mar</div></div>
-      <div class="tl-day-info"><div class="tl-day-date">Sunday 29 March 2026</div><div class="tl-day-place">Hà Nội → Seaplane → Hạ Long Cruise</div><div class="tl-day-tagline">The most dramatic day — seaplane over limestone karsts</div></div>
-      <div class="tl-day-toggle">▼</div>
-    </div>
-    <div class="tl-events">
-      <div class="tl-event"><div class="tl-event-time est">~07:30</div><div class="tl-event-icon icon-meal">🥐</div><div class="tl-event-body"><div class="tl-event-title">Breakfast &amp; Luggage Pack</div><div class="tl-event-desc">Pack everything — you won't be back to Somerset until Day 9. Leave non-essentials in a luggage hold at the hotel if offered.</div></div></div>
-      <div class="tl-event"><div class="tl-event-time est">~08:30</div><div class="tl-event-icon icon-transfer">🚐</div><div class="tl-event-body"><div class="tl-event-title">Transfer to Tuan Chau Marina (~3.5 hrs)</div><div class="tl-event-desc">Private vehicle heading northeast toward Hạ Long Bay. Motorway drive (~160km). Arrive at Tuan Chau International Tourist Harbour.</div></div></div>
-      <div class="tl-event"><div class="tl-event-time">10:50</div><div class="tl-event-icon icon-activity">✈️</div><div class="tl-event-body"><div class="tl-event-title">🛩️ Seaplane Scenic Flight — 5 passengers</div><div class="tl-event-desc">25-minute breathtaking aerial flight over Hạ Long Bay's 1,969 limestone karst islands. The only way to truly appreciate the scale of this UNESCO masterpiece. <em>Doritte will not take this flight.</em> Weight limit: 100kg/ticket. Timing subject to weather.</div><div class="tl-event-links"><a class="tl-event-link ev-activity" href="https://maps.google.com/maps?q=20.9441,107.0726" target="_blank">📍 Tuan Chau Marina</a></div></div></div>
-      <div class="tl-event"><div class="tl-event-time">11:30</div><div class="tl-event-icon icon-hotel">🛳️</div><div class="tl-event-body"><div class="tl-event-title">Check in at Cruise Lounge</div><div class="tl-event-desc">Complete luggage check-in at the Signature Cruise waiting lounge at the harbour.</div><div class="tl-event-links"><a class="tl-event-link ev-hotel" href="https://www.signaturehalongcruise.com" target="_blank">🌐 Signature Cruise Website</a><span class="tl-event-link ev-hotel">Ref 19398</span></div></div></div>
-      <div class="tl-event"><div class="tl-event-time">12:00</div><div class="tl-event-icon icon-activity">⛵</div><div class="tl-event-body"><div class="tl-event-title">Board Cruise — Welcome Drink &amp; Safety Briefing</div><div class="tl-event-desc">Transferred by tender boat to the Signature Cruise. The Cruise Manager welcomes you aboard, safety briefing, itinerary overview while enjoying a signature welcome drink.</div></div></div>
-      <div class="tl-event"><div class="tl-event-time">13:00</div><div class="tl-event-icon icon-meal">🦐</div><div class="tl-event-body"><div class="tl-event-title">Lunch — Sailing into Bai Tu Long Bay</div><div class="tl-event-desc">Lunch served at the restaurant as the cruise departs toward Bai Tu Long Bay — a less-touristed gem of the Hạ Long complex. Limestone karsts emerge from jade water in every direction.</div></div></div>
-      <div class="tl-event"><div class="tl-event-time">14:45</div><div class="tl-event-icon icon-activity">🚣</div><div class="tl-event-body"><div class="tl-event-title">Vũng Viêng Floating Fishing Village — Kayak &amp; Bamboo Boat</div><div class="tl-event-desc">Kayak freely through the floating village, or take a traditional bamboo boat rowed by a local boatman. Discover the life and culture of the fishing community on the water.</div></div></div>
-      <div class="tl-event"><div class="tl-event-time est">~18:00</div><div class="tl-event-icon icon-activity">🌅</div><div class="tl-event-body"><div class="tl-event-title">Sunset &amp; Cocktails on Deck</div><div class="tl-event-desc">The sun setting over limestone karsts — one of the great sights in all of Asia. Drinks on the sundeck.</div></div></div>
-      <div class="tl-event"><div class="tl-event-time est">~19:00</div><div class="tl-event-icon icon-meal">🦞</div><div class="tl-event-body"><div class="tl-event-title">Dinner on Board</div><div class="tl-event-desc">Multi-course Vietnamese seafood dinner. Anchored overnight in the bay.</div></div></div>
-    </div>
-  </div>
-
-  <!-- DAY 8 -->
-  <div class="tl-day">
-    <div class="tl-day-header" onclick="toggleDay(this)">
-      <div class="tl-day-num"><div class="tl-day-num-n">8</div><div class="tl-day-num-label">Mon 30 Mar</div></div>
-      <div class="tl-day-info"><div class="tl-day-date">Monday 30 March 2026</div><div class="tl-day-place">Hạ Long → Ninh Bình</div><div class="tl-day-tagline">Cave, disembark, drive south to the karsts</div></div>
-      <div class="tl-day-toggle">▼</div>
-    </div>
-    <div class="tl-events">
-      <div class="tl-event"><div class="tl-event-time est">~06:00</div><div class="tl-event-icon icon-activity">🧘</div><div class="tl-event-body"><div class="tl-event-title">Optional: Tai Chi on Deck</div><div class="tl-event-desc">Sunrise Tai Chi session on the sundeck — the bay at dawn is extraordinary.</div></div></div>
-      <div class="tl-event"><div class="tl-event-time">08:00</div><div class="tl-event-icon icon-activity">🦇</div><div class="tl-event-body"><div class="tl-event-title">Thiên Cảnh Sơn Cave</div><div class="tl-event-desc">Three interconnected caverns strewn with stalactites and stalagmites. 200 steps up (kids will love the challenge!). Walk along white sand beach with panoramic Bai Tu Long views.</div></div></div>
-      <div class="tl-event"><div class="tl-event-time">09:00</div><div class="tl-event-icon icon-hotel">📦</div><div class="tl-event-body"><div class="tl-event-title">Check Out of Cruise — Pack Luggage</div><div class="tl-event-desc">Leave luggage outside cabin door — crew collects and readies at the pier.</div></div></div>
-      <div class="tl-event"><div class="tl-event-time">09:30</div><div class="tl-event-icon icon-meal">🍳</div><div class="tl-event-body"><div class="tl-event-title">Brunch Buffet — Cruising to Port</div><div class="tl-event-desc">Generous brunch while cruising back toward Halong International Harbour. One last look at the karsts.</div></div></div>
-      <div class="tl-event"><div class="tl-event-time">10:45</div><div class="tl-event-icon icon-transfer">🚐</div><div class="tl-event-body"><div class="tl-event-title">Disembark &amp; Drive to Ninh Bình</div><div class="tl-event-desc">Transfer by tender to harbour. Private vehicle south to Ninh Bình (~2.5 hours, ~180km). Arrive Emeralda Resort ~14:00.</div></div></div>
-      <div class="tl-event"><div class="tl-event-time">14:00</div><div class="tl-event-icon icon-hotel">🌾</div><div class="tl-event-body"><div class="tl-event-title">Check in — Emeralda Resort Tam Coc</div><div class="tl-event-desc">4-star resort in the Trang An UNESCO landscape. 3 × Deluxe rooms. Beautiful river and mountain views.</div><div class="tl-event-links"><a class="tl-event-link ev-hotel" href="https://www.google.com/maps/search/?api=1&query=Emeralda+Resort+Tam+Coc+Ninh+Binh&query_place_id=ChIJk2yfySkkNTERGhYC6kh382g" target="_blank">📍 Maps</a><a class="tl-event-link ev-hotel" href="https://www.emeraldaresort.com" target="_blank">🌐 Website</a><span class="tl-event-link ev-hotel">Ref 20038</span></div></div></div>
-    </div>
-  </div>
-
-  <!-- DAY 9 -->
-  <div class="tl-day">
-    <div class="tl-day-header" onclick="toggleDay(this)">
-      <div class="tl-day-num"><div class="tl-day-num-n">9</div><div class="tl-day-num-label">Tue 31 Mar</div></div>
-      <div class="tl-day-info"><div class="tl-day-date">Tuesday 31 March 2026</div><div class="tl-day-place">Ninh Bình — Caves, Bikes &amp; Citadel</div><div class="tl-day-tagline">Vietnam's ancient capital — on a sampan, a bicycle</div></div>
-      <div class="tl-day-toggle">▼</div>
-    </div>
-    <div class="tl-events">
-      <div class="tl-event"><div class="tl-event-time est">~08:00</div><div class="tl-event-icon icon-meal">🥐</div><div class="tl-event-body"><div class="tl-event-title">Breakfast at Resort</div><div class="tl-event-desc">Great breakfast with river views — one of the resort's highlights.</div></div></div>
-      <div class="tl-event"><div class="tl-event-time est">~09:00</div><div class="tl-event-icon icon-activity">🚣</div><div class="tl-event-body"><div class="tl-event-title">Tam Cốc River Caves — Sampan Boat</div><div class="tl-event-desc">Flat-bottomed sampan rowed by local women (with their feet!) through three cave tunnels carved by the Ngô Đồng River. Lush rice paddies frame each side; water buffalo wade nearby. ~2 hrs total. One of Vietnam's most serene experiences.</div><div class="tl-event-links"><a class="tl-event-link ev-activity" href="https://maps.google.com/maps?q=20.2271,105.9447" target="_blank">📍 Tam Cốc Boats</a></div></div></div>
-      <div class="tl-event"><div class="tl-event-time est">~11:30</div><div class="tl-event-icon icon-activity">🚲</div><div class="tl-event-body"><div class="tl-event-title">Cycle Through Rice Paddies</div><div class="tl-event-desc">Hire bikes from the resort or nearby (cheaper outside). Flat, easy cycling through the valley — rice fields, limestone peaks, and villages. Kids will love this.</div></div></div>
-      <div class="tl-event"><div class="tl-event-time est">~13:00</div><div class="tl-event-icon icon-meal">🍽️</div><div class="tl-event-body"><div class="tl-event-title">Lunch</div><div class="tl-event-desc">Local restaurants near Tam Coc — Ninh Bình is famous for Thịt Dê (goat meat) and Cơm Cháy (crispy rice). Also great fresh spring rolls.</div></div></div>
-      <div class="tl-event"><div class="tl-event-time est">~14:30</div><div class="tl-event-icon icon-activity">⛩️</div><div class="tl-event-body"><div class="tl-event-title">Bích Động Pagoda &amp; Hoa Lư Citadel</div><div class="tl-event-desc">Bích Động ("Jade Grotto") — an 18th-century pagoda built into a limestone cliff cave. Then Hoa Lư — ruins of Vietnam's ancient 10th-century imperial citadel, former capital before Hanoi.</div><div class="tl-event-links"><a class="tl-event-link ev-activity" href="https://maps.google.com/maps?q=20.2195,105.9364" target="_blank">📍 Bích Động</a><a class="tl-event-link ev-activity" href="https://maps.google.com/maps?q=20.2762,105.8972" target="_blank">📍 Hoa Lư Citadel</a></div></div></div>
-    </div>
-  </div>
-
-  <!-- DAY 10 -->
-  <div class="tl-day" id="tl-d10">
-    <div class="tl-day-header" onclick="toggleDay(this)">
-      <div class="tl-day-num"><div class="tl-day-num-n">10</div><div class="tl-day-num-label">Wed 1 Apr</div></div>
-      <div class="tl-day-info"><div class="tl-day-date">Wednesday 1 April 2026</div><div class="tl-day-place">Ninh Bình → Mai Châu</div><div class="tl-day-tagline">Drive west into the highlands — White Thai country</div></div>
-      <div class="tl-day-toggle">▼</div>
-    </div>
-    <div class="tl-events">
-      <div class="tl-event"><div class="tl-event-time est">~08:00</div><div class="tl-event-icon icon-meal">🥐</div><div class="tl-event-body"><div class="tl-event-title">Breakfast &amp; Check-out</div><div class="tl-event-desc">Last breakfast at Emeralda. Check out, luggage loaded.</div></div></div>
-      <div class="tl-event"><div class="tl-event-time est">~09:00</div><div class="tl-event-icon icon-transfer">🚐</div><div class="tl-event-body"><div class="tl-event-title">Drive to Mai Châu (~3 hours)</div><div class="tl-event-desc">~130km west through mountainous Hòa Bình province. The road climbs into the highlands — limestone scenery, minority villages, and terraced hillsides.</div></div></div>
-      <div class="tl-event"><div class="tl-event-time">14:00</div><div class="tl-event-icon icon-hotel">🏔️</div><div class="tl-event-body"><div class="tl-event-title">Check in — Mai Chau Ecolodge</div><div class="tl-event-desc">4-star ecolodge perched in the Mai Châu valley. 3 × Suite rooms (connecting guaranteed). Rice paddies and limestone mountains in every direction. Pool and spa available.</div><div class="tl-event-links"><a class="tl-event-link ev-hotel" href="https://www.google.com/maps/search/?api=1&query=Mai+Chau+Ecolodge+Vietnam&query_place_id=ChIJhwcfY1MINDERFnWr9OFoAr0" target="_blank">📍 Maps</a><a class="tl-event-link ev-hotel" href="https://maichau.ecolodge.asia/en/" target="_blank">🌐 Website</a><span class="tl-event-link ev-hotel">Ref 164184</span></div></div></div>
-      <div class="tl-event"><div class="tl-event-time est">~15:30</div><div class="tl-event-icon icon-activity">🚲</div><div class="tl-event-body"><div class="tl-event-title">Afternoon — Explore by Bicycle</div><div class="tl-event-desc">Free bikes at the ecolodge. Gentle cycling on paved trails through rice paddies and White Thai villages. Stilt houses, children playing, weavers at their looms — incredibly peaceful.</div></div></div>
-      <div class="tl-event"><div class="tl-event-time est">~18:30</div><div class="tl-event-icon icon-meal">🍽️</div><div class="tl-event-body"><div class="tl-event-title">Dinner at Lodge Restaurant</div><div class="tl-event-desc">Local dishes — try grilled fish in bamboo, sticky rice with banana leaf, and fresh mountain vegetables. Beautiful sunset over the valley.</div></div></div>
-    </div>
-  </div>
-
-  <!-- DAY 11 -->
-  <div class="tl-day">
-    <div class="tl-day-header" onclick="toggleDay(this)">
-      <div class="tl-day-num"><div class="tl-day-num-n">11</div><div class="tl-day-num-label">Thu 2 Apr</div></div>
-      <div class="tl-day-info"><div class="tl-day-date">Thursday 2 April 2026</div><div class="tl-day-place">Mai Châu — Village Hike &amp; Bamboo Rafting</div><div class="tl-day-tagline">Remote trails, Thai farmers, floating down the river</div></div>
-      <div class="tl-day-toggle">▼</div>
-    </div>
-    <div class="tl-events">
-      <div class="tl-event"><div class="tl-event-time est">~08:00</div><div class="tl-event-icon icon-meal">🥐</div><div class="tl-event-body"><div class="tl-event-title">Breakfast</div><div class="tl-event-desc">Lovely breakfast with valley views.</div></div></div>
-      <div class="tl-event"><div class="tl-event-time">09:30</div><div class="tl-event-icon icon-activity">🥾</div><div class="tl-event-body"><div class="tl-event-title">Guided Hike to Mai Hịch Village</div><div class="tl-event-desc">Wind through limestone mountains and rice fields to the remote Mai Hịch Valley. Meet White Thai farmers planting or harvesting rice, herding buffalo, weaving baskets. The guide provides cultural context throughout — an authentic experience far from the tourist trail.</div></div></div>
-      <div class="tl-event"><div class="tl-event-time est">~12:30</div><div class="tl-event-icon icon-meal">🍱</div><div class="tl-event-body"><div class="tl-event-title">Lunch</div><div class="tl-event-desc">Traditional meal with a local family or prepared picnic in the village.</div></div></div>
-      <div class="tl-event"><div class="tl-event-time est">~14:00</div><div class="tl-event-icon icon-activity">🚣</div><div class="tl-event-body"><div class="tl-event-title">Bamboo Rafting</div><div class="tl-event-desc">Float down a tranquil mountain stream on handcrafted bamboo rafts. Learn to paddle, steer, and drift through jungle-fringed channels. Calm and beautiful — great for the kids.</div></div></div>
-      <div class="tl-event"><div class="tl-event-time est">~16:00</div><div class="tl-event-icon icon-transfer">🚐</div><div class="tl-event-body"><div class="tl-event-title">Return to Ecolodge</div><div class="tl-event-desc">Transfer back. Pool, spa, or just watching the valley fade into evening from your terrace.</div></div></div>
-    </div>
-  </div>
-
-  <!-- DAY 12 -->
-  <div class="tl-day">
-    <div class="tl-day-header" onclick="toggleDay(this)">
-      <div class="tl-day-num"><div class="tl-day-num-n">12</div><div class="tl-day-num-label">Fri 3 Apr</div></div>
-      <div class="tl-day-info"><div class="tl-day-date">Friday 3 April 2026</div><div class="tl-day-place">Mai Châu → Hà Nội</div><div class="tl-day-tagline">3.5-hour drive back to the capital for the last time</div></div>
-      <div class="tl-day-toggle">▼</div>
-    </div>
-    <div class="tl-events">
-      <div class="tl-event"><div class="tl-event-time est">~08:00</div><div class="tl-event-icon icon-meal">🥐</div><div class="tl-event-body"><div class="tl-event-title">Breakfast &amp; Check-out</div><div class="tl-event-desc">Final breakfast in the valley. Say goodbye to the limestone peaks.</div></div></div>
-      <div class="tl-event"><div class="tl-event-time est">~10:00</div><div class="tl-event-icon icon-transfer">🚐</div><div class="tl-event-body"><div class="tl-event-title">Drive to Hà Nội (~3.5 hours)</div><div class="tl-event-desc">~160km east back to the capital. Arrive early afternoon.</div></div></div>
-      <div class="tl-event"><div class="tl-event-time">14:00</div><div class="tl-event-icon icon-hotel">🏙️</div><div class="tl-event-body"><div class="tl-event-title">Check in — Somerset Grand Hanoi (Final Stay)</div><div class="tl-event-desc">Back to the Somerset — same 3-bedroom apartment, same booking. Two final nights in Hanoi.</div><div class="tl-event-links"><a class="tl-event-link ev-hotel" href="https://www.google.com/maps/search/?api=1&query=Somerset+Grand+Hanoi&query_place_id=ChIJDyi8FJerNTERkGa5aeymJIw" target="_blank">📍 Maps</a><span class="tl-event-link ev-hotel">Ref 19371581</span></div></div></div>
-      <div class="tl-event"><div class="tl-event-time est">~16:00</div><div class="tl-event-icon icon-activity">🌙</div><div class="tl-event-body"><div class="tl-event-title">Evening — Night Market &amp; Final Dinner</div><div class="tl-event-desc">Đồng Xuân Night Market (Fri–Sun only — perfect timing). Then a proper last dinner — Chả Cá Lã Vọng (turmeric fish with dill, a Hanoi institution), or beer and snacks on Tạ Hiện Street (Bia Hơi Street).</div><div class="tl-event-links"><a class="tl-event-link ev-activity" href="https://maps.google.com/maps?q=21.0425,105.8458" target="_blank">📍 Đồng Xuân Night Market</a></div></div></div>
-    </div>
-  </div>
-
-  <!-- DAY 13 -->
-  <div class="tl-day">
-    <div class="tl-day-header" onclick="toggleDay(this)">
-      <div class="tl-day-num"><div class="tl-day-num-n">13</div><div class="tl-day-num-label">Sat 4 Apr</div></div>
-      <div class="tl-day-info"><div class="tl-day-date">Saturday 4 April 2026</div><div class="tl-day-place">Hà Nội — Free Day</div><div class="tl-day-tagline">Your day — mausoleum, markets, or just wander</div></div>
-      <div class="tl-day-toggle">▼</div>
-    </div>
-    <div class="tl-events">
-      <div class="tl-event"><div class="tl-event-time est">~07:00</div><div class="tl-event-icon icon-activity">🏛️</div><div class="tl-event-body"><div class="tl-event-title">Ho Chi Minh Mausoleum &amp; Complex</div><div class="tl-event-desc">Open Tue–Thu &amp; Sat–Sun, 8:00–11:00 only. Queue early. The preserved body of Uncle Ho is on display. The adjacent Presidential Palace gardens, Ho Chi Minh's stilt house, and the One Pillar Pagoda are all in the same complex. Free entry.</div><div class="tl-event-links"><a class="tl-event-link ev-activity" href="https://maps.google.com/maps?q=21.0369,105.8350" target="_blank">📍 Ho Chi Minh Mausoleum</a></div></div></div>
-      <div class="tl-event"><div class="tl-event-time est">~11:00</div><div class="tl-event-icon icon-activity">🎨</div><div class="tl-event-body"><div class="tl-event-title">Fine Arts Museum or Old Quarter</div><div class="tl-event-desc">Vietnam Museum of Fine Arts (impressive lacquerware and silk paintings) or browse the 36 guild streets — Hang Gai (silk), Hang Bac (silver), Hang Thiec (tin), each named for its historical trade. Good souvenir shopping.</div><div class="tl-event-links"><a class="tl-event-link ev-activity" href="https://maps.google.com/maps?q=21.0338,105.8432" target="_blank">📍 Fine Arts Museum</a></div></div></div>
-      <div class="tl-event"><div class="tl-event-time est">~13:00</div><div class="tl-event-icon icon-meal">🍽️</div><div class="tl-event-body"><div class="tl-event-title">Lunch — Classic Hanoi</div><div class="tl-event-desc">Phở Bò (beef noodle soup) for breakfast or lunch is very much the Hanoi tradition. Or Bún Chả (grilled pork with noodles — Obama's famous Hanoi meal) at Bún Chả Hương Liên.</div></div></div>
-      <div class="tl-event"><div class="tl-event-time est">~16:00</div><div class="tl-event-icon icon-activity">☕</div><div class="tl-event-body"><div class="tl-event-title">Cà Phê Trứng — Egg Coffee</div><div class="tl-event-desc">Hanoi's iconic invention — whipped egg yolk and condensed milk over espresso. Must try at Giảng Café or Đinh Café, both in the Old Quarter. Serve it hot or iced.</div><div class="tl-event-links"><a class="tl-event-link ev-activity" href="https://maps.google.com/maps?q=21.0337,105.8501" target="_blank">📍 Giảng Café</a></div></div></div>
-      <div class="tl-event"><div class="tl-event-time est">~19:00</div><div class="tl-event-icon icon-meal">🥂</div><div class="tl-event-body"><div class="tl-event-title">Last Dinner Together</div><div class="tl-event-desc">The two families dine together for the last time. Splurge on a rooftop restaurant or a Hanoi cooking experience. Early night — different departure times tomorrow.</div></div></div>
-    </div>
-  </div>
-
-  <!-- DAY 14 -->
-  <div class="tl-day" id="tl-d14">
-    <div class="tl-day-header" onclick="toggleDay(this)">
-      <div class="tl-day-num" style="background:var(--ink-light)"><div class="tl-day-num-n">14</div><div class="tl-day-num-label">Sun 5 Apr</div></div>
-      <div class="tl-day-info"><div class="tl-day-date">Sunday 5 April 2026 · DEPARTURE DAY</div><div class="tl-day-place">Hà Nội → Tel Aviv — Two Flights Home</div><div class="tl-day-tagline">Split departures — safe travels everyone 🪷</div></div>
-      <div class="tl-day-toggle">▼</div>
-    </div>
-    <div class="tl-events">
-
       <div class="tl-event">
-        <div class="tl-event-time">08:30</div>
+        <div class="tl-event-time est">~13:30</div>
+        <div class="tl-event-icon icon-activity">🥥</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Cam Thanh Coconut Village</div>
+          <div class="tl-event-desc">Glide through lush coconut waterways on a traditional basket boat — learn to paddle, enjoy the rowing performance.</div>
+          
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-event-time est">~15:30</div>
+        <div class="tl-event-icon icon-activity">🏮</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Old Town Walking Tour</div>
+          <div class="tl-event-desc">UNESCO landmarks — merchant houses, assembly halls, the Japanese Covered Bridge.</div>
+          
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-event-time est">~17:00</div>
+        <div class="tl-event-icon icon-activity">🎨</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Silk Lantern Workshop</div>
+          <div class="tl-event-desc">At a local craftsman home: history, shapes, colors — then create or decorate your own lantern to take home.</div>
+          
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-event-time est">~19:00</div>
+        <div class="tl-event-icon icon-activity">🌙</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Night Market & Flower Lanterns</div>
+          <div class="tl-event-desc">Lantern-lit streets and street food, then a gentle Hoai River boat ride releasing flower lanterns — a wish for luck, happiness and peace.</div>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tl-day">
+    <div class="tl-day-header" onclick="toggleDay(this)">
+      <div class="tl-day-num"><div class="tl-day-num-n">16</div><div class="tl-day-num-label">Wed 23 Sep</div></div>
+      <div class="tl-day-info"><div class="tl-day-date">Wednesday 23 September 2026</div><div class="tl-day-place">Hội An — Bà Nà Hills & the Golden Bridge</div><div class="tl-day-tagline">Cable cars through the clouds · B</div></div>
+      <div class="tl-day-toggle">▼</div>
+    </div>
+    <div class="tl-events">
+      <div class="tl-event">
+        <div class="tl-event-time est">~08:00</div>
         <div class="tl-event-icon icon-transfer">🚐</div>
         <div class="tl-event-body">
-          <div class="tl-event-title">Doritte &amp; Richard — Driver Pickup</div>
-          <div class="tl-event-desc">Driver collects Doritte and Richard from Somerset Grand Hanoi at 08:30 sharp. Transfer to Noi Bai International Airport (~45 min).</div>
+          <div class="tl-event-title">Drive to Bà Nà Hills (50 min)</div>
+          <div class="tl-event-desc">Up to 1,400m+ — cool air year-round.</div>
+          
         </div>
       </div>
-
       <div class="tl-event">
-        <div class="tl-event-time">12:05</div>
-        <div class="tl-event-icon icon-flight">✈️</div>
+        <div class="tl-event-time est">~09:15</div>
+        <div class="tl-event-icon icon-activity">🚡</div>
         <div class="tl-event-body">
-          <div class="tl-event-title">Doritte &amp; Richard Depart — BR398</div>
-          <div class="tl-event-desc">EVA Air flight BR398 from Hanoi to Tel Aviv. Direct routing.</div>
-          <div class="tl-event-links"><span class="tl-event-link ev-flight">BR398 · EVA Air · HAN→TLV</span></div>
+          <div class="tl-event-title">Cable Car Ascent</div>
+          <div class="tl-event-desc">A bird-eye view of strikingly beautiful nature — flying among clouds and wind.</div>
+          
         </div>
       </div>
-
       <div class="tl-event">
         <div class="tl-event-time est">~10:00</div>
-        <div class="tl-event-icon icon-meal">🍽️</div>
+        <div class="tl-event-icon icon-activity">🌉</div>
         <div class="tl-event-body">
-          <div class="tl-event-title">Adi's Family — Final Morning in Hanoi</div>
-          <div class="tl-event-desc">Still ~5 hours before your pickup at 15:45. Have a leisurely last lunch in the Old Quarter. Last Phở. Last egg coffee. Don't forget to buy Van Phuc silk from Hang Gai street!</div>
+          <div class="tl-event-title">The Golden Bridge</div>
+          <div class="tl-event-desc">Walk in the clouds on the bridge held by a pair of giant stone hands.</div>
+          
         </div>
       </div>
-
       <div class="tl-event">
-        <div class="tl-event-time">15:45</div>
+        <div class="tl-event-time est">~11:00</div>
+        <div class="tl-event-icon icon-activity">🎢</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">French Village & Fantasy Park</div>
+          <div class="tl-event-desc">European villas, flower beds, pagodas, indoor games (ticket includes most of Fantasy Park; French Wine Cellar and Wax Museum excluded).</div>
+          
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-event-time est">~15:30</div>
         <div class="tl-event-icon icon-transfer">🚐</div>
         <div class="tl-event-body">
-          <div class="tl-event-title">Adi, Verly, Sol &amp; Neil — Driver Pickup</div>
-          <div class="tl-event-desc">Driver collects the family from Somerset Grand Hanoi at 15:45 sharp. Transfer to Noi Bai International Airport (~45 min).</div>
+          <div class="tl-event-title">Return to Hội An</div>
+          <div class="tl-event-desc">Rest of the day at leisure — one more beach sunset.</div>
+          
         </div>
       </div>
-
-      <div class="tl-event">
-        <div class="tl-event-time">20:40</div>
-        <div class="tl-event-icon icon-flight">✈️</div>
-        <div class="tl-event-body">
-          <div class="tl-event-title">Depart Hà Nội — EY431</div>
-          <div class="tl-event-desc">Etihad Airways EY431, Hanoi → Abu Dhabi. 6h 50min. Arrives AUH 00:30 Mon 6 Apr. Seats TBA. Booking 8MIJJN, 25kg baggage.</div>
-          <div class="tl-event-links"><span class="tl-event-link ev-flight">EY431 · HAN→AUH · Booking 8MIJJN</span></div>
-        </div>
-      </div>
-
-      <div class="tl-event">
-        <div class="tl-event-time">02:45</div>
-        <div class="tl-event-icon icon-flight">✈️</div>
-        <div class="tl-event-body">
-          <div class="tl-event-title">Abu Dhabi → Tel Aviv — EY609</div>
-          <div class="tl-event-desc">Etihad Airways EY609, Abu Dhabi → Tel Aviv Ben Gurion T3. 3h 25min. Arrives TLV 05:10 Mon 6 Apr. Seats TBA. Booking 8MIJJN, 25kg baggage.</div>
-          <div class="tl-event-links"><span class="tl-event-link ev-flight">EY609 · AUH→TLV · Arrives 05:10</span></div>
-        </div>
-      </div>
-
     </div>
-  </div><!-- end day 14 -->
+  </div>
+
+  <div class="tl-day" id="tl-d17">
+    <div class="tl-day-header" onclick="toggleDay(this)">
+      <div class="tl-day-num"><div class="tl-day-num-n">17</div><div class="tl-day-num-label">Thu 24 Sep</div></div>
+      <div class="tl-day-info"><div class="tl-day-date">Thursday 24 September 2026</div><div class="tl-day-place">Hội An → Fly to Hồ Chí Minh City</div><div class="tl-day-tagline">South to Saigon · B</div></div>
+      <div class="tl-day-toggle">▼</div>
+    </div>
+    <div class="tl-events">
+      <div class="tl-event">
+        <div class="tl-event-time est">~09:00</div>
+        <div class="tl-event-icon icon-activity">🏖️</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Morning at Leisure</div>
+          <div class="tl-event-desc">Last swim at Cua Dai.</div>
+          
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-event-time est">~12:30</div>
+        <div class="tl-event-icon icon-transfer">🚐</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Driver to Đà Nẵng Airport</div>
+          <div class="tl-event-desc">Timed to your flight.</div>
+          
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-event-time est">~15:00</div>
+        <div class="tl-event-icon icon-flight">✈️</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Fly DAD → SGN</div>
+          <div class="tl-event-desc">Vietnam Airlines to HCMC. On arrival head to exit gate A1–A2 — your guide waits with a signboard.</div>
+          <div class="tl-event-links"><span class="tl-event-link ev-flight">DAD→SGN · via SO85988</span></div>
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-event-time est">~17:30</div>
+        <div class="tl-event-icon icon-hotel">🏙️</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Check in — Somerset Ho Chi Minh City</div>
+          <div class="tl-event-desc">2-bed Executive + 1-bed Deluxe apartments.</div>
+          <div class="tl-event-links"><a class="tl-event-link ev-hotel" href="https://www.google.com/maps/search/?api=1&query=Somerset+Ho+Chi+Minh+City" target="_blank">📍 Maps</a><a class="tl-event-link ev-hotel" href="https://www.somerset.com/en/vietnam/ho-chi-minh-city/somerset-ho-chi-minh-city" target="_blank">🌐 Website</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tl-day">
+    <div class="tl-day-header" onclick="toggleDay(this)">
+      <div class="tl-day-num"><div class="tl-day-num-n">18</div><div class="tl-day-num-label">Fri 25 Sep</div></div>
+      <div class="tl-day-info"><div class="tl-day-date">Friday 25 September 2026</div><div class="tl-day-place">HCMC — City Highlights · 🔀 Families Split</div><div class="tl-day-tagline">Farewell Doritte & Rick · Saigon for the rest · B</div></div>
+      <div class="tl-day-toggle">▼</div>
+    </div>
+    <div class="tl-events">
+      <div class="tl-event">
+        <div class="tl-event-time est">~08:00</div>
+        <div class="tl-event-icon icon-transfer">🚐</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Doritte & Rick — Airport Transfer</div>
+          <div class="tl-event-desc">Private transfer to Tan Son Nhat for their flight home. Safe travels! 🪷</div>
+          
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-event-time est">~09:30</div>
+        <div class="tl-event-icon icon-activity">🏛️</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Dong Khoi & Colonial Saigon</div>
+          <div class="tl-event-desc">CIA building (the 1975 helicopter evacuation — ride one of the city oldest elevators), Saigon Opera House, Notre Dame Cathedral, the 1891 Central Post Office.</div>
+          
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-event-time est">~11:30</div>
+        <div class="tl-event-icon icon-activity">🏫</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Reunification Palace</div>
+          <div class="tl-event-desc">Former residence of the Indochina Governor-General — stories of April 30, 1975.</div>
+          
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-event-time est">~14:00</div>
+        <div class="tl-event-icon icon-activity">🌿</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">FITO Museum</div>
+          <div class="tl-event-desc">Vietnam first museum of traditional medicine — 3,000 relics, centuries-old handwritten prescriptions, carved wooden interiors.</div>
+          
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-event-time est">~16:00</div>
+        <div class="tl-event-icon icon-activity">🏮</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Cholon & Thien Hau Temple</div>
+          <div class="tl-event-desc">Chinatown — enormous burning incense coils at the 19th-century Cantonese temple of the sea goddess.</div>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tl-day">
+    <div class="tl-day-header" onclick="toggleDay(this)">
+      <div class="tl-day-num"><div class="tl-day-num-n">19</div><div class="tl-day-num-label">Sat 26 Sep</div></div>
+      <div class="tl-day-info"><div class="tl-day-date">Saturday 26 September 2026</div><div class="tl-day-place">HCMC → Mekong Delta → Vũng Liêm</div><div class="tl-day-tagline">Duck farms, dragon fruit, pop rice · B/D</div></div>
+      <div class="tl-day-toggle">▼</div>
+    </div>
+    <div class="tl-events">
+      <div class="tl-event">
+        <div class="tl-event-time est">~08:00</div>
+        <div class="tl-event-icon icon-transfer">🚐</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Drive to Vũng Liêm (3 hrs)</div>
+          <div class="tl-event-desc">A secluded Mekong village — rice paddies and fruit farms replace city sights.</div>
+          
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-event-time est">~11:30</div>
+        <div class="tl-event-icon icon-hotel">🏡</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Coco Riverside Lodge — Welcome</div>
+          <div class="tl-event-desc">Welcome drink, check into your private rustic bungalow of traditional Mekong materials. Delta-style lunch.</div>
+          <div class="tl-event-links"><a class="tl-event-link ev-hotel" href="https://www.google.com/maps/search/?api=1&query=Coco+Riverside+Lodge+Vung+Liem+Mekong+Delta+Vietnam" target="_blank">📍 Maps</a><a class="tl-event-link ev-hotel" href="https://www.cocoriverside.com" target="_blank">🌐 Website</a></div>
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-event-time est">~14:30</div>
+        <div class="tl-event-icon icon-activity">🚲</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Rural Cycling (~4–5 km)</div>
+          <div class="tl-event-desc">Duck farm, dragon fruit orchard, coconut fabric factory, rice paddies. Watch traditional pop rice making at a local home. Sunset photo heaven.</div>
+          
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-event-time est">~18:00</div>
+        <div class="tl-event-icon icon-meal">🍲</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Cook Dinner with Your Host</div>
+          <div class="tl-event-desc">Help make a traditional home-cooked Mekong dinner. Overnight in the bungalow.</div>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tl-day">
+    <div class="tl-day-header" onclick="toggleDay(this)">
+      <div class="tl-day-num"><div class="tl-day-num-n">20</div><div class="tl-day-num-label">Sun 27 Sep</div></div>
+      <div class="tl-day-info"><div class="tl-day-date">Sunday 27 September 2026</div><div class="tl-day-place">Vũng Liêm — Mekong Delta Life</div><div class="tl-day-tagline">Canals, market, frog farm · B/L/D</div></div>
+      <div class="tl-day-toggle">▼</div>
+    </div>
+    <div class="tl-events">
+      <div class="tl-event">
+        <div class="tl-event-time est">~07:30</div>
+        <div class="tl-event-icon icon-meal">🥐</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Breakfast by the Host</div>
+          <div class="tl-event-desc">Simple and well-prepared.</div>
+          
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-event-time est">~08:30</div>
+        <div class="tl-event-icon icon-activity">🛶</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Private Boat Canal Cruise</div>
+          <div class="tl-event-desc">Leisurely cruise on the peaceful canals; local market where Mekong residents exchange goods.</div>
+          
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-event-time est">~10:30</div>
+        <div class="tl-event-icon icon-activity">⛩️</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Cao Dai Temple & Coconut Workshop</div>
+          <div class="tl-event-desc">Colourful temple, then coconut processing up close.</div>
+          
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-event-time est">~14:00</div>
+        <div class="tl-event-icon icon-activity">🚣</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Sampan to Mother Hero Village</div>
+          <div class="tl-event-desc">Row to the village, visit the frog farm of her grandson, coconut juice with the family.</div>
+          
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-event-time est">~18:30</div>
+        <div class="tl-event-icon icon-meal">🍲</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Dinner at the Lodge</div>
+          <div class="tl-event-desc">Second night in the bungalow.</div>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tl-day">
+    <div class="tl-day-header" onclick="toggleDay(this)">
+      <div class="tl-day-num"><div class="tl-day-num-n">21</div><div class="tl-day-num-label">Mon 28 Sep</div></div>
+      <div class="tl-day-info"><div class="tl-day-date">Monday 28 September 2026</div><div class="tl-day-place">Vũng Liêm → Hồ Chí Minh City</div><div class="tl-day-tagline">Weaving with the host, back to Saigon · B/L</div></div>
+      <div class="tl-day-toggle">▼</div>
+    </div>
+    <div class="tl-events">
+      <div class="tl-event">
+        <div class="tl-event-time est">~08:30</div>
+        <div class="tl-event-icon icon-activity">🌴</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Water Coconut Harvest & Weaving</div>
+          <div class="tl-event-desc">Harvest water coconut leaves and weave with your host — a skill passed through generations.</div>
+          
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-event-time est">~13:00</div>
+        <div class="tl-event-icon icon-transfer">🚐</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Return to HCMC (3 hrs)</div>
+          <div class="tl-event-desc">Private car back to the city.</div>
+          
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-event-time est">~16:30</div>
+        <div class="tl-event-icon icon-hotel">🏙️</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Somerset Ho Chi Minh City</div>
+          <div class="tl-event-desc">Final evening in Saigon — rooftop bar, Ben Thanh street food, last shopping.</div>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tl-day" id="tl-d22">
+    <div class="tl-day-header" onclick="toggleDay(this)">
+      <div class="tl-day-num"><div class="tl-day-num-n">22</div><div class="tl-day-num-label">Tue 29 Sep</div></div>
+      <div class="tl-day-info"><div class="tl-day-date">Tuesday 29 September 2026 · DEPARTURE DAY</div><div class="tl-day-place">HCMC → Hà Nội → Tel Aviv</div><div class="tl-day-tagline">The long way home · B</div></div>
+      <div class="tl-day-toggle">▼</div>
+    </div>
+    <div class="tl-events">
+      <div class="tl-event">
+        <div class="tl-event-time est">~09:00</div>
+        <div class="tl-event-icon icon-transfer">🚐</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Transfer to Tan Son Nhat</div>
+          <div class="tl-event-desc">Check out and drive to the airport.</div>
+          
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-event-time">12:00</div>
+        <div class="tl-event-icon icon-flight">✈️</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Fly SGN → HAN</div>
+          <div class="tl-event-desc">Vietnam Airlines, 12:00 → 14:10. On landing, make your own way to the international terminal.</div>
+          <div class="tl-event-links"><span class="tl-event-link ev-flight">SGN→HAN · via SO85988</span></div>
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-event-time">19:50</div>
+        <div class="tl-event-icon icon-flight">✈️</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Depart Hà Nội — IZ596</div>
+          <div class="tl-event-desc">Arkia direct to Tel Aviv. Arrives TLV 01:55 Wednesday 30 September. What a trip! 🪷</div>
+          <div class="tl-event-links"><span class="tl-event-link ev-flight">IZ596 · Arkia · Booking 13048969</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 
   <footer>
     <div class="ftitle">Safe travels, Hoek family 🪷</div>
@@ -1056,6 +1853,21 @@ function switchTab(tab){
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script>
+/* ── TABS ── */
+let leafletMap = null;
+function switchTab(tab){
+  document.querySelectorAll('#overview-view .tab-section').forEach(s => s.classList.remove('tab-active'));
+  const target = tab === 'home' ? document.getElementById('tab-home') : document.getElementById(tab);
+  if(target) target.classList.add('tab-active');
+  document.querySelectorAll('#overview-view .tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
+  window.scrollTo({top:0});
+  if(tab === 'tripmap'){
+    initMap();
+    setTimeout(() => { if(leafletMap) leafletMap.invalidateSize(); }, 80);
+  }
+  try{ localStorage.setItem('vn26_tab', tab); }catch(e){}
+}
+
 /* ── PASSWORD ── */
 const PASS_HASH="4126792aba172af73ab054fcd3b1203c241ddd8f99933180ef7956ceada4416b";
 const SESSION_KEY="vietnam2026_unlocked";
@@ -1066,7 +1878,7 @@ async function sha256(str){const buf=await crypto.subtle.digest("SHA-256",new Te
 async function checkPassword(e){
   e.preventDefault();
   const hash=await sha256(document.getElementById("pw-input").value.trim());
-  if(hash===PASS_HASH){sessionStorage.setItem(SESSION_KEY,"true");showSelector();}
+  if(hash===PASS_HASH){localStorage.setItem(SESSION_KEY,"true");showSelector();}
   else{const err=document.getElementById("pw-error");err.textContent="Incorrect password. Try again.";document.getElementById("pw-input").value="";document.getElementById("pw-input").focus();setTimeout(()=>err.textContent="",3000);}
 }
 
@@ -1080,21 +1892,21 @@ function showView(which){
   document.getElementById("overview-view").classList.remove("active");
   document.getElementById("timeline-view").classList.remove("active");
   document.getElementById(which+"-view").classList.add("active");
-  sessionStorage.setItem(VIEW_KEY, which);
+  localStorage.setItem(VIEW_KEY, which);
   window.scrollTo({top:0});
   if(which==="overview"){
-    const savedTab = sessionStorage.getItem('vn26_tab') || 'home';
+    const savedTab = localStorage.getItem('vn26_tab') || 'home';
     switchTab(savedTab);
   }
 }
 
 window.addEventListener("DOMContentLoaded",()=>{
-  if(sessionStorage.getItem(SESSION_KEY)==="true"){
-    const savedView=sessionStorage.getItem(VIEW_KEY);
+  if(localStorage.getItem(SESSION_KEY)==="true"){
+    const savedView=localStorage.getItem(VIEW_KEY);
     if(savedView==="overview"||savedView==="timeline"){
       showView(savedView);
       if(savedView==="overview"){
-        const savedTab = sessionStorage.getItem('vn26_tab');
+        const savedTab = localStorage.getItem('vn26_tab');
         if(savedTab && typeof switchTab === 'function') switchTab(savedTab);
       }
     }
