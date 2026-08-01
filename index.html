@@ -1845,41 +1845,65 @@ async function sha256(str){const buf=await crypto.subtle.digest("SHA-256",new Te
 async function checkPassword(e){
   e.preventDefault();
   const hash=await sha256(document.getElementById("pw-input").value.trim());
-  if(hash===PASS_HASH){localStorage.setItem(SESSION_KEY,"true");showSelector();}
+  if(hash===PASS_HASH){rememberUnlock();showSelector();}
   else{const err=document.getElementById("pw-error");err.textContent="Incorrect password. Try again.";document.getElementById("pw-input").value="";document.getElementById("pw-input").focus();setTimeout(()=>err.textContent="",3000);}
 }
 
+function hideLock(){
+  const l = document.getElementById("lock-screen");
+  if(l) l.classList.add("hidden");
+}
+
+function rememberUnlock(){
+  try{ localStorage.setItem(SESSION_KEY,"true"); }catch(e){}
+  // Cookie fallback — survives iOS/Safari clearing localStorage for PWAs
+  try{ document.cookie = "vn26_unlocked=1; max-age=63072000; path=/; SameSite=Lax"; }catch(e){}
+}
+
+function isUnlocked(){
+  try{ if(localStorage.getItem(SESSION_KEY)==="true") return true; }catch(e){}
+  try{ if(document.cookie.indexOf("vn26_unlocked=1") !== -1) return true; }catch(e){}
+  return false;
+}
+
 function showSelector(){
-  document.getElementById("lock-screen").classList.add("hidden");
+  hideLock();
   document.getElementById("view-selector").classList.add("active");
 }
 
 function showView(which){
+  hideLock();
   document.getElementById("view-selector").classList.remove("active");
   document.getElementById("overview-view").classList.remove("active");
   document.getElementById("timeline-view").classList.remove("active");
   document.getElementById(which+"-view").classList.add("active");
-  localStorage.setItem(VIEW_KEY, which);
+  try{ localStorage.setItem(VIEW_KEY, which); }catch(e){}
   window.scrollTo({top:0});
   if(which==="overview"){
-    const savedTab = localStorage.getItem('vn26_tab') || 'home';
+    let savedTab = 'home';
+    try{ savedTab = localStorage.getItem('vn26_tab') || 'home'; }catch(e){}
     switchTab(savedTab);
   }
 }
 
-window.addEventListener("DOMContentLoaded",()=>{
-  if(localStorage.getItem(SESSION_KEY)==="true"){
-    const savedView=localStorage.getItem(VIEW_KEY);
-    if(savedView==="overview"||savedView==="timeline"){
-      showView(savedView);
-      if(savedView==="overview"){
-        const savedTab = localStorage.getItem('vn26_tab');
-        if(savedTab && typeof switchTab === 'function') switchTab(savedTab);
-      }
-    }
-    else{showSelector();}
+function initApp(){
+  if(!isUnlocked()) return;          // stay locked
+  rememberUnlock();                   // refresh both stores
+  let savedView = null;
+  try{ savedView = localStorage.getItem(VIEW_KEY); }catch(e){}
+  if(savedView==="overview"||savedView==="timeline"){
+    showView(savedView);
+  } else {
+    showSelector();
   }
-});
+}
+
+// Run now if the DOM is already parsed, otherwise wait for it
+if(document.readyState === "loading"){
+  window.addEventListener("DOMContentLoaded", initApp);
+} else {
+  initApp();
+}
 
 /* ── TIMELINE TOGGLE ── */
 function toggleDay(header){
