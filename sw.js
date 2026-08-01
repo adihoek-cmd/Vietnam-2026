@@ -1,6 +1,6 @@
 // Vietnam 2026 — Service Worker
 // Caches the app shell so the trip site works offline (airplane mode, no roaming!)
-const CACHE = 'vietnam2026-v2';
+const CACHE = 'vietnam2026-v3';
 const ASSETS = [
   './',
   './index.html',
