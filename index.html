@@ -562,7 +562,7 @@
     <div class="sl">Day by Day</div>
     <h2 class="st">The <em>Journey</em></h2>
     <div class="tl">
-      <div class="ti"><div class="tdot">1</div><div class="tc"><div class="tdate">Tue 8 Sep · Day 1</div><div class="tcity">Hà Nội — Arrival</div><div class="tdesc">Arrive Noi Bai on IZ595 (14:05). Guide meets at exit column 14. Transfer to Somerset Grand Hanoi.</div><div class="sbadge">🏨 Somerset Grand Hanoi</div></div></div>
+      <div class="ti"><div class="tdot">1</div><div class="tc"><div class="tdate">Tue 8 Sep · Day 1</div><div class="tcity">Hà Nội — Arrival</div><div class="tdesc">Arrive Noi Bai on IZ595 (14:05). Guide meets at exit column 14. Transfer to Somerset Grand Hanoi. <strong>Dinner booked 18:00 at Hanoi Downtown Restaurant</strong> (table for 6).</div><div class="sbadge">🏨 Somerset Grand Hanoi</div><div class="sbadge">🍽️ Hanoi Downtown · 18:00</div></div></div>
       <div class="ti"><div class="tdot">2</div><div class="tc"><div class="tdate">Wed 9 Sep · Day 2</div><div class="tcity">Hà Nội — City Highlights</div><div class="tdesc">HCM Mausoleum complex, One Pillar Pagoda, Tran Quoc Pagoda on West Lake, Temple of Literature, Old Quarter, hidden café &amp; famous egg coffee.</div><div class="sbadge">🏨 Somerset Grand Hanoi</div></div></div>
       <div class="ti"><div class="tdot">3</div><div class="tc"><div class="tdate">Thu 10 Sep · Day 3</div><div class="tcity">Hà Nội — Cooking Class at a Garden House</div><div class="tdesc">Cyclo ride to market, Thanh Ha wet market tour, serene garden house with fish pond &amp; vegetable garden, hands-on cooking class. Menu: nem, bún bò, bò cuốn lá lốt, phở gà, palm sugar cake.</div><div class="sbadge">🏨 Somerset Grand Hanoi</div></div></div>
       <div class="ti"><div class="tdot">4</div><div class="tc"><div class="tdate">Fri 11 Sep · Day 4</div><div class="tcity">Hà Nội → Mai Châu</div><div class="tdesc">3-hour scenic drive southwest. Afternoon village walk, chat with White Thai hill tribe, hands-on turmeric fabric dyeing.</div><div class="sbadge">🏨 Mai Chau Ecolodge</div></div></div>
@@ -670,11 +670,20 @@
         </div>
       </div>
       <div class="tl-event">
-        <div class="tl-event-time est">~18:30</div>
-        <div class="tl-event-icon icon-meal">🍜</div>
+        <div class="tl-event-time">18:00</div>
+        <div class="tl-event-icon icon-meal">🍽️</div>
         <div class="tl-event-body">
-          <div class="tl-event-title">Easy First Evening</div>
-          <div class="tl-event-desc">Short stroll to Hoan Kiem Lake, first phở or bún chả nearby, early night — big day tomorrow.</div>
+          <div class="tl-event-title">Dinner — Hanoi Downtown Restaurant ✅</div>
+          <div class="tl-event-desc"><strong>Table booked for 6, 18:00–19:30.</strong> Booked under Doritte Hoek. 09 Ô Quan Chưởng St, Hoàn Kiếm — about a 15-minute walk from the Somerset, at the edge of the Old Quarter by the ancient gate. Contact: Ms. Mai Phuong Anh, +84 914 430 209 (WhatsApp).</div>
+          <div class="tl-event-links"><a class="tl-event-link ev-meal" href="https://www.google.com/maps/search/?api=1&query=Hanoi+Downtown+Restaurant+9+O+Quan+Chuong+Hoan+Kiem+Hanoi" target="_blank">📍 Maps</a><a class="tl-event-link ev-meal" href="https://www.hanoi-downtown.com" target="_blank">🌐 Website</a><a class="tl-event-link ev-meal" href="tel:+84916292882">📞 Hotline</a></div>
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-event-time est">~19:45</div>
+        <div class="tl-event-icon icon-activity">🌿</div>
+        <div class="tl-event-body">
+          <div class="tl-event-title">Stroll Back via Hoan Kiem Lake</div>
+          <div class="tl-event-desc">Gentle walk back past the lake and Ngọc Sơn Temple lit up at night. Early sleep — big day tomorrow.</div>
           
         </div>
       </div>
@@ -1932,11 +1941,21 @@ function initMap(){
     {name:"Coco Riverside Lodge",city:"Vũng Liêm · Mekong",dates:"27–29 Sep 2026",lat:10.0667,lng:105.9667,color:"#2a6e45",mapsUrl:"https://www.google.com/maps/search/?api=1&query=Coco+Riverside+Lodge+Vung+Liem+Mekong+Delta+Vietnam",webUrl:"https://www.cocoriverside.com",emoji:"🌊",num:9}
   ];
 
+  const extras=[
+    {name:"Hanoi Downtown Restaurant",city:"Dinner · Day 1 · 18:00–19:30",dates:"Table for 6 · Tue 8 Sep",lat:21.0367,lng:105.8536,color:"#7a5c00",mapsUrl:"https://www.google.com/maps/search/?api=1&query=Hanoi+Downtown+Restaurant+9+O+Quan+Chuong+Hoan+Kiem+Hanoi",webUrl:"https://www.hanoi-downtown.com",emoji:"🍽️",num:"★"}
+  ];
+
   L.polyline(stops.map(s=>[s.lat,s.lng]),{color:"#C8102E",weight:2.5,opacity:.5,dashArray:"8,6"}).addTo(map);
 
   stops.forEach(s=>{
     const icon=L.divIcon({html:`<div style="width:34px;height:34px;border-radius:50%;background:${s.color};border:3px solid white;box-shadow:0 3px 12px rgba(0,0,0,.25);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:14px;font-weight:700;color:white;cursor:pointer;">${s.num}</div>`,className:"",iconSize:[34,34],iconAnchor:[17,17],popupAnchor:[0,-20]});
     const popup=`<div class="map-popup-name">${s.emoji} ${s.name}</div><div class="map-popup-city">${s.city}</div><div class="map-popup-dates">${s.dates}</div><div class="map-popup-links"><a class="map-popup-link mpl-maps" href="${s.mapsUrl}" target="_blank">📍 Google Maps</a><a class="map-popup-link mpl-web" href="${s.webUrl}" target="_blank">🌐 Website</a></div>`;
+    L.marker([s.lat,s.lng],{icon}).addTo(map).bindPopup(popup,{maxWidth:260});
+  });
+
+  extras.forEach(s=>{
+    const icon=L.divIcon({html:'<div style="width:28px;height:28px;border-radius:50%;background:'+s.color+';border:2px solid white;box-shadow:0 2px 10px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;font-size:13px;color:#fff;cursor:pointer;">'+s.num+'</div>',className:"",iconSize:[28,28],iconAnchor:[14,14],popupAnchor:[0,-16]});
+    const popup='<div class="map-popup-name">'+s.emoji+' '+s.name+'</div><div class="map-popup-city">'+s.city+'</div><div class="map-popup-dates">'+s.dates+'</div><div class="map-popup-links"><a class="map-popup-link mpl-maps" href="'+s.mapsUrl+'" target="_blank">Google Maps</a><a class="map-popup-link mpl-web" href="'+s.webUrl+'" target="_blank">Website</a></div>';
     L.marker([s.lat,s.lng],{icon}).addTo(map).bindPopup(popup,{maxWidth:260});
   });
 }
