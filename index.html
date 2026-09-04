@@ -1558,7 +1558,17 @@ function dock(){
 /* ── offline + service worker ── */
 function net(){ $('#offline').classList.toggle('on',!navigator.onLine); }
 addEventListener('online',net); addEventListener('offline',net); net();
-if('serviceWorker' in navigator) addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
+if('serviceWorker' in navigator){
+  addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
+  // a newly activated worker means the cached page is stale — reload once, quietly
+  navigator.serviceWorker.addEventListener('message',ev=>{
+    if(ev.data&&ev.data.type==='sw-updated'){
+      try{ if(sessionStorage.getItem('vn26_reloaded')===ev.data.v) return;
+           sessionStorage.setItem('vn26_reloaded',ev.data.v); }catch(_){}
+      location.reload();
+    }
+  });
+}
 </script>
 </body>
 </html>
