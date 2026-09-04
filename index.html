@@ -391,6 +391,22 @@ html.flat *{transition-duration:1ms!important}
 
 html.flat #dock{background:#0B0908}
 @media(prefers-reduced-motion:reduce){#dock a,#dock button{transition:none}}
+
+/* ── must-order blocks ── */
+.must{margin-top:var(--s4);padding:var(--s4);border:1px solid rgba(201,162,39,.24);
+  background:rgba(201,162,39,.045)}
+.must-h{font-family:'Courier Prime',monospace;font-size:.6rem;letter-spacing:.22em;
+  color:var(--gold-leaf);margin-bottom:var(--s3);text-transform:uppercase}
+.must ul{list-style:none;margin:0}
+.must li{padding:var(--s2) 0;border-top:1px solid rgba(201,185,155,.09);font-size:.84rem;line-height:1.55}
+.must li:first-child{border-top:0}
+.must b{color:var(--eggshell);font-weight:400;font-family:Cormorant,serif;font-size:1.08rem;
+  display:block;margin-bottom:1px}
+.must b i{font-style:normal;color:var(--gold-line);font-family:'Courier Prime',monospace;
+  font-size:.62rem;letter-spacing:.1em;margin-left:var(--s2)}
+.must .tip{margin-top:var(--s3);padding-top:var(--s3);border-top:1px solid rgba(201,185,155,.12);
+  font-size:.78rem;color:var(--dim)}
+html.flat .must{background:none}
 </style>
 </head>
 <body class="locked">
@@ -822,7 +838,7 @@ html.flat #dock{background:#0B0908}
 <div class="evb"><span class="evk k-hotel">hotel</span><div class="evtitle">Check in — Somerset Grand Hanoi</div>
 <div class="evdesc">3-bedroom Executive apartment (King + Queen + Twin). 49 Hai Bà Trưng St, Hoan Kiem — supermarket in the building.</div><div class="evlinks"><a href="https://www.google.com/maps/search/?api=1&query=Somerset+Grand+Hanoi&query_place_id=ChIJDyi8FJerNTERkGa5aeymJIw" target="_blank" rel="noopener">📍 Maps</a><a href="https://www.somerset.com/en/vietnam/hanoi/somerset-grand-hanoi" target="_blank" rel="noopener">🌐 Website</a><span>Ref SO85988</span></div></div></div><div class="ev"><div class="evt">18:00</div>
 <div class="evb"><span class="evk k-meal">meal</span><div class="evtitle">Dinner — Hanoi Downtown Restaurant ✅</div>
-<div class="evdesc"><strong>Table booked for 6, 18:00–19:30.</strong> Booked under Doritte Hoek. 09 Ô Quan Chưởng St, Hoàn Kiếm — about a 15-minute walk from the Somerset, at the edge of the Old Quarter by the ancient gate. Contact: Ms. Mai Phuong Anh, +84 914 430 209 (WhatsApp).</div><div class="evlinks"><a href="https://www.google.com/maps/search/?api=1&query=Hanoi+Downtown+Restaurant+9+O+Quan+Chuong+Hoan+Kiem+Hanoi" target="_blank" rel="noopener">📍 Maps</a><a href="https://www.hanoi-downtown.com" target="_blank" rel="noopener">🌐 Website</a><a href="tel:+84916292882" target="_blank" rel="noopener">📞 Hotline</a></div></div></div><div class="ev"><div class="evt est">~19:45</div>
+<div class="evdesc"><strong>Table booked for 6, 18:00–19:30.</strong> Booked under Doritte Hoek. 09 Ô Quan Chưởng St, Hoàn Kiếm — about a 15-minute walk from the Somerset, at the edge of the Old Quarter by the ancient gate. Contact: Ms. Mai Phuong Anh, +84 914 430 209 (WhatsApp).<div class="must"><div class="must-h">Must order</div><ul><li><b>Chả cá<i>cha ca</i></b>Turmeric-and-dill fish finished in a pan at your table. Hanoi's own dish — barely exists anywhere else in Vietnam.</li><li><b>Bún chả<i>bun cha</i></b>Charcoal-grilled pork patties dropped into a sweet-sour broth, with vermicelli and a mountain of herbs.</li><li><b>Nem cua bể<i>nem cua be</i></b>Square-wrapped crab spring rolls, the Hanoi version. Reliable with children.</li><li><b>Cá nướng<i>ca nuong</i></b>Grilled fish — one of the dishes reviewers single out here.</li></ul><div class="tip">The kitchen serves each private room together so nobody waits, and they take pre-orders — worth sending your choices ahead on a first night after fifteen hours of flying. Full vegetarian menu for Doritte. Five private rooms across three floors of a hundred-year-old merchant house.</div></div></div><div class="evlinks"><a href="https://www.google.com/maps/search/?api=1&query=Hanoi+Downtown+Restaurant+9+O+Quan+Chuong+Hoan+Kiem+Hanoi" target="_blank" rel="noopener">📍 Maps</a><a href="https://www.hanoi-downtown.com" target="_blank" rel="noopener">🌐 Website</a><a href="tel:+84916292882" target="_blank" rel="noopener">📞 Hotline</a></div></div></div><div class="ev"><div class="evt est">~19:45</div>
 <div class="evb"><span class="evk k-activity">activity</span><div class="evtitle">Stroll Back via Hoan Kiem Lake</div>
 <div class="evdesc">Gentle walk back past the lake and Ngọc Sơn Temple lit up at night. Early sleep — big day tomorrow.</div></div></div></div></article>
 <article class="day" id="d2" data-day="2">
@@ -846,7 +862,7 @@ html.flat #dock{background:#0B0908}
 <div class="evb"><span class="evk k-meal">meal</span><div class="evtitle">Hidden Café — Egg Coffee Demo</div>
 <div class="evdesc">A creative alley space built from recycled materials. Watch how the famous cà phê trứng is made, then drink it.</div></div></div><div class="ev"><div class="evt">18:30</div>
 <div class="evb"><span class="evk k-meal">meal</span><div class="evtitle">Dinner — MIAs Restaurant ✅</div>
-<div class="evdesc"><strong>Table booked for 7 — Lily joins us.</strong> Booked under Doritte Hoek. 22 Bảo Khánh, Hoàn Kiếm — a couple of minutes off the west side of Hoan Kiem Lake, so an easy walk on from the egg coffee. <strong>Table held only 15 minutes</strong> — call ahead if running late. Bring cash: card payments carry a 4% surcharge (VND or USD both fine).</div><div class="evlinks"><a href="https://www.google.com/maps/search/?api=1&query=MIAs+Restaurant+22+Bao+Khanh+Hoan+Kiem+Hanoi" target="_blank" rel="noopener">📍 Maps</a><a href="tel:+84966396698" target="_blank" rel="noopener">📞 Hotline 0966 396 698</a><a href="tel:+84365135661" target="_blank" rel="noopener">📞 Jasmine</a></div></div></div></div></article>
+<div class="evdesc"><strong>Table booked for 7 — Lily joins us.</strong> Booked under Doritte Hoek. 22 Bảo Khánh, Hoàn Kiếm — a couple of minutes off the west side of Hoan Kiem Lake, so an easy walk on from the egg coffee. <strong>Table held only 15 minutes</strong> — call ahead if running late. Bring cash: card payments carry a 4% surcharge (VND or USD both fine).<div class="must"><div class="must-h">Must order</div><ul><li><b>Nem hải sản<i>net spring rolls</i></b>Shrimp and squid in a lace-like net wrapper, twice-fried. The dish MIAs is known for.</li><li><b>Chân giò kho dừa<i>coconut pork leg</i></b>Pork leg simmered two hours in young coconut meat and its water until sticky and tender.</li><li><b>Gà lá dứa<i>pandan chicken</i></b>Chicken thigh in lemongrass and garlic, wrapped in pandan leaf and fried gold. Comes with lotus rice.</li><li><b>Rau muống xào tỏi<i>morning glory</i></b>Garlic-fried greens. Order it with everything.</li><li><b>Sữa chua nếp cẩm<i>yogurt + black rice</i></b>Yogurt over warm black sticky rice. This is the one for Sol and Neil.</li><li><b>Chuối nướng<i>grilled banana</i></b>Banana in pandan sticky rice, wrapped in banana leaf and grilled.</li></ul><div class="tip">Gluten-free and vegan options throughout, and the seafood-but-vegetarian line works easily here for Doritte. Ground floor of the Solaria Hotel, two minutes off the west side of Hoàn Kiếm — an easy walk on from the egg coffee. Kitchen's last order is 21:30.</div></div></div><div class="evlinks"><a href="https://www.google.com/maps/search/?api=1&query=MIAs+Restaurant+22+Bao+Khanh+Hoan+Kiem+Hanoi" target="_blank" rel="noopener">📍 Maps</a><a href="tel:+84966396698" target="_blank" rel="noopener">📞 Hotline 0966 396 698</a><a href="tel:+84365135661" target="_blank" rel="noopener">📞 Jasmine</a></div></div></div></div></article>
 <article class="day" id="d3" data-day="3">
 <button class="dhead" aria-expanded="false" aria-controls="ev3">
  <div class="dnum">3</div>
@@ -914,7 +930,9 @@ html.flat #dock{background:#0B0908}
 <div class="evb"><span class="evk k-activity">activity</span><div class="evtitle">The Giant Water Wheels</div>
 <div class="evdesc">Centuries-old feats of engineering channeling water into the fields. Scenic loop back.</div></div></div><div class="ev"><div class="evt est">~17:30</div>
 <div class="evb"><span class="evk k-hotel">hotel</span><div class="evtitle">Check in — Pu Luong Retreat</div>
-<div class="evdesc">Changed 4 Sep from Hanasa — the property VietnamStay trusts most in the area. <strong>Two rooms only</strong>: Adi &amp; Verly's family share one, Doritte &amp; Rick the other. Dinner is reserved at the Retreat's restaurant for <strong>both nights</strong>. Tomorrow: easy hike, 4–6 km, mostly flat paved road.</div><div class="evlinks"><a href="https://www.google.com/maps/search/?api=1&query=Pu+Luong+Retreat+Thanh+Hoa+Vietnam" target="_blank" rel="noopener">Maps</a><a href="https://puluongretreat.com" target="_blank" rel="noopener">Website</a></div></div></div></div></article>
+<div class="evdesc">Changed 4 Sep from Hanasa — the property VietnamStay trusts most in the area. <strong>Two rooms only</strong>: Adi &amp; Verly's family share one, Doritte &amp; Rick the other. Dinner is reserved at the Retreat's restaurant for <strong>both nights</strong>. Tomorrow: easy hike, 4–6 km, mostly flat paved road.</div><div class="evlinks"><a href="https://www.google.com/maps/search/?api=1&query=Pu+Luong+Retreat+Thanh+Hoa+Vietnam" target="_blank" rel="noopener">Maps</a><a href="https://puluongretreat.com" target="_blank" rel="noopener">Website</a></div></div></div><div class="ev"><div class="evt est">~19:30</div>
+<div class="evb"><span class="evk k-meal">meal</span><div class="evtitle">Dinner at the Retreat ✅</div>
+<div class="evdesc">Reserved by Lily for both nights.<div class="must"><div class="must-h">Must order</div><ul><li><b>Vịt Cỏ Lũng<i>Co Lung duck</i></b>The reason people talk about eating in Pú Luông. A local breed raised on the streams — order it the first night.</li><li><b>Cá suối nướng<i>grilled stream fish</i></b>Caught from the valley's rivers, grilled whole.</li><li><b>Ốc đá<i>mountain snails</i></b>Steamed rock snails, a Thai ethnic specialty of these hills.</li><li><b>Cơm lam<i>bamboo rice</i></b>Sticky rice cooked inside a bamboo tube over fire.</li><li><b>Rau vườn<i>garden greens</i></b>Much of the kitchen's produce comes from the retreat's own organic garden — you can walk it, and pick.</li></ul><div class="tip">Dinner is reserved for you both nights. The restaurant is the first floor of the main stilt house, open-sided over the valley; in the evening it's fireplace and candles, with folk music some nights. Afterwards, the tea room upstairs is worth finding — it doubles as a small museum of Thai hill-tribe patterns.</div></div></div></div></div></div></article>
 <article class="day" id="d7" data-day="7">
 <button class="dhead" aria-expanded="false" aria-controls="ev7">
  <div class="dnum">7</div>
@@ -934,7 +952,9 @@ html.flat #dock{background:#0B0908}
 <div class="evb"><span class="evk k-activity">activity</span><div class="evtitle">Cycle to Hieu Waterfall</div>
 <div class="evdesc">Farmland, wild fields, ponds, rivers, mountains — ending at the hidden waterfall in the Nature Reserve.</div></div></div><div class="ev"><div class="evt est">~16:30</div>
 <div class="evb"><span class="evk k-activity">activity</span><div class="evtitle">Evening at Leisure</div>
-<div class="evdesc">Infinity pool over the rice terraces.</div></div></div></div></article>
+<div class="evdesc">Infinity pool over the rice terraces.</div></div></div><div class="ev"><div class="evt est">~19:30</div>
+<div class="evb"><span class="evk k-meal">meal</span><div class="evtitle">Dinner at the Retreat ✅</div>
+<div class="evdesc">Second reserved night. If you had the duck last night, tonight is for the stream fish and the snails — and the tea room afterwards.</div></div></div></div></article>
 <article class="day" id="d8" data-day="8">
 <button class="dhead" aria-expanded="false" aria-controls="ev8">
  <div class="dnum">8</div>
