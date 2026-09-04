@@ -230,20 +230,55 @@ h2{font-family:Cormorant,serif;font-weight:300;font-size:clamp(2.2rem,5.4vw,3.6r
   margin:0 calc(var(--gutter)*-1);padding:var(--s2) var(--gutter) var(--s5);
   -webkit-overflow-scrolling:touch}
 .routelist::-webkit-scrollbar{display:none}
-.stop{scroll-snap-align:start;flex:0 0 clamp(238px,76vw,320px);background:var(--resin);
-  border:1px solid rgba(201,185,155,.1);padding:var(--s5);display:flex;flex-direction:column;
-  position:relative;transition:border-color var(--t2) var(--ease-leaf)}
-.stop:hover{border-color:rgba(201,185,155,.24)}
+.stop{scroll-snap-align:start;flex:0 0 clamp(238px,76vw,320px);display:flex}
+.stopbtn{background:var(--resin);border:1px solid rgba(201,185,155,.1);padding:var(--s5);
+  display:flex;flex-direction:column;position:relative;width:100%;text-align:left;cursor:pointer;
+  font:inherit;color:inherit;transition:border-color var(--t2) var(--ease-leaf);
+  -webkit-tap-highlight-color:transparent}
+.stopbtn:hover,.stopbtn:focus-visible{border-color:rgba(201,185,155,.3)}
+.stopbtn:active{background:var(--raise)}
+.stopbtn>span{display:block}
+.smore{font-family:'Courier Prime',monospace;font-size:.62rem;letter-spacing:.14em;color:var(--gold-line);
+  margin-top:var(--s3);text-transform:uppercase}
 .sbar{position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--acc)}
 .snum{font-family:'Courier Prime',monospace;font-size:.68rem;letter-spacing:.2em;color:var(--acc);margin-bottom:var(--s3)}
 .scity{font-family:Cormorant,serif;font-size:1.85rem;line-height:1.05;margin-bottom:var(--s2)}
 .sdates{font-family:'Courier Prime',monospace;font-size:.66rem;letter-spacing:.1em;color:var(--dim);margin-bottom:var(--s4)}
 .sblurb{font-size:.86rem;color:var(--dim);line-height:1.6;flex:1;margin-bottom:var(--s4)}
 .shotel{font-size:.8rem;color:var(--crackle);padding-top:var(--s3);border-top:1px solid rgba(201,185,155,.1)}
-.slinks{display:flex;gap:var(--s4);margin-top:var(--s3)}
-.slinks a{font-family:'Courier Prime',monospace;font-size:.66rem;letter-spacing:.08em;color:var(--crackle);
+/* ── stop dialog ── */
+#sheet{border:0;padding:0;background:transparent;max-width:min(520px,94vw);width:100%;color:var(--eggshell)}
+#sheet::backdrop{background:rgba(8,6,5,.82);backdrop-filter:blur(5px)}
+.sheet-in{background:var(--resin);border:1px solid rgba(201,185,155,.16);border-left:3px solid var(--acc,var(--gold-line));
+  padding:var(--s6);max-height:86svh;overflow-y:auto;position:relative}
+#sheet[open] .sheet-in{animation:rise var(--t3) var(--ease-sand)}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.sheet-x{position:absolute;top:var(--s3);right:var(--s3);width:44px;height:44px;background:none;border:0;
+  color:var(--crackle);font-size:1.4rem;cursor:pointer;line-height:1}
+.sheet-x:hover{color:var(--eggshell)}
+.sheet-k{font-family:'Courier Prime',monospace;font-size:.64rem;letter-spacing:.2em;color:var(--acc);margin-bottom:var(--s3)}
+.sheet-h{font-family:Cormorant,serif;font-size:2.1rem;line-height:1.05;margin-bottom:var(--s2)}
+.sheet-d{font-family:'Courier Prime',monospace;font-size:.68rem;color:var(--dim);margin-bottom:var(--s4)}
+.sheet-b{font-size:.92rem;color:var(--dim);line-height:1.65;margin-bottom:var(--s5)}
+.sheet-hotel{font-family:Cormorant,serif;font-size:1.25rem;padding-top:var(--s4);
+  border-top:1px solid rgba(201,185,155,.12);margin-bottom:var(--s3)}
+.sheet-go{display:flex;align-items:center;justify-content:space-between;gap:var(--s4);width:100%;
+  margin-top:var(--s5);padding:var(--s4) var(--s5);background:none;border:1px solid var(--gold-soft);
+  color:var(--gold-leaf);font:inherit;font-size:.92rem;cursor:pointer;min-height:52px;text-decoration:none;
+  transition:background var(--t2),border-color var(--t2)}
+.sheet-go:hover{background:rgba(201,162,39,.09);border-color:var(--gold-leaf)}
+.sheet-go span:last-child{font-family:'Courier Prime',monospace;font-size:1.1rem}
+.sheet-links{display:flex;gap:var(--s5);margin-top:var(--s4);flex-wrap:wrap}
+.sheet-links a{font-family:'Courier Prime',monospace;font-size:.7rem;letter-spacing:.1em;color:var(--crackle);
   text-decoration:none;border-bottom:1px solid var(--gold-soft);min-height:44px;display:inline-flex;align-items:center}
-.slinks a:hover{color:var(--gold-leaf);border-color:var(--gold-leaf)}
+.sheet-links a:hover{color:var(--gold-leaf)}
+@media(max-width:640px){
+  #sheet{max-width:100%;margin:auto auto 0;width:100%}
+  .sheet-in{padding:var(--s6) var(--s5) calc(var(--s6) + env(safe-area-inset-bottom,0))}
+  #sheet[open] .sheet-in{animation:slideup var(--t3) var(--ease-sand)}
+  @keyframes slideup{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:none}}
+}
+@media(prefers-reduced-motion:reduce){#sheet[open] .sheet-in{animation:none}}
 .striprail{height:2px;background:rgba(201,185,155,.14);position:relative;margin-top:calc(var(--s5)*-1)}
 .striprail i{position:absolute;left:0;top:0;height:100%;background:var(--gold-line);width:20%;
   transition:left var(--t2) var(--ease-leaf),width var(--t2) var(--ease-leaf)}
@@ -467,88 +502,97 @@ html.flat #dock{background:#0B0908}
   <h2 style="margin:0">North to <em style="font-style:italic">south</em></h2>
   <div class="arrows"><button id="sprev" aria-label="Previous stop">&#8592;</button><button id="snext" aria-label="Next stop">&#8594;</button></div>
  </div>
- <p class="hint" style="margin-bottom:var(--s4)">NINE STOPS &middot; SWIPE &rarr;</p>
+ <p class="hint" style="margin-bottom:var(--s4)">NINE STOPS &middot; SWIPE &rarr; &middot; TAP FOR DETAILS</p>
  <ol class="routelist" id="strip" data-sand><li class="stop" style="--acc:var(--a-hanoi)">
-<div class="sbar"></div>
-<div class="snum">01</div>
-<div class="scity">Hà Nội</div>
-<div class="sdates">8–11 Sep · nights 1–3</div>
-<p class="sblurb">Old Quarter, water puppets and the first pho. Three nights to land properly.</p>
-<div class="shotel">Somerset Grand Hanoi</div>
-<div class="slinks"><a href="https://www.google.com/maps/search/?api=1&query=Somerset+Grand+Hanoi&query_place_id=ChIJDyi8FJerNTERkGa5aeymJIw" target="_blank" rel="noopener">Maps</a><a href="#stop-1">Details</a></div>
-</li>
+<button class="stopbtn" data-stop="1" aria-haspopup="dialog">
+<span class="sbar"></span>
+<span class="snum">01</span>
+<span class="scity">Hà Nội</span>
+<span class="sdates">8–11 Sep · nights 1–3</span>
+<span class="sblurb">Old Quarter, water puppets and the first pho. Three nights to land properly.</span>
+<span class="shotel">Somerset Grand Hanoi</span>
+<span class="smore">Tap for details</span>
+</button></li>
 <li class="stop" style="--acc:var(--a-maichau)">
-<div class="sbar"></div>
-<div class="snum">02</div>
-<div class="scity">Mai Châu</div>
-<div class="sdates">11–13 Sep · nights 4–5</div>
-<p class="sblurb">Rice terraces and stilt houses in the Hoa Binh valley. Bikes, and quiet.</p>
-<div class="shotel">Mai Chau Ecolodge</div>
-<div class="slinks"><a href="https://www.google.com/maps/search/?api=1&query=Mai+Chau+Ecolodge+Vietnam&query_place_id=ChIJhwcfY1MINDERFnWr9OFoAr0" target="_blank" rel="noopener">Maps</a><a href="#stop-2">Details</a></div>
-</li>
+<button class="stopbtn" data-stop="2" aria-haspopup="dialog">
+<span class="sbar"></span>
+<span class="snum">02</span>
+<span class="scity">Mai Châu</span>
+<span class="sdates">11–13 Sep · nights 4–5</span>
+<span class="sblurb">Rice terraces and stilt houses in the Hoa Binh valley. Bikes, and quiet.</span>
+<span class="shotel">Mai Chau Ecolodge</span>
+<span class="smore">Tap for details</span>
+</button></li>
 <li class="stop" style="--acc:var(--a-puluong)">
-<div class="sbar"></div>
-<div class="snum">03</div>
-<div class="scity">Pú Luông</div>
-<div class="sdates">13–15 Sep · nights 6–7</div>
-<p class="sblurb">The Pu Luong reserve — waterwheels, limestone, almost no one else.</p>
-<div class="shotel">Hanasa Pu Luong Resort</div>
-<div class="slinks"><a href="https://www.google.com/maps/search/?api=1&query=Hanasa+Pu+Luong+Resort+Thanh+Hoa+Vietnam" target="_blank" rel="noopener">Maps</a><a href="#stop-3">Details</a></div>
-</li>
+<button class="stopbtn" data-stop="3" aria-haspopup="dialog">
+<span class="sbar"></span>
+<span class="snum">03</span>
+<span class="scity">Pú Luông</span>
+<span class="sdates">13–15 Sep · nights 6–7</span>
+<span class="sblurb">The Pu Luong reserve — waterwheels, limestone, almost no one else.</span>
+<span class="shotel">Hanasa Pu Luong Resort</span>
+<span class="smore">Tap for details</span>
+</button></li>
 <li class="stop" style="--acc:var(--a-ninhbinh)">
-<div class="sbar"></div>
-<div class="snum">04</div>
-<div class="scity">Ninh Bình</div>
-<div class="sdates">15–17 Sep · nights 8–9</div>
-<p class="sblurb">Tam Coc by sampan, rowed with feet. Karst without the sea.</p>
-<div class="shotel">Emeralda Resort Tam Coc</div>
-<div class="slinks"><a href="https://www.google.com/maps/search/?api=1&query=Emeralda+Resort+Tam+Coc+Ninh+Binh&query_place_id=ChIJk2yfySkkNTERGhYC6kh382g" target="_blank" rel="noopener">Maps</a><a href="#stop-4">Details</a></div>
-</li>
+<button class="stopbtn" data-stop="4" aria-haspopup="dialog">
+<span class="sbar"></span>
+<span class="snum">04</span>
+<span class="scity">Ninh Bình</span>
+<span class="sdates">15–17 Sep · nights 8–9</span>
+<span class="sblurb">Tam Coc by sampan, rowed with feet. Karst without the sea.</span>
+<span class="shotel">Emeralda Resort Tam Coc</span>
+<span class="smore">Tap for details</span>
+</button></li>
 <li class="stop" style="--acc:var(--a-halong)">
-<div class="sbar"></div>
-<div class="snum">05</div>
-<div class="scity">Hạ Long Bay</div>
-<div class="sdates">17–19 Sep · nights 10–11</div>
-<p class="sblurb">Two nights on the water in Bai Tu Long, the quieter half of the bay.</p>
-<div class="shotel">Athena Royal Cruise</div>
-<div class="slinks"><a href="https://www.google.com/maps/search/?api=1&query=Halong+International+Cruise+Port+Vietnam" target="_blank" rel="noopener">Maps</a><a href="#stop-5">Details</a></div>
-</li>
+<button class="stopbtn" data-stop="5" aria-haspopup="dialog">
+<span class="sbar"></span>
+<span class="snum">05</span>
+<span class="scity">Hạ Long Bay</span>
+<span class="sdates">17–19 Sep · nights 10–11</span>
+<span class="sblurb">Two nights on the water in Bai Tu Long, the quieter half of the bay.</span>
+<span class="shotel">Athena Royal Cruise</span>
+<span class="smore">Tap for details</span>
+</button></li>
 <li class="stop" style="--acc:var(--a-hue)">
-<div class="sbar"></div>
-<div class="snum">06</div>
-<div class="scity">Huế</div>
-<div class="sdates">19–21 Sep · nights 12–13</div>
-<p class="sblurb">The Citadel, the tombs, the Perfume River. Imperial and slow.</p>
-<div class="shotel">Senna Hue</div>
-<div class="slinks"><a href="https://www.google.com/maps/search/?api=1&query=Senna+Hue+Hotel+Vietnam" target="_blank" rel="noopener">Maps</a><a href="#stop-6">Details</a></div>
-</li>
+<button class="stopbtn" data-stop="6" aria-haspopup="dialog">
+<span class="sbar"></span>
+<span class="snum">06</span>
+<span class="scity">Huế</span>
+<span class="sdates">19–21 Sep · nights 12–13</span>
+<span class="sblurb">The Citadel, the tombs, the Perfume River. Imperial and slow.</span>
+<span class="shotel">Senna Hue</span>
+<span class="smore">Tap for details</span>
+</button></li>
 <li class="stop" style="--acc:var(--a-hoian)">
-<div class="sbar"></div>
-<div class="snum">07</div>
-<div class="scity">Hội An</div>
-<div class="sdates">21–24 Sep · nights 14–16</div>
-<p class="sblurb">Lanterns, tailors and An Bang beach. The longest stay of the trip.</p>
-<div class="shotel">Palm Garden Beach Resort &amp; Spa</div>
-<div class="slinks"><a href="https://www.google.com/maps/search/?api=1&query=Palm+Garden+Beach+Resort+Hoi+An&query_place_id=ChIJd2hEc5MNQjERYLHo53B5sU8" target="_blank" rel="noopener">Maps</a><a href="#stop-7">Details</a></div>
-</li>
+<button class="stopbtn" data-stop="7" aria-haspopup="dialog">
+<span class="sbar"></span>
+<span class="snum">07</span>
+<span class="scity">Hội An</span>
+<span class="sdates">21–24 Sep · nights 14–16</span>
+<span class="sblurb">Lanterns, tailors and An Bang beach. The longest stay of the trip.</span>
+<span class="shotel">Palm Garden Beach Resort &amp; Spa</span>
+<span class="smore">Tap for details</span>
+</button></li>
 <li class="stop" style="--acc:var(--a-hcmc)">
-<div class="sbar"></div>
-<div class="snum">08</div>
-<div class="scity">Hồ Chí Minh</div>
-<div class="sdates">24–27 Sep · nights 17–19</div>
-<p class="sblurb">Saigon at full volume — markets, rooftops, and the war museum.</p>
-<div class="shotel">Somerset Ho Chi Minh City</div>
-<div class="slinks"><a href="https://www.google.com/maps/search/?api=1&query=Somerset+Ho+Chi+Minh+City" target="_blank" rel="noopener">Maps</a><a href="#stop-8">Details</a></div>
-</li>
+<button class="stopbtn" data-stop="8" aria-haspopup="dialog">
+<span class="sbar"></span>
+<span class="snum">08</span>
+<span class="scity">Hồ Chí Minh</span>
+<span class="sdates">24–27 Sep · nights 17–19</span>
+<span class="sblurb">Saigon at full volume — markets, rooftops, and the war museum.</span>
+<span class="shotel">Somerset Ho Chi Minh City</span>
+<span class="smore">Tap for details</span>
+</button></li>
 <li class="stop" style="--acc:var(--a-mekong)">
-<div class="sbar"></div>
-<div class="snum">09</div>
-<div class="scity">Vũng Liêm · Mekong</div>
-<div class="sdates">27–29 Sep · nights 20–21</div>
-<p class="sblurb">Vung Liem on the river. Bungalows, boats, and the last two nights.</p>
-<div class="shotel">Coco Riverside Lodge</div>
-<div class="slinks"><a href="https://www.google.com/maps/search/?api=1&query=Coco+Riverside+Lodge+Vung+Liem+Mekong+Delta+Vietnam" target="_blank" rel="noopener">Maps</a><a href="#stop-9">Details</a></div>
-</li></ol>
+<button class="stopbtn" data-stop="9" aria-haspopup="dialog">
+<span class="sbar"></span>
+<span class="snum">09</span>
+<span class="scity">Vũng Liêm · Mekong</span>
+<span class="sdates">27–29 Sep · nights 20–21</span>
+<span class="sblurb">Vung Liem on the river. Bungalows, boats, and the last two nights.</span>
+<span class="shotel">Coco Riverside Lodge</span>
+<span class="smore">Tap for details</span>
+</button></li></ol>
  <div class="striprail" aria-hidden="true"><i id="srail"></i></div>
 </section>
 
@@ -1171,6 +1215,9 @@ html.flat #dock{background:#0B0908}
  <p class="foot">Booking SO85988 · VietnamStay · private family site · not indexed</p>
 </section>
 
+<dialog id="sheet" aria-labelledby="sheet-h">
+ <div class="sheet-in" id="sheet-in"></div>
+</dialog>
 <div id="thread" aria-hidden="true"></div>
 <nav id="dock" aria-label="Quick navigation"><a href="#hero" data-t="top"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11 12 3l9 8"/><path d="M6 10v10h12V10"/></svg>Top</a><a href="#route" data-t="route"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="9.5" r="2.6"/><path d="M12 21c4.5-5.2 7-8.5 7-11.4A7 7 0 0 0 5 9.6C5 12.5 7.5 15.8 12 21z"/></svg>Route</a><a href="#papers" data-t="papers"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4"/><path d="M9 12h6M9 16h6"/></svg>Papers</a><a href="#days" data-t="days" id="dock-days"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="16"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>Days</a><a href="#crew" data-t="crew"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8.5" r="3"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6"/><path d="M16.5 6.2a3 3 0 0 1 0 5.6M18 20c0-2.4-.8-4.3-2.2-5.6"/></svg>Crew</a><button id="flat" aria-pressed="false" title="Toggle flat mode"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h16"/><path d="M4 7h16M4 17h16" opacity=".45"/></svg><span id="flat-l">Flat</span></button></nav>
 <div id="offline" role="status">Offline — showing saved copy</div>
@@ -1179,7 +1226,7 @@ html.flat #dock{background:#0B0908}
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" defer></script>
 <script>
-const STOPS = [{"n": 1, "name": "Somerset Grand Hanoi", "city": "Hà Nội", "dates": "8–11 Sep", "lat": 21.025829, "lng": 105.846344, "maps": "https://www.google.com/maps/search/?api=1&query=Somerset+Grand+Hanoi&query_place_id=ChIJDyi8FJerNTERkGa5aeymJIw", "web": "https://www.somerset.com/en/vietnam/hanoi/somerset-grand-hanoi"}, {"n": 2, "name": "Mai Chau Ecolodge", "city": "Mai Châu", "dates": "11–13 Sep", "lat": 20.657749, "lng": 105.069752, "maps": "https://www.google.com/maps/search/?api=1&query=Mai+Chau+Ecolodge+Vietnam&query_place_id=ChIJhwcfY1MINDERFnWr9OFoAr0", "web": "https://maichau.ecolodge.asia/en/"}, {"n": 3, "name": "Hanasa Pu Luong Resort", "city": "Pú Luông", "dates": "13–15 Sep", "lat": 20.4167, "lng": 105.1167, "maps": "https://www.google.com/maps/search/?api=1&query=Hanasa+Pu+Luong+Resort+Thanh+Hoa+Vietnam", "web": "https://www.google.com/search?q=Hanasa+Pu+Luong+Resort"}, {"n": 4, "name": "Emeralda Resort Tam Coc", "city": "Ninh Bình", "dates": "15–17 Sep", "lat": 20.216754, "lng": 105.935143, "maps": "https://www.google.com/maps/search/?api=1&query=Emeralda+Resort+Tam+Coc+Ninh+Binh&query_place_id=ChIJk2yfySkkNTERGhYC6kh382g", "web": "https://www.emeraldaresort.com"}, {"n": 5, "name": "Athena Royal Cruise", "city": "Hạ Long Bay", "dates": "17–19 Sep", "lat": 20.954095, "lng": 107.055541, "maps": "https://www.google.com/maps/search/?api=1&query=Halong+International+Cruise+Port+Vietnam", "web": "https://www.athenaroyalcruise.com"}, {"n": 6, "name": "Senna Hue", "city": "Huế", "dates": "19–21 Sep", "lat": 16.461225, "lng": 107.598319, "maps": "https://www.google.com/maps/search/?api=1&query=Senna+Hue+Hotel+Vietnam", "web": "https://www.sennahotel.com"}, {"n": 7, "name": "Palm Garden Beach Resort & Spa", "city": "Hội An", "dates": "21–24 Sep", "lat": 15.9008, "lng": 108.359024, "maps": "https://www.google.com/maps/search/?api=1&query=Palm+Garden+Beach+Resort+Hoi+An&query_place_id=ChIJd2hEc5MNQjERYLHo53B5sU8", "web": "https://www.palmgardenresort.com.vn"}, {"n": 8, "name": "Somerset Ho Chi Minh City", "city": "Hồ Chí Minh", "dates": "24–27 Sep", "lat": 10.7769, "lng": 106.7009, "maps": "https://www.google.com/maps/search/?api=1&query=Somerset+Ho+Chi+Minh+City", "web": "https://www.somerset.com/en/vietnam/ho-chi-minh-city/somerset-ho-chi-minh-city"}, {"n": 9, "name": "Coco Riverside Lodge", "city": "Vũng Liêm · Mekong", "dates": "27–29 Sep", "lat": 10.0667, "lng": 105.9667, "maps": "https://www.google.com/maps/search/?api=1&query=Coco+Riverside+Lodge+Vung+Liem+Mekong+Delta+Vietnam", "web": "https://www.cocoriverside.com"}];
+const STOPS = [{"n": 1, "name": "Somerset Grand Hanoi", "city": "Hà Nội", "dates": "8–11 Sep", "nights": "1–3", "lat": 21.025829, "lng": 105.846344, "maps": "https://www.google.com/maps/search/?api=1&query=Somerset+Grand+Hanoi&query_place_id=ChIJDyi8FJerNTERkGa5aeymJIw", "web": "https://www.somerset.com/en/vietnam/hanoi/somerset-grand-hanoi", "ref": "21589305", "room": "3-bed Executive · King+Queen+Twin", "ci": "8 Sep", "co": "11 Sep", "blurb": "Old Quarter, water puppets and the first pho. Three nights to land properly.", "acc": "hanoi", "d1": 1, "d2": 3}, {"n": 2, "name": "Mai Chau Ecolodge", "city": "Mai Châu", "dates": "11–13 Sep", "nights": "4–5", "lat": 20.657749, "lng": 105.069752, "maps": "https://www.google.com/maps/search/?api=1&query=Mai+Chau+Ecolodge+Vietnam&query_place_id=ChIJhwcfY1MINDERFnWr9OFoAr0", "web": "https://maichau.ecolodge.asia/en/", "ref": "166543", "room": "Deluxe Paddy View ×3 · connecting", "ci": "11 Sep", "co": "13 Sep", "blurb": "Rice terraces and stilt houses in the Hoa Binh valley. Bikes, and quiet.", "acc": "maichau", "d1": 4, "d2": 5}, {"n": 3, "name": "Hanasa Pu Luong Resort", "city": "Pú Luông", "dates": "13–15 Sep", "nights": "6–7", "lat": 20.4167, "lng": 105.1167, "maps": "https://www.google.com/maps/search/?api=1&query=Hanasa+Pu+Luong+Resort+Thanh+Hoa+Vietnam", "web": "https://www.google.com/search?q=Hanasa+Pu+Luong+Resort", "ref": "HPR260913", "room": "Premium Valley Bungalow ×3", "ci": "13 Sep", "co": "15 Sep", "blurb": "The Pu Luong reserve — waterwheels, limestone, almost no one else.", "acc": "puluong", "d1": 6, "d2": 7}, {"n": 4, "name": "Emeralda Resort Tam Coc", "city": "Ninh Bình", "dates": "15–17 Sep", "nights": "8–9", "lat": 20.216754, "lng": 105.935143, "maps": "https://www.google.com/maps/search/?api=1&query=Emeralda+Resort+Tam+Coc+Ninh+Binh&query_place_id=ChIJk2yfySkkNTERGhYC6kh382g", "web": "https://www.emeraldaresort.com", "ref": "21981", "room": "Superior ×3", "ci": "15 Sep", "co": "17 Sep", "blurb": "Tam Coc by sampan, rowed with feet. Karst without the sea.", "acc": "ninhbinh", "d1": 8, "d2": 9}, {"n": 5, "name": "Athena Royal Cruise", "city": "Hạ Long Bay", "dates": "17–19 Sep", "nights": "10–11", "lat": 20.954095, "lng": 107.055541, "maps": "https://www.google.com/maps/search/?api=1&query=Halong+International+Cruise+Port+Vietnam", "web": "https://www.athenaroyalcruise.com", "ref": "26124", "room": "Deluxe Balcony main deck ×3 · connecting", "ci": "17 Sep embark", "co": "19 Sep 10:45", "blurb": "Two nights on the water in Bai Tu Long, the quieter half of the bay.", "acc": "halong", "d1": 10, "d2": 11}, {"n": 6, "name": "Senna Hue", "city": "Huế", "dates": "19–21 Sep", "nights": "12–13", "lat": 16.461225, "lng": 107.598319, "maps": "https://www.google.com/maps/search/?api=1&query=Senna+Hue+Hotel+Vietnam", "web": "https://www.sennahotel.com", "ref": "150766", "room": "Premium ×3 · connecting", "ci": "19 Sep", "co": "21 Sep", "blurb": "The Citadel, the tombs, the Perfume River. Imperial and slow.", "acc": "hue", "d1": 12, "d2": 13}, {"n": 7, "name": "Palm Garden Beach Resort & Spa", "city": "Hội An", "dates": "21–24 Sep", "nights": "14–16", "lat": 15.9008, "lng": 108.359024, "maps": "https://www.google.com/maps/search/?api=1&query=Palm+Garden+Beach+Resort+Hoi+An&query_place_id=ChIJd2hEc5MNQjERYLHo53B5sU8", "web": "https://www.palmgardenresort.com.vn", "ref": "72386", "room": "Superior Partly Ocean View ×3 · connecting", "ci": "21 Sep", "co": "24 Sep", "blurb": "Lanterns, tailors and An Bang beach. The longest stay of the trip.", "acc": "hoian", "d1": 14, "d2": 16}, {"n": 8, "name": "Somerset Ho Chi Minh City", "city": "Hồ Chí Minh", "dates": "24–27 Sep", "nights": "17–19", "lat": 10.7769, "lng": 106.7009, "maps": "https://www.google.com/maps/search/?api=1&query=Somerset+Ho+Chi+Minh+City", "web": "https://www.somerset.com/en/vietnam/ho-chi-minh-city/somerset-ho-chi-minh-city", "ref": "21603032/33/34", "room": "2-bed Exec Suite + 1-bed Deluxe · D&R late c/o", "ci": "24 Sep", "co": "27 Sep", "blurb": "Saigon at full volume — markets, rooftops, and the war museum.", "acc": "hcmc", "d1": 17, "d2": 19}, {"n": 9, "name": "Coco Riverside Lodge", "city": "Vũng Liêm · Mekong", "dates": "27–29 Sep", "nights": "20–21", "lat": 10.0667, "lng": 105.9667, "maps": "https://www.google.com/maps/search/?api=1&query=Coco+Riverside+Lodge+Vung+Liem+Mekong+Delta+Vietnam", "web": "https://www.cocoriverside.com", "ref": "SO85988 · cash on site", "room": "Family Bungalow", "ci": "27 Sep", "co": "29 Sep", "blurb": "Vung Liem on the river. Bungalows, boats, and the last two nights.", "acc": "mekong", "d1": 20, "d2": 22}];
 const HASH = "4126792aba172af73ab054fcd3b1203c241ddd8f99933180ef7956ceada4416b";
 const KEY  = "vietnam2026_unlocked";
 const reduce = matchMedia('(prefers-reduced-motion:reduce)').matches;
@@ -1220,7 +1267,7 @@ addEventListener('DOMContentLoaded',()=>{ if(!document.body.classList.contains('
 let booted=false;
 function boot(){
   if(booted)return; booted=true;
-  reveal(); days(); scrub(); copy(); thread(); countdown(); flat(); light(); map(); dock(); strip();
+  reveal(); days(); scrub(); copy(); thread(); countdown(); flat(); light(); map(); dock(); strip(); sheet();
 }
 
 /* ── reveal: once, never replays ── */
@@ -1267,8 +1314,7 @@ function scrub(){
 }
 
 /* ── copy: confirmation written into the material ── */
-function copy(){
-  document.querySelectorAll('.code[data-copy]').forEach(el=>{
+function bindCopy(el){
     const go=()=>{
       const t=el.dataset.copy;
       const done=()=>{el.classList.add('copied');setTimeout(()=>el.classList.remove('copied'),1300);};
@@ -1279,8 +1325,8 @@ function copy(){
     };
     el.addEventListener('click',go);
     el.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){e.preventDefault();go();} });
-  });
 }
+function copy(){ document.querySelectorAll('.code[data-copy]').forEach(bindCopy); }
 
 /* ── the thread: progress + papers anchor ── */
 function thread(){
@@ -1370,6 +1416,49 @@ function map(){
     });
     setTimeout(()=>m.invalidateSize(),200);
   }
+}
+
+/* ── stop dialog: the card opens here, and only here is the way into the days ── */
+function sheet(){
+  const dlg=$('#sheet'), box=$('#sheet-in');
+  const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  let last=null;
+
+  function open(n){
+    const s=STOPS.find(x=>x.n===n); if(!s)return;
+    last=document.activeElement;
+    dlg.style.setProperty('--acc','var(--a-'+s.acc+')');
+    const span = s.d1===s.d2 ? 'day '+s.d1 : 'days '+s.d1+'–'+s.d2;
+    box.innerHTML =
+      '<button class="sheet-x" id="sheet-x" aria-label="Close">&times;</button>'+
+      '<div class="sheet-k">STOP '+String(s.n).padStart(2,'0')+' &middot; NIGHTS '+esc(s.nights)+'</div>'+
+      '<h3 class="sheet-h" id="sheet-h">'+esc(s.city)+'</h3>'+
+      '<div class="sheet-d">'+esc(s.dates)+' 2026</div>'+
+      '<p class="sheet-b">'+esc(s.blurb)+'</p>'+
+      '<div class="sheet-hotel">'+esc(s.name)+'</div>'+
+      '<div class="row"><span>Check in</span><span>'+esc(s.ci)+'</span></div>'+
+      '<div class="row"><span>Check out</span><span>'+esc(s.co)+'</span></div>'+
+      '<div class="row"><span>Room</span><span>'+esc(s.room)+'</span></div>'+
+      '<div class="row"><span>Ref</span><span class="code" data-copy="'+esc(s.ref)+'" role="button" tabindex="0">'+esc(s.ref)+'</span></div>'+
+      '<div class="sheet-links">'+
+        '<a href="'+esc(s.maps)+'" target="_blank" rel="noopener">Open in Maps</a>'+
+        '<a href="'+esc(s.web)+'" target="_blank" rel="noopener">Hotel website</a>'+
+        '<a href="#stop-'+s.n+'" data-close>Full booking</a></div>'+
+      '<a class="sheet-go" href="#d'+s.d1+'" data-close><span>Open the '+span+'</span><span>&rarr;</span></a>';
+    if(dlg.showModal) dlg.showModal(); else dlg.setAttribute('open','');
+    box.querySelectorAll('.code[data-copy]').forEach(bindCopy);
+    box.querySelectorAll('[data-close]').forEach(a=>a.addEventListener('click',()=>close()));
+    $('#sheet-x').addEventListener('click',()=>close());
+    box.scrollTop=0;
+    setTimeout(()=>$('#sheet-x').focus(),40);
+  }
+  function close(){ dlg.close?dlg.close():dlg.removeAttribute('open'); if(last)last.focus(); }
+
+  document.querySelectorAll('.stopbtn').forEach(b=>
+    b.addEventListener('click',()=>open(parseInt(b.dataset.stop,10))));
+  // click the backdrop to dismiss
+  dlg.addEventListener('click',e=>{ if(e.target===dlg) close(); });
+  dlg.addEventListener('close',()=>{ if(last)last.focus(); });
 }
 
 /* ── the strip ── */
