@@ -216,13 +216,39 @@ h2{font-family:Cormorant,serif;font-weight:300;font-size:clamp(2.2rem,5.4vw,3.6r
 .leaflet-container{background:var(--deep)!important;font-family:'Be Vietnam Pro',sans-serif!important}
 .map-cap{padding:var(--s4) var(--gutter);font-size:.8rem;color:var(--dim);
   border-top:1px solid rgba(201,185,155,.1);background:var(--board)}
-.routelist{list-style:none;counter-reset:r;margin-top:var(--s5)}
-.routelist li{counter-increment:r;display:flex;gap:var(--s4);padding:var(--s3) 0;
-  border-bottom:1px solid rgba(201,185,155,.08);align-items:baseline}
-.routelist li::before{content:counter(r);font-family:'Courier Prime',monospace;color:var(--gold-line);
-  font-size:.8rem;min-width:1.6em}
-.routelist .rn{font-family:Cormorant,serif;font-size:1.2rem;flex:1}
-.routelist .rd{font-size:.76rem;color:var(--dim);white-space:nowrap}
+/* ── the strip: nine peers, swiped ── */
+.striphead{display:flex;justify-content:space-between;align-items:flex-end;gap:var(--s4);margin-bottom:var(--s4)}
+.striphead .hint{font-family:'Courier Prime',monospace;font-size:.68rem;letter-spacing:.16em;color:var(--gold-line)}
+.arrows{display:none;gap:var(--s2)}
+.arrows button{width:44px;height:44px;border:1px solid var(--gold-soft);background:none;color:var(--crackle);
+  cursor:pointer;font-size:1rem;transition:border-color var(--t1),color var(--t1)}
+.arrows button:hover:not(:disabled){border-color:var(--gold-leaf);color:var(--gold-leaf)}
+.arrows button:disabled{opacity:.3;cursor:default}
+@media(min-width:820px){.arrows{display:flex}}
+.routelist{list-style:none;display:flex;gap:var(--s4);overflow-x:auto;scroll-snap-type:x mandatory;
+  overscroll-behavior-x:contain;scroll-padding-left:var(--gutter);scrollbar-width:none;
+  margin:0 calc(var(--gutter)*-1);padding:var(--s2) var(--gutter) var(--s5);
+  -webkit-overflow-scrolling:touch}
+.routelist::-webkit-scrollbar{display:none}
+.stop{scroll-snap-align:start;flex:0 0 clamp(238px,76vw,320px);background:var(--resin);
+  border:1px solid rgba(201,185,155,.1);padding:var(--s5);display:flex;flex-direction:column;
+  position:relative;transition:border-color var(--t2) var(--ease-leaf)}
+.stop:hover{border-color:rgba(201,185,155,.24)}
+.sbar{position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--acc)}
+.snum{font-family:'Courier Prime',monospace;font-size:.68rem;letter-spacing:.2em;color:var(--acc);margin-bottom:var(--s3)}
+.scity{font-family:Cormorant,serif;font-size:1.85rem;line-height:1.05;margin-bottom:var(--s2)}
+.sdates{font-family:'Courier Prime',monospace;font-size:.66rem;letter-spacing:.1em;color:var(--dim);margin-bottom:var(--s4)}
+.sblurb{font-size:.86rem;color:var(--dim);line-height:1.6;flex:1;margin-bottom:var(--s4)}
+.shotel{font-size:.8rem;color:var(--crackle);padding-top:var(--s3);border-top:1px solid rgba(201,185,155,.1)}
+.slinks{display:flex;gap:var(--s4);margin-top:var(--s3)}
+.slinks a{font-family:'Courier Prime',monospace;font-size:.66rem;letter-spacing:.08em;color:var(--crackle);
+  text-decoration:none;border-bottom:1px solid var(--gold-soft);min-height:44px;display:inline-flex;align-items:center}
+.slinks a:hover{color:var(--gold-leaf);border-color:var(--gold-leaf)}
+.striprail{height:2px;background:rgba(201,185,155,.14);position:relative;margin-top:calc(var(--s5)*-1)}
+.striprail i{position:absolute;left:0;top:0;height:100%;background:var(--gold-line);width:20%;
+  transition:left var(--t2) var(--ease-leaf),width var(--t2) var(--ease-leaf)}
+@media(prefers-reduced-motion:reduce){.routelist{scroll-snap-type:none}}
+@media print{.routelist{display:block;overflow:visible}.stop{flex:none;margin-bottom:8px}}
 
 /* ── days ── */
 #days{background:var(--board)}
@@ -437,16 +463,93 @@ html.flat #dock{background:#0B0908}
 </div>
 <section id="route-list">
  <div class="eyebrow">THE ROUTE</div>
- <h2>North to <em style="font-style:italic">south</em></h2>
- <ol class="routelist" data-sand><li><span class="rn">Hà Nội — Somerset Grand Hanoi</span><span class="rd">8–11 Sep</span></li>
-<li><span class="rn">Mai Châu — Mai Chau Ecolodge</span><span class="rd">11–13 Sep</span></li>
-<li><span class="rn">Pú Luông — Hanasa Pu Luong Resort</span><span class="rd">13–15 Sep</span></li>
-<li><span class="rn">Ninh Bình — Emeralda Resort Tam Coc</span><span class="rd">15–17 Sep</span></li>
-<li><span class="rn">Hạ Long Bay — Athena Royal Cruise</span><span class="rd">17–19 Sep</span></li>
-<li><span class="rn">Huế — Senna Hue</span><span class="rd">19–21 Sep</span></li>
-<li><span class="rn">Hội An — Palm Garden Beach Resort &amp; Spa</span><span class="rd">21–24 Sep</span></li>
-<li><span class="rn">Hồ Chí Minh — Somerset Ho Chi Minh City</span><span class="rd">24–27 Sep</span></li>
-<li><span class="rn">Vũng Liêm · Mekong — Coco Riverside Lodge</span><span class="rd">27–29 Sep</span></li></ol>
+ <div class="striphead">
+  <h2 style="margin:0">North to <em style="font-style:italic">south</em></h2>
+  <div class="arrows"><button id="sprev" aria-label="Previous stop">&#8592;</button><button id="snext" aria-label="Next stop">&#8594;</button></div>
+ </div>
+ <p class="hint" style="margin-bottom:var(--s4)">NINE STOPS &middot; SWIPE &rarr;</p>
+ <ol class="routelist" id="strip" data-sand><li class="stop" style="--acc:var(--a-hanoi)">
+<div class="sbar"></div>
+<div class="snum">01</div>
+<div class="scity">Hà Nội</div>
+<div class="sdates">8–11 Sep · nights 1–3</div>
+<p class="sblurb">Old Quarter, water puppets and the first pho. Three nights to land properly.</p>
+<div class="shotel">Somerset Grand Hanoi</div>
+<div class="slinks"><a href="https://www.google.com/maps/search/?api=1&query=Somerset+Grand+Hanoi&query_place_id=ChIJDyi8FJerNTERkGa5aeymJIw" target="_blank" rel="noopener">Maps</a><a href="#stop-1">Details</a></div>
+</li>
+<li class="stop" style="--acc:var(--a-maichau)">
+<div class="sbar"></div>
+<div class="snum">02</div>
+<div class="scity">Mai Châu</div>
+<div class="sdates">11–13 Sep · nights 4–5</div>
+<p class="sblurb">Rice terraces and stilt houses in the Hoa Binh valley. Bikes, and quiet.</p>
+<div class="shotel">Mai Chau Ecolodge</div>
+<div class="slinks"><a href="https://www.google.com/maps/search/?api=1&query=Mai+Chau+Ecolodge+Vietnam&query_place_id=ChIJhwcfY1MINDERFnWr9OFoAr0" target="_blank" rel="noopener">Maps</a><a href="#stop-2">Details</a></div>
+</li>
+<li class="stop" style="--acc:var(--a-puluong)">
+<div class="sbar"></div>
+<div class="snum">03</div>
+<div class="scity">Pú Luông</div>
+<div class="sdates">13–15 Sep · nights 6–7</div>
+<p class="sblurb">The Pu Luong reserve — waterwheels, limestone, almost no one else.</p>
+<div class="shotel">Hanasa Pu Luong Resort</div>
+<div class="slinks"><a href="https://www.google.com/maps/search/?api=1&query=Hanasa+Pu+Luong+Resort+Thanh+Hoa+Vietnam" target="_blank" rel="noopener">Maps</a><a href="#stop-3">Details</a></div>
+</li>
+<li class="stop" style="--acc:var(--a-ninhbinh)">
+<div class="sbar"></div>
+<div class="snum">04</div>
+<div class="scity">Ninh Bình</div>
+<div class="sdates">15–17 Sep · nights 8–9</div>
+<p class="sblurb">Tam Coc by sampan, rowed with feet. Karst without the sea.</p>
+<div class="shotel">Emeralda Resort Tam Coc</div>
+<div class="slinks"><a href="https://www.google.com/maps/search/?api=1&query=Emeralda+Resort+Tam+Coc+Ninh+Binh&query_place_id=ChIJk2yfySkkNTERGhYC6kh382g" target="_blank" rel="noopener">Maps</a><a href="#stop-4">Details</a></div>
+</li>
+<li class="stop" style="--acc:var(--a-halong)">
+<div class="sbar"></div>
+<div class="snum">05</div>
+<div class="scity">Hạ Long Bay</div>
+<div class="sdates">17–19 Sep · nights 10–11</div>
+<p class="sblurb">Two nights on the water in Bai Tu Long, the quieter half of the bay.</p>
+<div class="shotel">Athena Royal Cruise</div>
+<div class="slinks"><a href="https://www.google.com/maps/search/?api=1&query=Halong+International+Cruise+Port+Vietnam" target="_blank" rel="noopener">Maps</a><a href="#stop-5">Details</a></div>
+</li>
+<li class="stop" style="--acc:var(--a-hue)">
+<div class="sbar"></div>
+<div class="snum">06</div>
+<div class="scity">Huế</div>
+<div class="sdates">19–21 Sep · nights 12–13</div>
+<p class="sblurb">The Citadel, the tombs, the Perfume River. Imperial and slow.</p>
+<div class="shotel">Senna Hue</div>
+<div class="slinks"><a href="https://www.google.com/maps/search/?api=1&query=Senna+Hue+Hotel+Vietnam" target="_blank" rel="noopener">Maps</a><a href="#stop-6">Details</a></div>
+</li>
+<li class="stop" style="--acc:var(--a-hoian)">
+<div class="sbar"></div>
+<div class="snum">07</div>
+<div class="scity">Hội An</div>
+<div class="sdates">21–24 Sep · nights 14–16</div>
+<p class="sblurb">Lanterns, tailors and An Bang beach. The longest stay of the trip.</p>
+<div class="shotel">Palm Garden Beach Resort &amp; Spa</div>
+<div class="slinks"><a href="https://www.google.com/maps/search/?api=1&query=Palm+Garden+Beach+Resort+Hoi+An&query_place_id=ChIJd2hEc5MNQjERYLHo53B5sU8" target="_blank" rel="noopener">Maps</a><a href="#stop-7">Details</a></div>
+</li>
+<li class="stop" style="--acc:var(--a-hcmc)">
+<div class="sbar"></div>
+<div class="snum">08</div>
+<div class="scity">Hồ Chí Minh</div>
+<div class="sdates">24–27 Sep · nights 17–19</div>
+<p class="sblurb">Saigon at full volume — markets, rooftops, and the war museum.</p>
+<div class="shotel">Somerset Ho Chi Minh City</div>
+<div class="slinks"><a href="https://www.google.com/maps/search/?api=1&query=Somerset+Ho+Chi+Minh+City" target="_blank" rel="noopener">Maps</a><a href="#stop-8">Details</a></div>
+</li>
+<li class="stop" style="--acc:var(--a-mekong)">
+<div class="sbar"></div>
+<div class="snum">09</div>
+<div class="scity">Vũng Liêm · Mekong</div>
+<div class="sdates">27–29 Sep · nights 20–21</div>
+<p class="sblurb">Vung Liem on the river. Bungalows, boats, and the last two nights.</p>
+<div class="shotel">Coco Riverside Lodge</div>
+<div class="slinks"><a href="https://www.google.com/maps/search/?api=1&query=Coco+Riverside+Lodge+Vung+Liem+Mekong+Delta+Vietnam" target="_blank" rel="noopener">Maps</a><a href="#stop-9">Details</a></div>
+</li></ol>
+ <div class="striprail" aria-hidden="true"><i id="srail"></i></div>
 </section>
 
 <!-- ═══ 04 · PAPERS ═══ -->
@@ -1117,7 +1220,7 @@ addEventListener('DOMContentLoaded',()=>{ if(!document.body.classList.contains('
 let booted=false;
 function boot(){
   if(booted)return; booted=true;
-  reveal(); days(); scrub(); copy(); thread(); countdown(); flat(); light(); map(); dock();
+  reveal(); days(); scrub(); copy(); thread(); countdown(); flat(); light(); map(); dock(); strip();
 }
 
 /* ── reveal: once, never replays ── */
@@ -1267,6 +1370,31 @@ function map(){
     });
     setTimeout(()=>m.invalidateSize(),200);
   }
+}
+
+/* ── the strip ── */
+function strip(){
+  const s=$('#strip'); if(!s)return;
+  const rail=$('#srail'), prev=$('#sprev'), next=$('#snext');
+  const card=()=>{ const c=s.querySelector('.stop');
+    return c ? c.getBoundingClientRect().width + parseFloat(getComputedStyle(s).gap||0) : 300; };
+  const upd=()=>{
+    const max=s.scrollWidth-s.clientWidth;
+    const p=max>0?s.scrollLeft/max:0, w=Math.max(12,(s.clientWidth/s.scrollWidth)*100);
+    rail.style.width=w+'%'; rail.style.left=(p*(100-w))+'%';
+    if(prev){ prev.disabled=s.scrollLeft<8; next.disabled=s.scrollLeft>=max-8; }
+  };
+  let tk=false;
+  s.addEventListener('scroll',()=>{ if(tk)return; tk=true;
+    requestAnimationFrame(()=>{upd();tk=false;}); },{passive:true});
+  prev&&prev.addEventListener('click',()=>s.scrollBy({left:-card(),behavior:'smooth'}));
+  next&&next.addEventListener('click',()=>s.scrollBy({left:card(),behavior:'smooth'}));
+  s.addEventListener('keydown',e=>{
+    if(e.key==='ArrowRight'){e.preventDefault();s.scrollBy({left:card(),behavior:'smooth'});}
+    if(e.key==='ArrowLeft'){e.preventDefault();s.scrollBy({left:-card(),behavior:'smooth'});}
+  });
+  s.tabIndex=0; s.setAttribute('aria-label','Nine stops, use arrow keys to move between them');
+  addEventListener('resize',upd,{passive:true}); upd();
 }
 
 /* ── the dock: always visible, knows where you are ── */
