@@ -1242,7 +1242,7 @@ html.flat .must{background:none}
   <a href="tel:+84985459921">VietnamStay hotline · +84 985 459 921</a>
   <a href="tel:+84982893692">Lily, trip designer · +84 982 893 692</a>
  </div>
- <p class="foot">Booking SO85988 · VietnamStay · itinerary updated 4 Sep 2026 · private family site<br>
+ <p class="foot">Booking SO85988 · VietnamStay · private family site · build 04 Sep 2026 · 13:55 UTC<br>
 <a href="v1/" style="color:var(--dim);border-bottom:1px solid var(--gold-soft);text-decoration:none">previous version →</a></p>
 </section>
 
@@ -1560,7 +1560,6 @@ function net(){ $('#offline').classList.toggle('on',!navigator.onLine); }
 addEventListener('online',net); addEventListener('offline',net); net();
 if('serviceWorker' in navigator){
   addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
-  // a newly activated worker means the cached page is stale — reload once, quietly
   navigator.serviceWorker.addEventListener('message',ev=>{
     if(ev.data&&ev.data.type==='sw-updated'){
       try{ if(sessionStorage.getItem('vn26_reloaded')===ev.data.v) return;
