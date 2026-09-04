@@ -141,13 +141,35 @@ h2{font-family:Cormorant,serif;font-weight:300;font-size:clamp(2.2rem,5.4vw,3.6r
 /* ── thread ── */
 #thread{position:fixed;left:0;top:0;width:2px;height:0;background:linear-gradient(var(--gold-line),var(--gold-soft));
   z-index:80;pointer-events:none;opacity:0;transition:opacity var(--t3)}
-#papers-anchor{position:fixed;right:var(--s4);bottom:var(--s4);z-index:82;width:52px;height:52px;
-  border-radius:50%;border:1px solid var(--gold-soft);background:rgba(20,16,14,.9);
-  display:none;align-items:center;justify-content:center;text-decoration:none;font-size:.62rem;
-  letter-spacing:.08em;color:var(--gold-leaf);text-align:center;line-height:1.2;
-  backdrop-filter:blur(6px);transition:border-color var(--t2)}
-#papers-anchor.on{display:flex}
-#papers-anchor:hover{border-color:var(--gold-leaf)}
+/* ── the dock: always-visible quick access ── */
+#dock{position:fixed;z-index:86;display:none;background:rgba(16,12,10,.93);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+#dock.on{display:flex}
+#dock a,#dock button{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:3px;min-height:56px;text-decoration:none;background:none;border:0;cursor:pointer;
+  color:var(--dim);font-family:'Be Vietnam Pro',sans-serif;font-size:.58rem;letter-spacing:.11em;
+  text-transform:uppercase;transition:color var(--t1) var(--ease-leaf);padding:var(--s2) 2px;
+  position:relative;-webkit-tap-highlight-color:transparent}
+#dock svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.4;
+  stroke-linecap:round;stroke-linejoin:round}
+#dock a:hover,#dock button:hover,#dock a:focus-visible{color:var(--eggshell)}
+#dock a.on{color:var(--gold-leaf)}
+#dock a.on::before{content:"";position:absolute;top:0;left:22%;right:22%;height:2px;background:var(--gold-leaf)}
+#dock .badge{position:absolute;top:6px;right:calc(50% - 20px);background:var(--gold-leaf);color:var(--board);
+  font-family:'Courier Prime',monospace;font-size:.52rem;padding:1px 4px;line-height:1.3;font-weight:700}
+@media(max-width:819px){
+  #dock{left:0;right:0;bottom:0;flex-direction:row;border-top:1px solid var(--gold-soft);
+    padding-bottom:env(safe-area-inset-bottom,0)}
+  body.docked{padding-bottom:calc(56px + env(safe-area-inset-bottom,0))}
+}
+@media(min-width:820px){
+  #offline{bottom:var(--s4)}
+  #dock{right:0;top:50%;transform:translateY(-50%);flex-direction:column;width:76px;
+    border-left:1px solid var(--gold-soft);border-top:1px solid var(--gold-soft);
+    border-bottom:1px solid var(--gold-soft)}
+  #dock a.on::before{top:22%;bottom:22%;left:0;right:auto;width:2px;height:auto}
+  #dock .badge{top:4px;right:8px}
+}
 
 /* ── papers ── */
 #papers{background:var(--deep)}
@@ -266,13 +288,10 @@ h2{font-family:Cormorant,serif;font-weight:300;font-size:clamp(2.2rem,5.4vw,3.6r
   padding:var(--s2) 0;min-height:44px;display:inline-flex;align-items:center}
 .foot{margin-top:var(--s7);font-size:.72rem;color:var(--dim);
   font-family:'Courier Prime',monospace;letter-spacing:.1em}
-#offline{position:fixed;left:var(--s4);bottom:var(--s4);z-index:84;background:var(--son);
+#offline{position:fixed;left:var(--s4);bottom:calc(56px + var(--s4));z-index:84;background:var(--son);
   color:#fff;padding:var(--s2) var(--s4);font-size:.74rem;display:none}
 #offline.on{display:block}
-#flat{position:fixed;left:var(--s4);bottom:var(--s4);z-index:82;width:52px;height:52px;border-radius:50%;
-  border:1px solid var(--gold-soft);background:rgba(20,16,14,.9);color:var(--crackle);font-size:.58rem;
-  cursor:pointer;display:none;letter-spacing:.06em}
-#flat.on{display:block}
+
 
 @media(max-width:700px){
   section{padding:var(--s7) var(--gutter)}
@@ -303,11 +322,14 @@ html.flat *{transition-duration:1ms!important}
   #map{height:62vh}
 }
 @media print{
-  #gate,.grain,.vignette,#thread,#papers-anchor,#flat,#scrub,.pin-track,#hero{display:none!important}
+  #gate,.grain,.vignette,#thread,#dock,#scrub,.pin-track,#hero{display:none!important}
   body{background:#fff;color:#000}
   .card,.flight{border:1px solid #999;background:#fff}
   .code{color:#000}.devents{display:block!important}
 }
+
+html.flat #dock{background:#0B0908}
+@media(prefers-reduced-motion:reduce){#dock a,#dock button{transition:none}}
 </style>
 </head>
 <body class="locked">
@@ -1047,8 +1069,7 @@ html.flat *{transition-duration:1ms!important}
 </section>
 
 <div id="thread" aria-hidden="true"></div>
-<a href="#papers" id="papers-anchor" aria-label="Jump to the papers">papers</a>
-<button id="flat" aria-pressed="false" title="Toggle flat mode">flat</button>
+<nav id="dock" aria-label="Quick navigation"><a href="#hero" data-t="top"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11 12 3l9 8"/><path d="M6 10v10h12V10"/></svg>Top</a><a href="#route" data-t="route"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="9.5" r="2.6"/><path d="M12 21c4.5-5.2 7-8.5 7-11.4A7 7 0 0 0 5 9.6C5 12.5 7.5 15.8 12 21z"/></svg>Route</a><a href="#papers" data-t="papers"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4"/><path d="M9 12h6M9 16h6"/></svg>Papers</a><a href="#days" data-t="days" id="dock-days"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="16"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>Days</a><a href="#crew" data-t="crew"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8.5" r="3"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6"/><path d="M16.5 6.2a3 3 0 0 1 0 5.6M18 20c0-2.4-.8-4.3-2.2-5.6"/></svg>Crew</a><button id="flat" aria-pressed="false" title="Toggle flat mode"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h16"/><path d="M4 7h16M4 17h16" opacity=".45"/></svg><span id="flat-l">Flat</span></button></nav>
 <div id="offline" role="status">Offline — showing saved copy</div>
 <div class="vignette" aria-hidden="true"></div>
 <div class="grain" aria-hidden="true"></div>
@@ -1096,7 +1117,7 @@ addEventListener('DOMContentLoaded',()=>{ if(!document.body.classList.contains('
 let booted=false;
 function boot(){
   if(booted)return; booted=true;
-  reveal(); days(); scrub(); copy(); thread(); countdown(); flat(); light(); map();
+  reveal(); days(); scrub(); copy(); thread(); countdown(); flat(); light(); map(); dock();
 }
 
 /* ── reveal: once, never replays ── */
@@ -1160,7 +1181,7 @@ function copy(){
 
 /* ── the thread: progress + papers anchor ── */
 function thread(){
-  const t=$('#thread'), a=$('#papers-anchor'), f=$('#flat');
+  const t=$('#thread');
   let tick=false;
   addEventListener('scroll',()=>{
     if(tick)return; tick=true;
@@ -1168,8 +1189,6 @@ function thread(){
       const h=document.body.scrollHeight-innerHeight;
       const p=h>0?scrollY/h:0;
       t.style.height=(p*100)+'vh'; t.style.opacity=p>.01?1:0;
-      const past=scrollY>innerHeight*.8;
-      a.classList.toggle('on',past); f.classList.toggle('on',past);
       tick=false;
     });
   },{passive:true});
@@ -1197,7 +1216,7 @@ function countdown(){
 function flat(){
   const b=$('#flat');
   const set=on=>{ document.documentElement.classList.toggle('flat',on);
-    b.setAttribute('aria-pressed',on); b.textContent=on?'full':'flat';
+    b.setAttribute('aria-pressed',on); $('#flat-l').textContent=on?'Full':'Flat';
     if(on) document.querySelectorAll('[data-sand]').forEach(e=>e.classList.add('sanded')); };
   let on=false; try{on=localStorage.getItem('vn26_flat')==='1'}catch(_){}
   set(on);
@@ -1247,6 +1266,44 @@ function map(){
         '<a href="'+s.web+'" target="_blank" rel="noopener">Website</a>',{maxWidth:230});
     });
     setTimeout(()=>m.invalidateSize(),200);
+  }
+}
+
+/* ── the dock: always visible, knows where you are ── */
+function dock(){
+  const d=$('#dock'); d.classList.add('on'); document.body.classList.add('docked');
+  const links=[...d.querySelectorAll('a[data-t]')];
+  const ids={top:'hero',route:'route',papers:'papers',days:'days',crew:'crew'};
+
+  // during the trip, "Days" jumps to today and shows the day number
+  const start=new Date('2026-09-08T00:00:00+07:00');
+  const n=Math.floor((new Date()-start)/864e5)+1;
+  if(n>=1&&n<=22){
+    const dl=$('#dock-days');
+    dl.setAttribute('href','#d'+n);
+    dl.insertAdjacentHTML('beforeend','<span class="badge">'+n+'</span>');
+    dl.setAttribute('aria-label','Jump to today, day '+n);
+  }
+
+  // active section
+  if('IntersectionObserver' in window){
+    const secs=Object.values(ids).map(i=>document.getElementById(i)).filter(Boolean);
+    const io=new IntersectionObserver(es=>{
+      es.forEach(e=>{
+        if(!e.isIntersecting)return;
+        const k=Object.keys(ids).find(k=>ids[k]===e.target.id);
+        links.forEach(l=>l.classList.toggle('on',l.dataset.t===k));
+      });
+    },{rootMargin:'-45% 0px -50% 0px'});
+    secs.forEach(s=>io.observe(s));
+  }
+
+  // route-list counts as the route section too
+  const rl=document.getElementById('route-list');
+  if(rl&&'IntersectionObserver' in window){
+    new IntersectionObserver(es=>{ if(es[0].isIntersecting)
+      links.forEach(l=>l.classList.toggle('on',l.dataset.t==='route')); },
+      {rootMargin:'-45% 0px -50% 0px'}).observe(rl);
   }
 }
 
