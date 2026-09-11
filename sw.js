@@ -1,7 +1,7 @@
 /* Việt Nam 2026 · service worker
    Network-first for the page so edits land immediately when online.
    Cache-first for assets. Full offline fallback either way. */
-const V = 'vn26-20260910-1327';
+const V = 'vn26-20260911-0311';
 const CORE = ['./','./index.html','./manifest.json','./icon-192.png','./icon-512.png','./apple-touch-icon.png'];
 
 self.addEventListener('install', e => {

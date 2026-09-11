@@ -1266,7 +1266,7 @@ html.flat .must{background:none}
   <a href="tel:+84985459921">VietnamStay hotline · +84 985 459 921</a>
   <a href="tel:+84982893692">Lily, trip designer · +84 982 893 692</a>
  </div>
- <p class="foot">Booking SO85988 · VietnamStay · private family site · build 10 Sep 2026 · 13:27 UTC<br>
+ <p class="foot">Booking SO85988 · VietnamStay · private family site · build 11 Sep 2026 · 03:11 UTC<br>
 <a href="v1/" style="color:var(--dim);border-bottom:1px solid var(--gold-soft);text-decoration:none">previous version →</a></p>
 </section>
 
@@ -1310,24 +1310,41 @@ $('#pw').addEventListener('keydown', async e=>{
         $('#gerr').textContent='Not that one. Try the one Adi sent.'; $('#pw').value=''; }
 });
 function open_(){
-  $('#seal').classList.remove('fx'); $('#seal').classList.add('broken'); $('#pw').blur();
-  setTimeout(()=>{ $('#gate').classList.add('gone'); document.body.classList.remove('locked');
-                   setTimeout(()=>$('#gate').remove(),1200); }, 560);
-  const T=(f,ms)=>setTimeout(f, reduce?0:ms);
-  const seen = (()=>{try{return localStorage.getItem('vn26_seen')}catch(_){return null}})();
-  const late = Date.now() > new Date('2026-09-06T00:00:00+03:00').getTime();
-  const quick = seen || late || reduce;                 // the film plays once, and never during the trip
-  T(()=>{ $('#title').style.maskPosition='0 0'; $('#title').style.webkitMaskPosition='0 0'; }, quick?0:560);
-  T(()=>{ $('#hrule').style.width='clamp(110px,15vw,220px)'; }, quick?0:1300);
-  T(()=>{ document.querySelectorAll('#hero [data-sand]').forEach((el,i)=>
-            setTimeout(()=>el.classList.add('sanded'), quick?0:i*150)); }, quick?0:1400);
-  T(()=>{ $('#horizon').style.transition='opacity 1.2s'; $('#horizon').style.opacity='.7'; }, quick?0:1800);
-  try{localStorage.setItem('vn26_seen','1')}catch(_){}
+  /* every element touched here lives inside #gate or #hero and may already be gone,
+     so nothing in the chrome is allowed to throw and strand the page before boot(). */
+  try{
+    const seal=$('#seal'); if(seal){ seal.classList.remove('fx'); seal.classList.add('broken'); }
+    const pw=$('#pw'); if(pw) pw.blur();
+    setTimeout(()=>{ const g=$('#gate'); if(g) g.classList.add('gone');
+                     document.body.classList.remove('locked');
+                     setTimeout(()=>{ const g2=$('#gate'); if(g2) g2.remove(); },1200); }, 560);
+    const T=(f,ms)=>setTimeout(f, reduce?0:ms);
+    const seen = (()=>{try{return localStorage.getItem('vn26_seen')}catch(_){return null}})();
+    const late = Date.now() > new Date('2026-09-06T00:00:00+03:00').getTime();
+    const quick = seen || late || reduce;               // the film plays once, and never during the trip
+    T(()=>{ const t=$('#title'); if(t){ t.style.maskPosition='0 0'; t.style.webkitMaskPosition='0 0'; } }, quick?0:560);
+    T(()=>{ const h=$('#hrule'); if(h) h.style.width='clamp(110px,15vw,220px)'; }, quick?0:1300);
+    T(()=>{ document.querySelectorAll('#hero [data-sand]').forEach((el,i)=>
+              setTimeout(()=>el.classList.add('sanded'), quick?0:i*150)); }, quick?0:1400);
+    T(()=>{ const hz=$('#horizon'); if(hz){ hz.style.transition='opacity 1.2s'; hz.style.opacity='.7'; } }, quick?0:1800);
+    try{localStorage.setItem('vn26_seen','1')}catch(_){}
+  }catch(err){ console.error('gate chrome failed, opening anyway', err);
+               document.body.classList.remove('locked');
+               const g=$('#gate'); if(g) g.remove(); }
   boot();
 }
-try{ if(isUnlocked()){ $('#gate').classList.add('gone'); document.body.classList.remove('locked');
-  addEventListener('DOMContentLoaded',()=>{ $('#gate').remove(); open_(); }); } }catch(_){}
+/* already unlocked on this device: hide the gate, then open on DOM ready.
+   open_() disposes of #gate itself — removing it first is what blanked the page. */
+try{ if(isUnlocked()){
+  const g0=$('#gate'); if(g0) g0.classList.add('gone');
+  document.body.classList.remove('locked');
+  if(document.readyState==='loading') addEventListener('DOMContentLoaded',()=>open_());
+  else open_();
+} }catch(err){ console.error('unlock restore failed', err); }
 addEventListener('DOMContentLoaded',()=>{ if(!document.body.classList.contains('locked'))return; $('#pw').focus(); });
+/* failsafe: a blank screen is never acceptable mid-trip. if the gate is down and
+   boot() still has not run a moment later, run it. */
+setTimeout(()=>{ try{ if(!booted && !document.body.classList.contains('locked')) boot(); }catch(_){} }, 2500);
 
 /* ── boot everything behind the gate ── */
 let booted=false;
