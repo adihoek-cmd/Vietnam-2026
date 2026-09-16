@@ -1281,7 +1281,7 @@ html.flat .must{background:none}
   <a href="tel:+84985459921">VietnamStay hotline · +84 985 459 921</a>
   <a href="tel:+84982893692">Lily, trip designer · +84 982 893 692</a>
  </div>
- <p class="foot">Booking SO85988 · VietnamStay · private family site · build 16 Sep 2026 · 07:11 UTC<br>
+ <p class="foot">Booking SO85988 · VietnamStay · private family site · build 16 Sep 2026 · 07:17 UTC<br>
 <a href="v1/" style="color:var(--dim);border-bottom:1px solid var(--gold-soft);text-decoration:none">previous version →</a></p>
 </section>
 
@@ -1368,12 +1368,12 @@ function boot(){
   reveal(); days(); scrub(); copy(); thread(); countdown(); flat(); light(); map(); dock(); strip(); sheet(); weather();
 }
 
-/* ── weather: live 3-day forecast for wherever we are, on today + next two day headers ──
+/* ── weather: live 6-day forecast for wherever we are, on today + next five day headers ──
    Open-Meteo, no key. Cached in localStorage (3h) so offline shows the last fetch, dashed. */
 function weather(){
   const start=new Date('2026-09-08T00:00:00+07:00');
   const today=Math.floor((Date.now()-start)/864e5)+1;
-  const want=[today,today+1,today+2].filter(n=>n>=1&&n<=22);
+  const want=[0,1,2,3,4,5].map(i=>today+i).filter(n=>n>=1&&n<=22);
   if(!want.length) return;
   const HCMC={lat:10.7769,lng:106.7009,city:'Hồ Chí Minh'};
   const locOf=n=>STOPS.find(x=>n>=x.d1&&n<=x.d2)||(n>=21?HCMC:null);
