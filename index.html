@@ -308,7 +308,7 @@ h2{font-family:Cormorant,serif;font-weight:300;font-size:clamp(2.2rem,5.4vw,3.6r
 .dplace{font-family:Cormorant,serif;font-size:1.45rem;line-height:1.15}
 .dtag{font-size:.82rem;color:var(--dim);margin-top:var(--s1)}
 .dsleep{font-size:.74rem;color:var(--crackle);margin-top:var(--s2);opacity:.8}
-.wx{display:inline-flex;align-items:center;gap:.5em;margin-top:var(--s2);padding:.28em .7em .28em .5em;
+.wx{display:inline-flex;flex-wrap:wrap;align-items:center;gap:.25em .5em;max-width:100%;margin-top:var(--s2);padding:.28em .7em .28em .5em;
   border:1px solid var(--gold-soft);border-radius:999px;font-family:'Courier Prime',monospace;
   font-size:.7rem;letter-spacing:.04em;color:var(--dim);opacity:0;transform:translateY(3px);
   transition:opacity var(--t3) var(--ease-leaf),transform var(--t3) var(--ease-leaf)}
@@ -1281,7 +1281,7 @@ html.flat .must{background:none}
   <a href="tel:+84985459921">VietnamStay hotline · +84 985 459 921</a>
   <a href="tel:+84982893692">Lily, trip designer · +84 982 893 692</a>
  </div>
- <p class="foot">Booking SO85988 · VietnamStay · private family site · build 16 Sep 2026 · 07:06 UTC<br>
+ <p class="foot">Booking SO85988 · VietnamStay · private family site · build 16 Sep 2026 · 07:11 UTC<br>
 <a href="v1/" style="color:var(--dim);border-bottom:1px solid var(--gold-soft);text-decoration:none">previous version →</a></p>
 </section>
 
@@ -1379,7 +1379,7 @@ function weather(){
   const locOf=n=>STOPS.find(x=>n>=x.d1&&n<=x.d2)||(n>=21?HCMC:null);
   const dateOf=n=>new Date(start.getTime()+(n-1)*864e5).toLocaleDateString('en-CA',{timeZone:'Asia/Ho_Chi_Minh'});
   const ICON=c=>c===0?'☀️':c<=2?'🌤️':c===3?'☁️':c<=48?'🌫️':c<=57?'🌦️':c<=67?'🌧️':c<=77?'🌨️':c<=82?'🌧️':c<=86?'🌨️':'⛈️';
-  const KEY='vn26_wx', TTL=3*3600e3;
+  const KEY='vn26_wx2', TTL=3*3600e3;
   let cache={}; try{ cache=JSON.parse(localStorage.getItem(KEY)||'{}')||{}; }catch(_){ cache={}; }
   const save=()=>{ try{
       const cut=Date.now()-2*864e5;
@@ -1392,8 +1392,11 @@ function weather(){
     if(!el){ el=document.createElement('div'); el.className='wx'; host.appendChild(el); }
     el.classList.toggle('stale',!!stale);
     el.title=(stale?'Last forecast fetched ':'Forecast fetched ')+new Date(d.t).toLocaleString('en-GB',{timeZone:'Asia/Ho_Chi_Minh'});
-    el.innerHTML=`<span class="wxi">${ICON(d.code)}</span><b>${Math.round(d.max)}°</b><span class="wxs">/ ${Math.round(d.min)}°</span>`
-               +`<span class="wxs">· ☔ ${d.rain}%</span><span class="wxs">· ${d.city}</span>`;
+    const mm=d.mm<1&&d.mm>0?d.mm.toFixed(1):Math.round(d.mm), hrs=Math.round(d.hrs);
+    const rain=d.mm>0||d.hrs>0 ? `<span class="wxs">· ☔ ${d.rain}%</span><span class="wxs">· ${mm} mm</span><span class="wxs">· ${hrs} h</span>`
+             : d.rain>0         ? `<span class="wxs">· ☔ ${d.rain}%</span>`
+                                : `<span class="wxs">· dry</span>`;
+    el.innerHTML=`<span class="wxi">${ICON(d.code)}</span><b>${Math.round(d.max)}°</b><span class="wxs">/${Math.round(d.min)}°</span>${rain}<span class="wxs">· ${d.city}</span>`;
     requestAnimationFrame(()=>el.classList.add('in'));
   };
   // one request per distinct location
@@ -1407,12 +1410,13 @@ function weather(){
     if(hit&&Date.now()-hit.t<TTL) return;
     try{
       const u='https://api.open-meteo.com/v1/forecast?latitude='+g.l.lat+'&longitude='+g.l.lng
-             +'&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max'
+             +'&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,precipitation_sum,precipitation_hours'
              +'&timezone=Asia%2FHo_Chi_Minh&start_date='+from+'&end_date='+to;
       const r=await fetch(u,{cache:'no-store'}); if(!r.ok) throw new Error(r.status);
       const j=await r.json(), D=j.daily, t=Date.now(), byDate={};
       D.time.forEach((dt,i)=>{ byDate[dt]={t,code:D.weather_code[i],max:D.temperature_2m_max[i],min:D.temperature_2m_min[i],
-                                           rain:D.precipitation_probability_max[i]==null?0:D.precipitation_probability_max[i],city:g.l.city}; });
+                                           rain:D.precipitation_probability_max[i]==null?0:D.precipitation_probability_max[i],
+                                           mm:D.precipitation_sum[i]==null?0:D.precipitation_sum[i],hrs:D.precipitation_hours[i]==null?0:D.precipitation_hours[i],city:g.l.city}; });
       g.days.forEach(n=>{ const d=byDate[dateOf(n)]; if(d) render(n,d,false); });
       cache[ck]={t,byDate}; save();
     }catch(e){ /* offline or API down: whatever is on screen stays */ }
