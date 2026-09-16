@@ -1,7 +1,7 @@
 /* Việt Nam 2026 · service worker
    Network-first for the page so edits land immediately when online.
    Cache-first for assets. Full offline fallback either way. */
-const V = 'vn26-20260915-0914';
+const V = 'vn26-20260916-0706';
 const CORE = ['./','./index.html','./manifest.json','./icon-192.png','./icon-512.png','./apple-touch-icon.png'];
 
 self.addEventListener('install', e => {
@@ -22,6 +22,8 @@ self.addEventListener('activate', e => {
 self.addEventListener('fetch', e => {
   const req = e.request;
   if (req.method !== 'GET') return;
+  // live data: never cache-first, never store. The page keeps its own short-lived copy.
+  if (req.url.includes('api.open-meteo.com')) return;
   const isDoc = req.mode === 'navigate' || req.destination === 'document';
 
   if (isDoc) {
