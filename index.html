@@ -393,11 +393,23 @@ html.flat *{transition-duration:1ms!important}
   #map{height:62vh}
 }
 @media print{
-  #gate,.grain,.vignette,#thread,#dock,#scrub,.pin-track,#hero{display:none!important}
-  body{background:#fff;color:#000}
+  #gate,.grain,.vignette,#thread,#dock,#scrub,.pin-track,#hero,#offline,.wx{display:none!important}
+  body{background:#fff;color:#000;padding-bottom:0!important}
   .card,.flight{border:1px solid #999;background:#fff}
   .code{color:#000}.devents{display:block!important}
+  /* every day open, nothing clipped, days kept whole where possible */
+  .day .devents,.day.open .devents{display:block!important}
+  .dtog{display:none!important}
+  .day{break-inside:avoid;page-break-inside:avoid;border-bottom:1px solid #ccc}
+  .ev{break-inside:avoid;page-break-inside:avoid}
+  section{break-before:page;page-break-before:always}
+  section:first-of-type{break-before:auto;page-break-before:auto}
+  a{color:#000;text-decoration:none}
+  .evlinks,.card-links{display:none!important}
+  #print-stamp{display:block!important;font-family:'Courier Prime',monospace;font-size:9pt;
+    color:#444;margin-bottom:8pt;border-bottom:1px solid #ccc;padding-bottom:4pt}
 }
+#print-stamp{display:none}
 
 html.flat #dock{background:#0B0908}
 @media(prefers-reduced-motion:reduce){#dock a,#dock button{transition:none}}
@@ -1094,7 +1106,9 @@ html.flat .must{background:none}
 <div class="evb"><span class="evk k-flight">flight</span><div class="evtitle">Fly HAN → HUE</div>
 <div class="evdesc">VN1545, Airbus A321, 16:35 → 17:55. 1PC baggage. Guide meets you at the exit gate with a signboard.</div><div class="evlinks"><span>VN1545 · EO4CD6 / EAK3EY</span></div></div></div><div class="ev"><div class="evt est">~18:30</div>
 <div class="evb"><span class="evk k-hotel">hotel</span><div class="evtitle">Check in — Senna Hue</div>
-<div class="evdesc">Premium rooms in the imperial city.</div><div class="evlinks"><a href="https://www.google.com/maps/search/?api=1&query=Senna+Hue+Hotel+Vietnam" target="_blank" rel="noopener">📍 Maps</a><a href="https://www.sennahotel.com" target="_blank" rel="noopener">🌐 Website</a></div></div></div><div class="ev"><div class="evt est">~19:00</div>
+<div class="evdesc">Premium rooms in the imperial city.</div><div class="evlinks"><a href="https://www.google.com/maps/search/?api=1&query=Senna+Hue+Hotel+Vietnam" target="_blank" rel="noopener">📍 Maps</a><a href="https://www.sennahotel.com" target="_blank" rel="noopener">🌐 Website</a></div></div></div><div class="ev"><div class="evt">19:30</div>
+<div class="evb"><span class="evk k-meal">meal</span><div class="evtitle">Dinner — Le Cercle ✅</div>
+<div class="evdesc">Terrace on the Perfume River at 11 Lê Lợi, about 10 minutes from Senna. Open until 23:00, so no rush after the flight.<div class="must"><div class="must-h">Order this</div><div class="must-i">Wagyu or Angus beef phở — the dish reviewers single out</div><div class="must-i">Deconstructed bánh mì</div><div class="must-i">The set menu, if you want it decided for you</div><div class="must-i">Skip the pizza — the one consistent complaint</div></div><div class="tip">4.7 across 979 reviews. Early enough for sunset over the river if the sky is clear.</div></div><div class="evlinks"><a href="https://www.google.com/maps/search/?api=1&query=Le+Cercle+Hue&query_place_id=ChIJrdHB9zmhQTERyrrrvRWd73k" target="_blank" rel="noopener">📍 Maps</a><a href="tel:+842343838055" target="_blank" rel="noopener">📞 +84 234 3838 055</a></div></div></div><div class="ev"><div class="evt est">~19:00</div>
 <div class="evb"><span class="evk k-note">note</span><div class="evtitle">🧺 Laundry — WhatsApp Thành Laundry tonight</div>
 <div class="evdesc"><strong>Message them this evening to arrange a hotel pickup tomorrow morning.</strong> They collect from and return to the hotel lobby, turn it round in 5–7 hours, and fold everything into bags. Reviewers quote about 30k₫ per kilo. You leave Huế the morning of the 21st, so tomorrow is the only full day — send it out early on the 20th and it is back before dinner.<div class="tip">66 Nguyễn Tri Phương, Thuận Hóa — open 06:00–22:15 every day. 5.0 from 22 reviews; one couple had a forgotten 1M₫ note returned from a pocket.</div></div><div class="evlinks"><a href="https://wa.me/84914177835" target="_blank" rel="noopener">💬 WhatsApp</a><a href="tel:+84914177835" target="_blank" rel="noopener">📞 +84 914 177 835</a><a href="https://www.google.com/maps/search/?api=1&query=Th%C3%A0nh+Laundry+Hu%E1%BA%BF&query_place_id=ChIJYxzuCzGhQTERt94zf6ksBOo" target="_blank" rel="noopener">📍 Maps</a></div></div></div></div></article>
 <article class="day" id="d13" data-day="13">
@@ -1286,7 +1300,7 @@ html.flat .must{background:none}
   <a href="tel:+84985459921">VietnamStay hotline · +84 985 459 921</a>
   <a href="tel:+84982893692">Lily, trip designer · +84 982 893 692</a>
  </div>
- <p class="foot">Booking SO85988 · VietnamStay · private family site · build 17 Sep 2026 · 12:02 UTC<br>
+ <p class="foot">Booking SO85988 · VietnamStay · private family site · build 19 Sep 2026 · 03:12 UTC<br>
 <a href="v1/" style="color:var(--dim);border-bottom:1px solid var(--gold-soft);text-decoration:none">previous version →</a></p>
 </section>
 
@@ -1294,7 +1308,8 @@ html.flat .must{background:none}
  <div class="sheet-in" id="sheet-in"></div>
 </dialog>
 <div id="thread" aria-hidden="true"></div>
-<nav id="dock" aria-label="Quick navigation"><a href="#hero" data-t="top"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11 12 3l9 8"/><path d="M6 10v10h12V10"/></svg>Top</a><a href="#route" data-t="route"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="9.5" r="2.6"/><path d="M12 21c4.5-5.2 7-8.5 7-11.4A7 7 0 0 0 5 9.6C5 12.5 7.5 15.8 12 21z"/></svg>Route</a><a href="#papers" data-t="papers"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4"/><path d="M9 12h6M9 16h6"/></svg>Papers</a><a href="#days" data-t="days" id="dock-days"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="16"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>Days</a><a href="#crew" data-t="crew"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8.5" r="3"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6"/><path d="M16.5 6.2a3 3 0 0 1 0 5.6M18 20c0-2.4-.8-4.3-2.2-5.6"/></svg>Crew</a><button id="flat" aria-pressed="false" title="Toggle flat mode"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h16"/><path d="M4 7h16M4 17h16" opacity=".45"/></svg><span id="flat-l">Flat</span></button></nav>
+<div id="print-stamp"></div>
+<nav id="dock" aria-label="Quick navigation"><a href="#hero" data-t="top"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11 12 3l9 8"/><path d="M6 10v10h12V10"/></svg>Top</a><a href="#route" data-t="route"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="9.5" r="2.6"/><path d="M12 21c4.5-5.2 7-8.5 7-11.4A7 7 0 0 0 5 9.6C5 12.5 7.5 15.8 12 21z"/></svg>Route</a><a href="#papers" data-t="papers"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4"/><path d="M9 12h6M9 16h6"/></svg>Papers</a><a href="#days" data-t="days" id="dock-days"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="16"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>Days</a><a href="#crew" data-t="crew"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8.5" r="3"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6"/><path d="M16.5 6.2a3 3 0 0 1 0 5.6M18 20c0-2.4-.8-4.3-2.2-5.6"/></svg>Crew</a><button id="pdf" title="Save the whole itinerary as a PDF"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6"/><path d="M6 18H4v-6h16v6h-2"/><path d="M8 14h8v7H8z"/></svg>PDF</button><button id="flat" aria-pressed="false" title="Toggle flat mode"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h16"/><path d="M4 7h16M4 17h16" opacity=".45"/></svg><span id="flat-l">Flat</span></button></nav>
 <div id="offline" role="status">Offline — showing saved copy</div>
 <div class="vignette" aria-hidden="true"></div>
 <div class="grain" aria-hidden="true"></div>
@@ -1371,10 +1386,22 @@ let booted=false;
 function boot(){
   if(booted)return; booted=true;
   reveal(); days(); scrub(); copy(); thread(); countdown(); flat(); light(); map(); dock(); strip(); sheet(); weather();
+  const pb=document.getElementById('pdf'); if(pb) pb.addEventListener('click',savePdf);
 }
 
 /* ── weather: live 6-day forecast for wherever we are, on today + next five day headers ──
    Open-Meteo, no key. Cached in localStorage (3h) so offline shows the last fetch, dashed. */
+function savePdf(){
+  const btn=document.getElementById('pdf'); if(btn) btn.disabled=true;
+  const was=[...document.querySelectorAll('.day')].map(d=>[d,d.classList.contains('open')]);
+  was.forEach(([d])=>d.classList.add('open'));
+  const stamp=document.getElementById('print-stamp');
+  if(stamp) stamp.textContent='Việt Nam 2026 — printed '+new Date().toLocaleString('en-GB',{timeZone:'Asia/Ho_Chi_Minh'})+' (Vietnam time). Live version: '+location.host+location.pathname;
+  const restore=()=>{ was.forEach(([d,on])=>d.classList.toggle('open',on)); if(btn) btn.disabled=false; };
+  addEventListener('afterprint',restore,{once:true});
+  setTimeout(()=>{ try{ print(); }catch(_){ } setTimeout(restore,3000); }, 120);
+}
+
 function weather(){
   const start=new Date('2026-09-08T00:00:00+07:00');
   const today=Math.floor((Date.now()-start)/864e5)+1;
