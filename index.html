@@ -300,7 +300,7 @@ h2{font-family:Cormorant,serif;font-weight:300;font-size:clamp(2.2rem,5.4vw,3.6r
 .day.today{border-left:2px solid var(--gold-leaf);padding-left:var(--s4);margin-left:calc(var(--s4)*-1)}
 .ev.now{background:rgba(201,162,39,.07);box-shadow:inset 2px 0 0 var(--gold-leaf);
   padding-left:var(--s3);margin-left:calc(var(--s3)*-1)}
-.ev.now .evt{color:var(--gold-leaf)}
+.ev.now .evt{color:var(--gold-flash)}
 .ev.now .evt::after{content:'NOW';display:block;font-size:.5rem;letter-spacing:.2em;
   color:var(--gold-leaf);opacity:.8;margin-top:3px}
 .dhead{display:flex;gap:var(--s4);align-items:flex-start;cursor:pointer;width:100%;
@@ -327,9 +327,9 @@ h2{font-family:Cormorant,serif;font-weight:300;font-size:clamp(2.2rem,5.4vw,3.6r
 .devents{display:none;padding-left:calc(1.7em + var(--s4));margin-top:var(--s4)}
 .day.open .devents{display:block}
 .ev{display:flex;gap:var(--s4);padding:var(--s4) 0;border-top:1px solid rgba(201,185,155,.07)}
-.evt{font-family:'Courier Prime',monospace;font-size:.8rem;color:var(--gold-line);min-width:4.4em;
+.evt{font-family:'Courier Prime',monospace;font-size:.8rem;color:var(--gold-flash);min-width:4.4em;
   flex-shrink:0;font-weight:700;padding-top:2px}
-.evt.est{opacity:.6;font-weight:400}
+.evt.est{opacity:.82;font-weight:400}
 .evb{flex:1;min-width:0}
 .evk{display:inline-block;font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;
   padding:2px 7px;border:1px solid;margin-bottom:var(--s2);opacity:.9}
@@ -401,7 +401,7 @@ html.flat *{transition-duration:1ms!important}
   #gate,.grain,.vignette,#thread,#dock,#scrub,.pin-track,#hero,#offline,.wx{display:none!important}
   body{background:#fff;color:#000;padding-bottom:0!important}
   .card,.flight{border:1px solid #999;background:#fff}
-  .code{color:#000}.devents{display:block!important}
+  .code{color:#000}.evt{color:#000!important;opacity:1!important}.devents{display:block!important}
   /* every day open, nothing clipped, days kept whole where possible */
   .day .devents,.day.open .devents{display:block!important}
   .dtog{display:none!important}
@@ -1321,7 +1321,7 @@ html.flat .must{background:none}
   <a href="tel:+84985459921">VietnamStay hotline · +84 985 459 921</a>
   <a href="tel:+84982893692">Lily, trip designer · +84 982 893 692</a>
  </div>
- <p class="foot">Booking SO85988 · VietnamStay · private family site · build 19 Sep 2026 · 03:56 UTC<br>
+ <p class="foot">Booking SO85988 · VietnamStay · private family site · build 19 Sep 2026 · 04:48 UTC<br>
 <a href="v1/" style="color:var(--dim);border-bottom:1px solid var(--gold-soft);text-decoration:none">previous version →</a></p>
 </section>
 
