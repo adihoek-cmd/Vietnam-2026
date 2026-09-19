@@ -298,6 +298,11 @@ h2{font-family:Cormorant,serif;font-weight:300;font-size:clamp(2.2rem,5.4vw,3.6r
 #scrub a:hover,#scrub a.on{color:var(--gold-leaf);border-bottom-color:var(--gold-leaf)}
 .day{border-top:1px solid rgba(201,185,155,.12);padding:var(--s5) 0;scroll-margin-top:60px}
 .day.today{border-left:2px solid var(--gold-leaf);padding-left:var(--s4);margin-left:calc(var(--s4)*-1)}
+.ev.now{background:rgba(201,162,39,.07);box-shadow:inset 2px 0 0 var(--gold-leaf);
+  padding-left:var(--s3);margin-left:calc(var(--s3)*-1)}
+.ev.now .evt{color:var(--gold-leaf)}
+.ev.now .evt::after{content:'NOW';display:block;font-size:.5rem;letter-spacing:.2em;
+  color:var(--gold-leaf);opacity:.8;margin-top:3px}
 .dhead{display:flex;gap:var(--s4);align-items:flex-start;cursor:pointer;width:100%;
   background:none;border:0;color:inherit;text-align:left;font:inherit;padding:var(--s2) 0;min-height:44px}
 .dnum{font-family:Cormorant,serif;font-size:2.6rem;line-height:.9;color:var(--gold-line);
@@ -406,6 +411,8 @@ html.flat *{transition-duration:1ms!important}
   section:first-of-type{break-before:auto;page-break-before:auto}
   a{color:#000;text-decoration:none}
   .evlinks,.card-links{display:none!important}
+  .ev.now{background:none;box-shadow:none;padding-left:0;margin-left:0}
+  .ev.now .evt::after{content:''}
   #print-stamp{display:block!important;font-family:'Courier Prime',monospace;font-size:9pt;
     color:#444;margin-bottom:8pt;border-bottom:1px solid #ccc;padding-bottom:4pt}
 }
@@ -1120,11 +1127,11 @@ html.flat .must{background:none}
 <div class="evb"><span class="evk k-flight">flight</span><div class="evtitle">Fly HAN → HUE</div>
 <div class="evdesc">VN1545, Airbus A321, 16:35 → 17:55. 1PC baggage. Guide meets you at the exit gate with a signboard.</div><div class="evlinks"><span>VN1545 · EO4CD6 / EAK3EY</span></div></div></div><div class="ev"><div class="evt est">~18:30</div>
 <div class="evb"><span class="evk k-hotel">hotel</span><div class="evtitle">Check in — Senna Hue</div>
-<div class="evdesc">Premium rooms in the imperial city.</div><div class="evlinks"><a href="https://www.google.com/maps/search/?api=1&query=Senna+Hue+Hotel+Vietnam" target="_blank" rel="noopener">📍 Maps</a><a href="https://www.sennahotel.com" target="_blank" rel="noopener">🌐 Website</a></div></div></div><div class="ev"><div class="evt">19:30</div>
-<div class="evb"><span class="evk k-meal">meal</span><div class="evtitle">Dinner — Le Cercle ☎️ not booked</div>
-<div class="evdesc"><strong>Call to book — Saturday night, table of 6.</strong> Terrace on the Perfume River at 11 Lê Lợi, about 10 minutes from Senna. Open until 23:00, so no rush after the flight.<div class="must"><div class="must-h">Order this</div><div class="must-i">Wagyu or Angus beef phở — the dish reviewers single out</div><div class="must-i">Deconstructed bánh mì</div><div class="must-i">The set menu, if you want it decided for you</div><div class="must-i">Skip the pizza — the one consistent complaint</div></div><div class="tip">4.7 across 979 reviews. Early enough for sunset over the river if the sky is clear.</div></div><div class="evlinks"><a href="https://www.google.com/maps/search/?api=1&query=Le+Cercle+Hue&query_place_id=ChIJrdHB9zmhQTERyrrrvRWd73k" target="_blank" rel="noopener">📍 Maps</a><a href="tel:+842343838055" target="_blank" rel="noopener">📞 +84 234 3838 055</a></div></div></div><div class="ev"><div class="evt est">~19:00</div>
+<div class="evdesc">Premium rooms in the imperial city.</div><div class="evlinks"><a href="https://www.google.com/maps/search/?api=1&query=Senna+Hue+Hotel+Vietnam" target="_blank" rel="noopener">📍 Maps</a><a href="https://www.sennahotel.com" target="_blank" rel="noopener">🌐 Website</a></div></div></div><div class="ev"><div class="evt est">~19:00</div>
 <div class="evb"><span class="evk k-note">note</span><div class="evtitle">🧺 Laundry — WhatsApp Thành Laundry tonight</div>
-<div class="evdesc"><strong>Message them this evening to arrange a hotel pickup tomorrow morning.</strong> They collect from and return to the hotel lobby, turn it round in 5–7 hours, and fold everything into bags. Reviewers quote about 30k₫ per kilo. You leave Huế the morning of the 21st, so tomorrow is the only full day — send it out early on the 20th and it is back before dinner.<div class="tip">66 Nguyễn Tri Phương, Thuận Hóa — open 06:00–22:15 every day. 5.0 from 22 reviews; one couple had a forgotten 1M₫ note returned from a pocket.</div></div><div class="evlinks"><a href="https://wa.me/84914177835" target="_blank" rel="noopener">💬 WhatsApp</a><a href="tel:+84914177835" target="_blank" rel="noopener">📞 +84 914 177 835</a><a href="https://www.google.com/maps/search/?api=1&query=Th%C3%A0nh+Laundry+Hu%E1%BA%BF&query_place_id=ChIJYxzuCzGhQTERt94zf6ksBOo" target="_blank" rel="noopener">📍 Maps</a></div></div></div></div></article>
+<div class="evdesc"><strong>Message them this evening to arrange a hotel pickup tomorrow morning.</strong> They collect from and return to the hotel lobby, turn it round in 5–7 hours, and fold everything into bags. Reviewers quote about 30k₫ per kilo. You leave Huế the morning of the 21st, so tomorrow is the only full day — send it out early on the 20th and it is back before dinner.<div class="tip">66 Nguyễn Tri Phương, Thuận Hóa — open 06:00–22:15 every day. 5.0 from 22 reviews; one couple had a forgotten 1M₫ note returned from a pocket.</div></div><div class="evlinks"><a href="https://wa.me/84914177835" target="_blank" rel="noopener">💬 WhatsApp</a><a href="tel:+84914177835" target="_blank" rel="noopener">📞 +84 914 177 835</a><a href="https://www.google.com/maps/search/?api=1&query=Th%C3%A0nh+Laundry+Hu%E1%BA%BF&query_place_id=ChIJYxzuCzGhQTERt94zf6ksBOo" target="_blank" rel="noopener">📍 Maps</a></div></div></div><div class="ev"><div class="evt">19:30</div>
+<div class="evb"><span class="evk k-meal">meal</span><div class="evtitle">Dinner — Le Cercle ☎️ not booked</div>
+<div class="evdesc"><strong>Call to book — Saturday night, table of 6.</strong> Terrace on the Perfume River at 11 Lê Lợi, about 10 minutes from Senna. Open until 23:00, so no rush after the flight.<div class="must"><div class="must-h">Order this</div><div class="must-i">Wagyu or Angus beef phở — the dish reviewers single out</div><div class="must-i">Deconstructed bánh mì</div><div class="must-i">The set menu, if you want it decided for you</div><div class="must-i">Skip the pizza — the one consistent complaint</div></div><div class="tip">4.7 across 979 reviews. Early enough for sunset over the river if the sky is clear.</div></div><div class="evlinks"><a href="https://www.google.com/maps/search/?api=1&query=Le+Cercle+Hue&query_place_id=ChIJrdHB9zmhQTERyrrrvRWd73k" target="_blank" rel="noopener">📍 Maps</a><a href="tel:+842343838055" target="_blank" rel="noopener">📞 +84 234 3838 055</a></div></div></div></div></article>
 <article class="day" id="d13" data-day="13">
 <button class="dhead" aria-expanded="false" aria-controls="ev13">
  <div class="dnum">13</div>
@@ -1314,7 +1321,7 @@ html.flat .must{background:none}
   <a href="tel:+84985459921">VietnamStay hotline · +84 985 459 921</a>
   <a href="tel:+84982893692">Lily, trip designer · +84 982 893 692</a>
  </div>
- <p class="foot">Booking SO85988 · VietnamStay · private family site · build 19 Sep 2026 · 03:44 UTC<br>
+ <p class="foot">Booking SO85988 · VietnamStay · private family site · build 19 Sep 2026 · 03:56 UTC<br>
 <a href="v1/" style="color:var(--dim);border-bottom:1px solid var(--gold-soft);text-decoration:none">previous version →</a></p>
 </section>
 
@@ -1405,6 +1412,35 @@ function boot(){
 
 /* ── weather: live 6-day forecast for wherever we are, on today + next five day headers ──
    Open-Meteo, no key. Cached in localStorage (3h) so offline shows the last fetch, dashed. */
+/* minutes past midnight in Vietnam, whatever the device clock says */
+function vnMinutes(){
+  try{
+    const p=new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Ho_Chi_Minh',hour:'2-digit',minute:'2-digit',hour12:false})
+             .formatToParts(new Date());
+    return (+p.find(x=>x.type==='hour').value)*60 + (+p.find(x=>x.type==='minute').value);
+  }catch(_){ const n=new Date(); return n.getHours()*60+n.getMinutes(); }
+}
+
+/* highlight the event we are inside right now, and (unless quiet) scroll to it */
+function markNow(day, quiet){
+  if(!day) return false;
+  const evs=[...day.querySelectorAll('.ev')].map(el=>{
+    const t=el.querySelector('.evt'); if(!t) return null;
+    const m=/(\d{1,2}):(\d{2})/.exec(t.textContent); if(!m) return null;
+    return {el, min:(+m[1])*60 + (+m[2])};
+  }).filter(Boolean);
+  if(!evs.length) return false;
+  const nowMin=vnMinutes();
+  /* pick by clock time, not DOM position — a day's events are not guaranteed sorted */
+  const started=evs.filter(e=>e.min<=nowMin);
+  const cur = started.length ? started.reduce((a,b)=>b.min>=a.min?b:a)
+                             : evs.reduce((a,b)=>b.min<a.min?b:a);
+  document.querySelectorAll('.ev.now').forEach(e=>e.classList.remove('now'));
+  cur.el.classList.add('now');
+  if(!quiet){ try{ cur.el.scrollIntoView({block:'center'}); }catch(_){ try{ cur.el.scrollIntoView(); }catch(__){} } }
+  return true;
+}
+
 function savePdf(){
   const btn=document.getElementById('pdf'); if(btn) btn.disabled=true;
   const was=[...document.querySelectorAll('.day')].map(d=>[d,d.classList.contains('open')]);
@@ -1493,7 +1529,10 @@ function days(){
     const d=document.getElementById('d'+n);
     if(d){ d.classList.add('today','open');
            d.querySelector('.dhead').setAttribute('aria-expanded','true');
-           setTimeout(()=>d.scrollIntoView({block:'start'}),400); }
+           setTimeout(()=>{ if(!markNow(d)) d.scrollIntoView({block:'start'}); },400);
+           /* keep the marker honest without yanking the page while it is being read */
+           addEventListener('visibilitychange',()=>{ if(!document.hidden) markNow(d,true); });
+           setInterval(()=>markNow(d,true),120000); }
   } else { const d1=document.getElementById('d1');
            if(d1){d1.classList.add('open'); d1.querySelector('.dhead').setAttribute('aria-expanded','true');} }
 }
